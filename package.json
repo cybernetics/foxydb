@@ -1,0 +1,13 @@
+{
+    "name": "foxydb",
+    "description": "FoxyDB",
+    "version": "1.0.0",
+    "private": true,
+    "dependencies": {
+    	"express": "3.x",
+        "sqlite3": "*",
+        "mysql": "*",
+        "progress": "*",
+        "validator": "*"
+    }
+}

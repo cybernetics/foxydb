@@ -1,0 +1,40 @@
+<div class="database pane">
+	<form data-validate="parsley">
+		<div class="paneTitle">
+			<h2><i class="icon-database "></i> Database setup</h2>
+
+			<div class="help">Need help? <a href="#">Click here</a></div>
+		</div>
+		<div class="paneContent">
+
+			<div class="row">
+				<label>Name</label> <input name="title" type="text" parsley-required="true"></input>
+			</div>
+<!--			<div class="row">
+				<label>Database Type</label> 
+				<select name="type" type="text" parsley-required="true">
+					<option value="mysql">MySQL</option>
+				</select>
+			</div>-->
+			<div class="row">
+				<label>Database Hostname</label> <input name="host" type="text" value="localhost" parsley-required="true"></input>
+			</div>
+			<div class="row">
+				<label>Database Port</label> <input name="port" type="text" value="3306" parsley-required="true" parsley-type="digits"></input>
+			</div>
+			<div class="row">
+				<label>Database Name</label> <input name="name" type="text" parsley-required="true"></input>
+			</div>
+			<div class="row">
+				<label>Database Username</label> <input name="username" type="text" parsley-required="true"></input>
+			</div>
+			<div class="row">
+				<label>Database Password</label> <input name="password" type="password" ></input>
+			</div>
+
+		</div>
+		<div class="paneButtons">
+			<button type="submit">Connect to the Database</button>
+		</div>
+	</form>
+</div>

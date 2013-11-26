@@ -1,0 +1,10 @@
+Database<br />
+<select class="databaseSelect">
+	<% can.each(databases, function(database) {%>
+		<option value="<%=database.attr('id')%>" <%=(database.attr('id')===insight.attr('database_id')?'selected="selected"':'')%>><%=database.attr('title')%></option>
+	<% }) %>
+	<option value="new">New Connection</option>
+</select>
+<div class="newDatabase"></div>
+<div class="tip">Some helpful tips</div>
+<div class="fox"></div>

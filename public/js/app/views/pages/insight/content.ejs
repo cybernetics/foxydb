@@ -1,0 +1,28 @@
+<ul class="tabs">
+	<li><input type="text" placeholder="Insight title" class="insightTitle" value="<%=insight.attr('name')%>" /></li>
+</ul>
+<div class="insightInner">
+	<div class="pane">
+		<div class="paneTitle">
+			<h2>SQL Query editor</h2>
+			<a href="#" class="button saveButton">
+				Save <span><i class="fa fa-angle-down "></i></span>
+				<ul class="submenu">
+					<li>Save as a Copy</li>
+				</ul>
+			</a>
+		</div>
+
+		<div class="queryEditor">
+			<div id="sql"><%=insight.attr('query')%></div>
+			<a href="#" class="button applyButton">Apply</a>
+		</div>
+		<div class="queryErrors">
+
+		</div>
+	</div>
+
+	<div class="results">
+
+	</div>
+</div>

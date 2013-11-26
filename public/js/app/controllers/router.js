@@ -3,6 +3,7 @@ define([
 	'can',
 	'can/route',
 	'app/controllers/account',
+	'app/controllers/database',
 	'app/controllers/dashboard',
 	'app/controllers/insight',
 	'jquery-cookie/jquery.cookie'
@@ -47,6 +48,7 @@ define([
 				can.route.ready();
 			},
 			loadPage: function(controller, action, options) {
+				console.log(controller, action, options);
 				console.log($('.content'));
 				if(($.cookie('loggedIn') != 1 && this.options.unauthenticated.indexOf(controller + '/' + action) < 0)){
 					can.route.attr({route: ''}, true);

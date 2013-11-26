@@ -1,4 +1,4 @@
-require([
+define([
 	'jquery',
 	'can',
 	'parsley',
@@ -6,7 +6,6 @@ require([
 	'formParams',
 	'app/models/database',
 	'app/models/insight',
-	'ace/ace',
 	'ace/mode-sql',
 	'ace/theme-github'
 ], function(

@@ -10,10 +10,10 @@ define(['jquery', 'can', 'squel', 'can/view/modifiers', 'can/view/ejs', 'app/con
 	});
 
 	Global = can.Construct({
-		user: new can.Observe({
+		user: new can.Map({
 			name: ''
 		}),
-		state: new can.Observe({
+		state: new can.Map({
 			loggedIn: false
 		})
 	},{});

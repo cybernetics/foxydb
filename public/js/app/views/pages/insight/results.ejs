@@ -1,35 +1,46 @@
-<div class="pane">
-	<div class="paneTitle">
-		<h2><i class="icon-list "></i> Results</h2><span class="page">Page <%=page%> of <%=count%></span>
+<% if(results.length === 0) { %>
+	<div class="pane noborder">
+		<div class="paneTitle">
+			<h2><i class="icon-list "></i> No Results</h2>
+		</div>
 	</div>
+<% } else { %>
 
-	<div class="resultsTable">
-		<table>
-			<thead>
-				<tr>
-					<% can.each(fields, function(item) { %>
-						<th title="<%=item%>"><%=can.capitalize(item.replace(/_/g,' '))%></th>
-					<% }) %>
+	<div class="pane">
+		<div class="paneTitle">
+			<h2><i class="icon-list "></i> Results</h2><span class="page">Page <%=page%> of <%=count%></span>
+		</div>
 
-				</tr>
-			</thead>
-			<tbody>
-				<% can.each(results, function(item) { %>
+		<div class="resultsTable">
+			
+			
+			<table>
+				<thead>
 					<tr>
-						<% can.each(fields, function(field) {  %>
-							<% if(item[field]) { %>
-								<td><%=item[field]%></td>
-							<% } else { %>
-								<td>&nbsp;</td>
-							<% } %>
+						<% can.each(fields, function(item) { %>
+							<th title="<%=item%>"><%=can.capitalize(item.replace(/_/g,' '))%></th>
 						<% }) %>
+
 					</tr>
-				<% }) %>
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					<% can.each(results, function(item) { %>
+						<tr>
+							<% can.each(fields, function(field) {  %>
+								<% if(item[field]) { %>
+									<td><%=item[field]%></td>
+								<% } else { %>
+									<td>&nbsp;</td>
+								<% } %>
+							<% }) %>
+						</tr>
+					<% }) %>
+				</tbody>
+			</table>
+		</div>
+		<div class="paneButtons">
+			<a href="#" class="button previous disabled">Previous</a>
+			<a href="#" class="button next disabled">Next</a>
+		</div>
 	</div>
-	<div class="paneButtons">
-		<a href="#" class="button previous disabled">Previous</a>
-		<a href="#" class="button next disabled">Next</a>
-	</div>
-</div>
+<% } %>

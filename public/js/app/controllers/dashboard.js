@@ -1,9 +1,10 @@
-require([
+define([
 	'jquery',
 	'can',
 	'parsleyerror',
 	'app/models/database',
 	'app/controllers/database',
+	'ace/ace',
 	'app/controllers/insight'
 ], function(
 	$,

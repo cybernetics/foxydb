@@ -1,9 +1,9 @@
 <header>
 	<a class="logo" href="#!dashboard"></a>
 	<% if(Global.state.attr('loggedIn')) { %>
-		<span class="user"><%= Global.user.attr('name') %> <i class="icon-angle-down "></i>
+		<span class="user"><%= Global.user.attr('name') %> <i class="fa fa-angle-down "></i>
 			<ul>
-				<li><a href="/account/logout"><i class="icon-exit"></i> Log out</a>
+				<li><a href="/account/logout"><i class="fa fa-sign-out"></i> Log out</a>
 			</ul>
 		</span>
 	<% } %>

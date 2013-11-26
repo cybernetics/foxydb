@@ -1,4 +1,4 @@
-require([
+define([
 	'jquery', 
 	'can', 
 	'parsleyerror',

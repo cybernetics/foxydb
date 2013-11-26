@@ -1,4 +1,4 @@
-require([
+define([
 	'jquery', 
 	'can', 
 	'parsley', 
@@ -66,8 +66,8 @@ require([
 						var user = new Model.User(element.formParams());
 						user.save().then(function(data) {
 							$.cookie('loggedIn',1);
-							Global.user.attr(data);
-							Global.state.attr('loggedIn', true);
+							//Global.user.attr(data);
+							//Global.state.attr('loggedIn', true);
 							can.route.attr({controller: 'dashboard'}, true);
 						}).fail(function(data) {
 							parsleyError(element, data.responseJSON.error);

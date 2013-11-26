@@ -10,3 +10,7 @@ Installation
 ------------
 - Run `npm install` to install all node.js dependencies
 - Edit `config.js` file 
+
+Running
+------------
+- Run `node server.js` 

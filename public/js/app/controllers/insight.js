@@ -6,6 +6,7 @@ define([
 	'formParams',
 	'app/models/database',
 	'app/models/insight',
+	'ace/ace',
 	'ace/mode-sql',
 	'ace/theme-github'
 ], function(
@@ -22,8 +23,9 @@ define([
 		{
 			init: function(element, options) {
 			},
-			edit: function() {
+			edit: function(options) {
 				var self = this;
+				self.options = options;
 				self.insight = new Model.Insight({query:'-- Type your query here'});
 				Model.Database.findAll().then(function(data) {
 					self.databases = data;
@@ -131,15 +133,15 @@ define([
 				var self = this;
 				event.preventDefault();
 
-				self.element.find('.insightTitle').removeClass('error');
-				if(self.element.find('.insightTitle').val().trim() === ''){
-					self.element.find('.insightTitle').addClass('error').focus();
+				self.element.find('.active .insightTitle').removeClass('error');
+				if(self.element.find('.active .insightTitle').val().trim() === ''){
+					self.element.find('.active .insightTitle').addClass('error').focus();
 				} else if($('.databaseSelect').val() === 'new') {
 					self.element.find('.databaseSelect').addClass('error').focus();
 				} else {
 					var insight = new Model.Insight({
 						database_id: $('.databaseSelect').val(),
-						name: self.element.find('.insightTitle').val().trim(),
+						name: self.element.find('.active .insightTitle').val().trim(),
 						query: self.editor.getValue()
 					});
 					insight.save().then(function(response) {
@@ -189,17 +191,17 @@ define([
 				element.parent().hide();
 				var self = this;
 
-				self.element.find('.insightTitle').removeClass('error');
-				if(self.element.find('.insightTitle').val().trim() === ''){
-					self.element.find('.insightTitle').addClass('error').focus();
+				self.element.find('.active .insightTitle').removeClass('error');
+				if(self.element.find('.active .insightTitle').val().trim() === ''){
+					self.element.find('.active .insightTitle').addClass('error').focus();
 				} else if($('.databaseSelect').val() === 'new') {
 					self.element.find('.databaseSelect').addClass('error').focus();
 				} else {
-					self.element.find('.insightTitle').val('Copy of ' + self.element.find('.insightTitle').val().trim());
+					self.element.find('.active .insightTitle').val('Copy of ' + self.element.find('.active .insightTitle').val().trim());
 					
 					var insight = new Model.Insight({
 						database_id: $('.databaseSelect').val(),
-						name: self.element.find('.insightTitle').val(),
+						name: self.element.find('.active .insightTitle').val(),
 						query: self.editor.getValue()
 					});
 					insight.save().then(function(response) {

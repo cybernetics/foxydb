@@ -1,5 +1,5 @@
-<ul class="tabs">
-	<li><input type="text" placeholder="Insight title" class="insightTitle" value="<%=insight.attr('name')%>" /></li>
+<ul class="tabs" <%= (el) -> new Controller.Tabs(el, {insight:insight}) %>>
+
 </ul>
 <div class="insightInner">
 	<div class="pane">

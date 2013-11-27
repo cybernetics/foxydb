@@ -5,6 +5,7 @@ define([
 	'app/controllers/account',
 	'app/controllers/database',
 	'app/controllers/dashboard',
+	'app/controllers/tabs',
 	'app/controllers/insight',
 	'jquery-cookie/jquery.cookie'
 ], function(

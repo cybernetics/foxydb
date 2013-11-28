@@ -1,4 +1,4 @@
 <% Global.tabs.each(function(insight) { %>
-	<li <%= insight.attr('id') == currentInsight.attr('id')?'class="active"':''%>><input type="text" placeholder="Insight title" class="insightTitle" value="<%=insight.attr('name')%>" /><a href="#!insight/edit&id=<%=insight.attr('id')%>"><%=insight.attr('name')%></a><i class="fa fa-times"></i></li>
+	<li <%= (el) -> el.data('insight',insight) %> <%= insight.attr('current')?'class="active"':''%>><input type="text" placeholder="Insight title" class="insightTitle" value="<%=insight.attr('name')%>" /><a href="#!insight/edit&id=<%=insight.attr('id')%>"><%=insight.attr('name')%></a><i class="fa fa-times"></i></li>
 <% }) %>
-<li class="new <%= currentInsight.attr('id')==='new'?'noshadow':''%>"><i class="fa fa-plus"></i> <a href="#!dashboard">New Tab</a></li>
+<li class="new"><i class="fa fa-plus"></i> <a href="#!dashboard">New Tab</a></li>

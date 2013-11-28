@@ -1,5 +1,8 @@
 <header>
 	<a class="logo" href="#!dashboard">FoxyDB</a>
+	<ul class="tabs" <%= (el) -> new Controller.Tabs(el) %>>
+
+	</ul>
 	<% if(Global.state.attr('loggedIn')) { %>
 		<span class="user"><%= Global.user.attr('name') %> <i class="fa fa-angle-down "></i>
 			<ul>

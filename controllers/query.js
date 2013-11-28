@@ -31,7 +31,7 @@ exports.controller = function(app, db) {
 									res.send(200, {data: rows.splice(req.body.offset, req.body.row_count), found_rows: len});
 								}
 							}
-
+							connection.end();
 						});
 					}
 				});

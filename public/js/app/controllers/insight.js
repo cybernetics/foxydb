@@ -33,7 +33,26 @@ define([
 							self.insight.attr('database_id',data[0].attr('id'));
 					} else {
 							Model.Insight.findOne({id: self.options.id}).then(function(response) {
-									self.insight.attr(response.attr(), true);
+								self.insight.attr(response.attr(), true);
+								$('.tabs .new').removeClass('noshadow');
+								var found = false;
+								Global.tabs.forEach(function(tab) {
+									tab.attr({current: false});
+									if(parseInt(self.insight.attr('id')) === tab.attr('id')){ 
+										tab.attr('current', true);
+										found = true;
+									}
+								});
+								if(!found) {
+									self.insight.attr({current: true});
+									Global.tabs.push(self.insight);
+								}
+								Global.tabs.forEach(function(tab) {
+									if(typeof tab.attr('id') === 'undefined'){ 
+										tab.destroy();
+									}
+								});
+
 							});
 					}
 

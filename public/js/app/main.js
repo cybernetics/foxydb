@@ -16,7 +16,7 @@ define(['jquery', 'can', 'squel', 'can/view/modifiers', 'can/view/ejs', 'app/con
 		state: new can.Map({
 			loggedIn: false
 		}),
-		tabs: new can.Model.List()
+		tabs: new can.List()
 	},{});
 
 

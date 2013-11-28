@@ -186,6 +186,93 @@ header {
 		line-height: 42px;
 		padding: 0 0 0 75px;
 	}
+	.tabs {
+		position: absolute;
+		left: 250px;
+		bottom: 0px;
+		z-index: 2;
+		overflow: hidden;
+		li {
+			float: left;
+			height: 40px;
+			background: @colorContent;
+			display: inline-block;
+			border-radius: 4px 4px 0 0;
+			margin: 0 4px 0 0;
+			padding: 4px;
+			position: relative;
+			line-height: 14px;
+			input {
+				display: none;
+				padding: 6px 8px;
+				border: 1px solid @colorLine;
+				border-radius: 3px;
+				margin: 0 4px 0 0;
+				font-size: 14px;
+				font-family: @font;
+				&:focus {
+					border: 1px solid darken(@colorLine, 20%);
+				}
+				overflow: hidden;
+
+
+
+			}
+
+			.fa-times {
+				cursor: pointer;
+			}
+
+			&:after {
+				left: 0;
+				bottom:-13px;
+				position: absolute;
+				height: 10px;
+				right: 0;
+				content: " ";
+				display: block;
+				box-shadow: 0 0 6px rgba(0,0,0,1);
+
+
+			}
+			a {
+				display: inline-block;
+				position: relative;
+				padding: 10px 4px 10px 8px;
+				color: @colorText;
+				
+			}
+			i {
+				padding: 4px;
+			}
+			&.active {
+				input {
+					display: inline-block;
+				}
+				a {
+					display: none;
+				}
+				&:after {
+					display: none;
+				}
+			}
+			&.new {
+				background: @colorGreenButton;
+					color: #fff;
+				a {
+					color: #fff;
+					padding: 10px 8px 10px 4px;
+				}
+				i {
+					padding: 4px 4px 4px 8px;
+				}
+				&.noshadow:after {
+					box-shadow: none;
+				}
+			}
+		}
+	}
+
 	.user {
 		float: right;
 		color: @colorText;
@@ -341,86 +428,7 @@ header {
 		float: right;
 		width: 100%;
 		margin: 0 0 -1000000px -250px;
-		.tabs {
-			position: absolute;
-			left: 250px;
-			top: -40px;
-			z-index: 2;
-			overflow: hidden;
-			li {
-				float: left;
-				height: 40px;
-				background: @colorContent;
-				display: inline-block;
-				border-radius: 4px 4px 0 0;
-				margin: 0 4px 0 0;
-				padding: 4px;
-				position: relative;
-				input {
-					display: none;
-					padding: 6px 8px;
-					border: 1px solid @colorLine;
-					border-radius: 3px;
-					margin: 0 4px 0 0;
-					font-size: 14px;
-					font-family: @font;
-					&:focus {
-						border: 1px solid darken(@colorLine, 20%);
-					}
-					overflow: hidden;
 
-
-
-				}
-				&:after {
-					left: 0;
-					bottom:-13px;
-					position: absolute;
-					height: 10px;
-					right: 0;
-					content: " ";
-					display: block;
-					box-shadow: 0 0 6px rgba(0,0,0,1);
-
-
-				}
-				a {
-					display: inline-block;
-					position: relative;
-					padding: 10px 4px 10px 8px;
-					color: @colorText;
-					
-				}
-				i {
-					padding: 4px;
-				}
-				&.active {
-					input {
-						display: inline-block;
-					}
-					a {
-						display: none;
-					}
-					&:after {
-						display: none;
-					}
-				}
-				&.new {
-					background: @colorGreenButton;
-						color: #fff;
-					a {
-						color: #fff;
-						padding: 10px 8px 10px 4px;
-					}
-					i {
-						padding: 4px 4px 4px 8px;
-					}
-					&.noshadow:after {
-						box-shadow: none;
-					}
-				}
-			}
-		}
 		.insightInner {
 			#sql {
 				width: 100%;

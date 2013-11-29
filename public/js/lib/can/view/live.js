@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.1
+ * CanJS - 2.0.3
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 12 Nov 2013 22:05:56 GMT
+ * Tue, 26 Nov 2013 18:21:22 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -29,12 +29,12 @@ define(["can/util/library", "can/view/elements", "can/view", "can/view/node_list
 		var teardown = function(){
 			unbind(data)
 			can.unbind.call(el,'removed', teardown);
+			return true
 		},
 			data = {
+				// returns true if no parent
 				teardownCheck: function(parent){
-					if(!parent){
-						teardown();
-					}
+					return parent ? false : teardown();
 				}
 			}
 
@@ -85,10 +85,6 @@ define(["can/util/library", "can/view/elements", "can/view", "can/view/node_list
 		 * @param {Object} parentNode
 		 */
 		list: function(el, compute, func, context, parentNode){
-			
-			
-			
-			
 			// A mapping of the index to an array
 			// of elements that represent the item.
 			// Each array is registered so child or parent
@@ -96,7 +92,13 @@ define(["can/util/library", "can/view/elements", "can/view", "can/view/node_list
 			var nodesMap = [],
 				// called when an item is added
 				add = function(ev, items, index){
-
+					// check that the placeholder textNode still has a parent.
+					// it's possible someone removed the contents of
+					// this element without removing the parent
+					if(data.teardownCheck(text.parentNode)){
+						return
+					}
+					
 					// Collect new html and mappings
 					var frag = document.createDocumentFragment(),
 						newMappings = [];
@@ -124,7 +126,17 @@ define(["can/util/library", "can/view/elements", "can/view", "can/view/node_list
 					});
 					[].splice.apply(nodesMap, [index, 0].concat(newMappings));
 				},
-				remove = function(ev, items, index){
+				// Remove can be called during teardown or when items are 
+				// removed from the element.
+				remove = function(ev, items, index, duringTeardown){
+					
+					// If this is because an element was removed, we should
+					// check to make sure the live elements are still in the page.
+					// If we did this during a teardown, it would cause an infinite loop.
+					if(!duringTeardown && data.teardownCheck(text.parentNode)){
+						return
+					}
+					
 					var removedMappings = nodesMap.splice(index, items.length),
 						itemsToRemove = [];
 
@@ -148,7 +160,7 @@ define(["can/util/library", "can/view/elements", "can/view", "can/view/node_list
 				// array
 				list && list.unbind && list.unbind("add", add).unbind("remove", remove);
 				// use remove to clean stuff up for us
-				remove({},{length: nodesMap.length},0);
+				remove({},{length: nodesMap.length},0, true);
 			}
 
 			updateList = function(ev, newList, oldList){
@@ -164,11 +176,7 @@ define(["can/util/library", "can/view/elements", "can/view", "can/view/node_list
 
 			// Setup binding and teardown to add and remove events
 			var data = setup(parentNode, function(){
-				if(text.parentNode){
-					can.isFunction(compute) && compute.bind("change",updateList)
-				} else {
-					data.teardownCheck()
-				}
+				can.isFunction(compute) && compute.bind("change",updateList)
 			},function(){
 				can.isFunction(compute) && compute.unbind("change",updateList)
 				teardownList()
@@ -225,7 +233,7 @@ define(["can/util/library", "can/view/elements", "can/view", "can/view/node_list
 			var parent = elements.getParentNode(el, parentNode);
 
 			// setup listening right away so we don't have to re-calculate value
-			var data  = listen( el.parentNode !== parent ? el.parentNode : parent, compute, function(ev, newVal, oldVal){
+			var data  = listen( parent, compute, function(ev, newVal, oldVal){
 				// Sometimes this is 'unknown' in IE and will throw an exception if it is
 				if ( typeof node.nodeValue != 'unknown' ) {
 					node.nodeValue = ""+newVal;

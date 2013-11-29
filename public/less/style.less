@@ -166,7 +166,7 @@ header {
 	background: @colorHeader;
 	height: 70px;
 	line-height: 70px;
-	padding: 0 20px;
+	padding: 0 0 0 20px;
 	color: @colorText;
 	position: absolute;
 	z-index: 1;
@@ -192,6 +192,25 @@ header {
 		bottom: 0px;
 		z-index: 2;
 		overflow: hidden;
+		cursor: pointer;
+		height: 40px;
+		ul.tabsInner {
+			float: left;
+		}
+		ul.tabsControls {
+			float: right;
+			.drop {
+				background: @colorInnerTitle;
+				display: none;
+				width: auto;
+				i {
+					font-size: 20px;
+    				margin: 4px 0 0;
+    				position: relative;
+
+				}
+			}
+		}
 		li {
 			float: left;
 			height: 40px;
@@ -202,6 +221,7 @@ header {
 			padding: 4px;
 			position: relative;
 			line-height: 14px;
+			width: 171px;
 			input {
 				display: none;
 				padding: 6px 8px;
@@ -210,6 +230,7 @@ header {
 				margin: 0 4px 0 0;
 				font-size: 14px;
 				font-family: @font;
+				width: 140px;
 				&:focus {
 					border: 1px solid darken(@colorLine, 20%);
 				}
@@ -240,10 +261,15 @@ header {
 				position: relative;
 				padding: 10px 4px 10px 8px;
 				color: @colorText;
-				
+				width: 144px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;	
 			}
 			i {
 				padding: 4px;
+				position: absolute;
+				top: 10px;
 			}
 			&.active {
 				input {
@@ -258,10 +284,12 @@ header {
 			}
 			&.new {
 				background: @colorGreenButton;
+				width: auto;
 					color: #fff;
 				a {
 					color: #fff;
-					padding: 10px 8px 10px 4px;
+					padding: 10px 8px 10px 28px;
+					width: auto;
 				}
 				i {
 					padding: 4px 4px 4px 8px;
@@ -276,10 +304,9 @@ header {
 	.user {
 		float: right;
 		color: @colorText;
-		padding: 16px;
-		line-height: 18px;
+		padding: 8px;
 		position: relative;
-		margin: 10px 0;
+		line-height: 10px;
 		i {
 			font-weight: bold;
 		}

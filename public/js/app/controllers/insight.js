@@ -159,12 +159,12 @@ define([
 				} else if($('.databaseSelect').val() === 'new') {
 					self.element.find('.databaseSelect').addClass('error').focus();
 				} else {
-					var insight = new Model.Insight({
+					self.insight.attr({
 						database_id: $('.databaseSelect').val(),
 						name: $('.tabs .active .insightTitle').val().trim(),
 						query: self.editor.getValue()
 					});
-					insight.save().then(function(response) {
+					self.insight.save().then(function(response) {
 						self.insight.attr(response.attr());
 						self.options.id = response.id;
 						can.route.attr('id',self.options.id);

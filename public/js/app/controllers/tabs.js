@@ -32,8 +32,11 @@ define([
 
 				event.stopPropagation();
 				event.preventDefault();
-				console.log(event);
+				console.log($(event.target));
 				if($(event.target).is(':not(li)') && $(event.target).is(':not(a)') && $(event.target).is(':not(.fa-plus)')) {
+					return;
+				}
+				if($(event.target).hasClass('active')) {
 					return;
 				}
 				if(element.hasClass('new')) {
@@ -52,7 +55,7 @@ define([
 				this.updateSize();
 			},
 			'.drop li click': function(element, event) {
-				this.element('.drop').removeClass('open');
+				$('.tabs .drop').removeClass('open');
 			},
 			':controller route': function(){
 				var r = can.route.attr();
@@ -90,7 +93,8 @@ define([
 						this.element.find('.drop').show();
 						Global.tabs.comparator = 'sorter';
 						if(this.element.find('.active').index() > lastVisibleIndex) {
-							
+							Global.tabs.sort();
+							can.trigger(Global.tabs, 'length');
 						}
 
 					} else {
@@ -99,8 +103,7 @@ define([
 					
 					Global.overflowTabs.replace(Global.tabs.slice(lastVisibleIndex+1));
 					this.element.find('.tabsInner').width(visibleWidth);
-					Global.tabs.sort();
-					can.trigger(Global.tabs, 'length');
+
 					this.calculating = false;
 				} 
 			},

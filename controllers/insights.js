@@ -19,6 +19,23 @@ exports.controller = function(app, db) {
 		}
 	});
 
+	app.put('/api/insights/:id', function(req, res) {
+		if(req.session.user) {
+			db.all("UPDATE `insights` SET database_id=?, name=?, query=? WHERE `id` = ?",[req.body.database_id, req.body.name, req.body.query, req.params.id] , function(err) {
+				if(err) {
+
+					res.send(500, err);
+				} else {
+					res.send(200, {id: req.params.id, name: req.body.name, database_id: req.body.database_id, query: req.body.query});
+				}
+			});
+
+
+		} else {
+			res.send(401);
+		}
+	});
+
 	app.get('/api/insights/:id', function(req, res) {
 		if(req.session.user) {
 			db.get("SELECT * FROM `insights` WHERE `id` = ?;",[req.params.id] , function(err, row) {

@@ -16,8 +16,8 @@ define(['jquery', 'can', 'squel', 'can/view/modifiers', 'can/view/ejs', 'app/con
 		state: new can.Map({
 			loggedIn: false
 		}),
-		tabs: new can.List([]),
-		overflowTabs: new can.List([])
+		tabs: new can.Model.List([]),
+		overflowTabs: new can.Model.List([])
 	},{});
 
 

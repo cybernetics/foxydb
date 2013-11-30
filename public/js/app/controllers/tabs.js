@@ -60,6 +60,11 @@ define([
 				if(r.controller == 'dashboard'){
 					this.element.find('li').removeClass('active');
 					this.element.find('.new').addClass('noshadow');	
+					Global.tabs.forEach(function(tab, index) {
+						if(typeof tab.attr('id') === 'undefined'){ 
+							tab.destroy();
+						}
+					});
 				}
 				this.updateSize();
 			},

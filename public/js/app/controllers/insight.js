@@ -26,11 +26,12 @@ define([
 			edit: function(options) {
 				var self = this;
 				self.options = options;
-				self.insight = new Model.Insight({query:'-- Type your query here'});
+				self.insight = new Model.Insight({query:'-- Type your query here', current: true, name: ''});
 				Model.Database.findAll().then(function(data) {
 					self.databases = data;
 					if(typeof self.options.id === 'undefined') {
 							self.insight.attr('database_id',data[0].attr('id'));
+							Global.tabs.push(self.insight);
 					} else {
 							Model.Insight.findOne({id: self.options.id}).then(function(response) {
 								self.insight.attr(response.attr(), true);
@@ -47,12 +48,13 @@ define([
 									self.insight.attr({current: true});
 									Global.tabs.push(self.insight);
 								}
-								Global.tabs.forEach(function(tab) {
-									if(typeof tab.attr('id') === 'undefined'){ 
-										tab.destroy();
-									}
-								});
+								
 								$(window).resize();
+							});
+							Global.tabs.forEach(function(tab, index) {
+								if(typeof tab.attr('id') === 'undefined'){ 
+									tab.destroy();
+								}
 							});
 					}
 
@@ -109,7 +111,7 @@ define([
 							self.element.find('.next').addClass('disabled');
 						}
 						self.page = page;
-						
+
 						//if(Math.ceil(data.found_rows/50) <= page)
 					},
 
@@ -151,16 +153,15 @@ define([
 			'.saveButton click': function(element, event) {
 				var self = this;
 				event.preventDefault();
-
-				self.element.find('.active .insightTitle').removeClass('error');
-				if(self.element.find('.active .insightTitle').val().trim() === ''){
-					self.element.find('.active .insightTitle').addClass('error').focus();
+				$('.tabs .active .insightTitle').removeClass('error');
+				if($('.tabs .active .insightTitle').val().trim() === ''){
+					$('.tabs .active .insightTitle').addClass('error').focus();
 				} else if($('.databaseSelect').val() === 'new') {
 					self.element.find('.databaseSelect').addClass('error').focus();
 				} else {
 					var insight = new Model.Insight({
 						database_id: $('.databaseSelect').val(),
-						name: self.element.find('.active .insightTitle').val().trim(),
+						name: $('.tabs .active .insightTitle').val().trim(),
 						query: self.editor.getValue()
 					});
 					insight.save().then(function(response) {
@@ -210,17 +211,17 @@ define([
 				element.parent().hide();
 				var self = this;
 
-				self.element.find('.active .insightTitle').removeClass('error');
-				if(self.element.find('.active .insightTitle').val().trim() === ''){
-					self.element.find('.active .insightTitle').addClass('error').focus();
+				$('.tabs .active .insightTitle').removeClass('error');
+				if($('.tabs .active .insightTitle').val().trim() === ''){
+					$('.tabs .active .insightTitle').addClass('error').focus();
 				} else if($('.databaseSelect').val() === 'new') {
 					self.element.find('.databaseSelect').addClass('error').focus();
 				} else {
-					self.element.find('.active .insightTitle').val('Copy of ' + self.element.find('.active .insightTitle').val().trim());
+					$('.tabs .active .insightTitle').val('Copy of ' + $('.tabs .active .insightTitle').val().trim());
 					
 					var insight = new Model.Insight({
 						database_id: $('.databaseSelect').val(),
-						name: self.element.find('.active .insightTitle').val(),
+						name: $('.tabs .active .insightTitle').val(),
 						query: self.editor.getValue()
 					});
 					insight.save().then(function(response) {

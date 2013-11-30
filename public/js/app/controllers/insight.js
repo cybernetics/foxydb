@@ -52,7 +52,7 @@ define([
 										tab.destroy();
 									}
 								});
-
+								$(window).resize();
 							});
 					}
 
@@ -109,7 +109,7 @@ define([
 							self.element.find('.next').addClass('disabled');
 						}
 						self.page = page;
-
+						
 						//if(Math.ceil(data.found_rows/50) <= page)
 					},
 

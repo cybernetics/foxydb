@@ -191,27 +191,76 @@ header {
 		left: 250px;
 		bottom: 0px;
 		z-index: 2;
-		overflow: hidden;
-		cursor: pointer;
-		height: 40px;
+		
+		
+		
 		ul.tabsInner {
 			float: left;
+			overflow: hidden;
+			height: 40px;
 		}
 		ul.tabsControls {
 			float: right;
+			> li {
+				overflow: hidden;
+				height: 40px;
+			}
 			.drop {
 				background: @colorInnerTitle;
 				display: none;
 				width: auto;
 				i {
 					font-size: 20px;
-    				margin: 4px 0 0;
+    				margin: -6px 0 0;
     				position: relative;
+
+				}
+				ul {
+					display: none;
+					
+					right: 0px;
+					top: 40px;
+					background: #fff;
+					box-shadow: 0 0 6px rgba(0,0,0,0.1);
+					position: absolute;
+					&:after {
+						width: 29px;
+						height: 5px;
+						background: #fff;
+						right: 0;
+						top: -5px;
+						content: " ";
+						display: block;
+						position: absolute;
+					}
+					li {
+						background: #fff;
+						border-bottom: 1px solid #f0f0f0;
+						i {
+							font-size: 14px;
+							margin: 0;
+							position: absolute;
+						}
+						&:after {
+							display: none;
+						}
+					}
+
+				}
+				&.open {
+					overflow: visible;
+					&:after {
+						display: none;
+					}
+					ul {
+						display: block;
+					}
 
 				}
 			}
 		}
-		li {
+		ul > li {
+			cursor: pointer;
 			float: left;
 			height: 40px;
 			background: @colorContent;

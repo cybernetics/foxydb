@@ -5,6 +5,14 @@
 	<% }) %>
 </ul>
 <ul class="tabsControls">
-	<li class="drop"><i class="fa fa-angle-down"></i></li>
+	<li class="drop">
+		<i class="fa fa-angle-down"></i>
+		<ul>
+			<% Global.overflowTabs.each(function(insight) { %>
+				<% controller.updateSize() %>
+				<li <%= (el) -> el.data('insight',insight) %>><a href="#!insight/edit&id=<%=insight.attr('id')%>"><%=insight.attr('name')%></a><i class="fa fa-times"></i></li>
+			<% }) %>
+		</ul>
+	</li>
 	<li class="new"><i class="fa fa-plus"></i> <a href="#!dashboard">New Tab</a></li>
 </ul>

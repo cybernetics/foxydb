@@ -28,6 +28,8 @@ define([
 				Global.tabs.splice(index, 1);
 			},
 			'li click': function(element, event) {
+				var self = this;
+
 				event.stopPropagation();
 				event.preventDefault();
 				console.log(event);
@@ -46,7 +48,11 @@ define([
 				Global.tabs.forEach(function(tab) {
 					tab.attr({current: false});
 				});
+				
 				this.updateSize();
+			},
+			'.drop li click': function(element, event) {
+				this.element('.drop').removeClass('open');
 			},
 			':controller route': function(){
 				var r = can.route.attr();
@@ -66,7 +72,7 @@ define([
 					var lastVisibleIndex = 0;
 
 					this.element.find('.tabsInner li').each(function(index, item) {
-						var tabWidth = $(item).outerWidth()+5;
+						var tabWidth = $(item).outerWidth()+4;
 						totalWidth += tabWidth;
 						if(totalWidth <= usableWidth) {
 							visibleWidth+= tabWidth;
@@ -79,21 +85,30 @@ define([
 						this.element.find('.drop').show();
 						Global.tabs.comparator = 'sorter';
 						if(this.element.find('.active').index() > lastVisibleIndex) {
-							Global.tabs.sort();
-							can.trigger(Global.tabs, 'length');
+							
 						}
 
 					} else {
 						this.element.find('.drop').hide();
 					}
 					
-
+					Global.overflowTabs.replace(Global.tabs.slice(lastVisibleIndex+1));
 					this.element.find('.tabsInner').width(visibleWidth);
+					Global.tabs.sort();
+					can.trigger(Global.tabs, 'length');
 					this.calculating = false;
 				} 
 			},
 			'{window} resize': function(element, event) {
 				this.updateSize();
+			},
+			'.drop click': function(element, event) {
+				element.addClass('open');
+				setTimeout(function() {
+					$('html').one('click', function(){
+						element.removeClass('open');
+					});
+				}, 50);
 			}
 
 		}

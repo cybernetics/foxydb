@@ -8,7 +8,8 @@ define([
 	'app/models/insight',
 	'ace/ace',
 	'ace/mode-sql',
-	'ace/theme-github'
+	'ace/theme-github',
+	'can/util/object'
 ], function(
 	$,
 	can,
@@ -26,7 +27,7 @@ define([
 			edit: function(options) {
 				var self = this;
 				self.options = options;
-				self.insight = new Model.Insight({query:'-- Type your query here', current: true, name: ''});
+				self.insight = new Model.Insight({query:'-- Type your query here', current: true, name: '', type: 1, variables: {}});
 				Model.Database.findAll().then(function(data) {
 					self.databases = data;
 					if(typeof self.options.id === 'undefined') {
@@ -35,6 +36,11 @@ define([
 					} else {
 							Model.Insight.findOne({id: self.options.id}).then(function(response) {
 								self.insight.attr(response.attr(), true);
+								if(!self.insight.attr('variables')) {
+									self.insight.attr('variables', {});
+								}
+								console.log('aaaa',self.insight.attr('variables'));
+
 								$('.tabs .new').removeClass('noshadow');
 								var found = false;
 								Global.tabs.forEach(function(tab) {
@@ -61,20 +67,53 @@ define([
 
 					self.element.find('.sidebar').html('//js/app/views/pages/insight/sidebar.ejs', {databases: self.databases, insight: self.insight});
 					self.element.find('.inner').html('//js/app/views/pages/insight/content.ejs', {insight: self.insight});
+					self.element.find('.tools').html('//js/app/views/pages/insight/tools.ejs', {insight: self.insight});
 					//setup editor
 					var editor = ace.edit("sql");
-					editor.setTheme("ace/theme/github");
+					editor.setTheme("ace/theme/tomorrow");
 					editor.getSession().setMode("ace/mode/sql");
 					document.getElementById('sql').style.fontSize='14px';
 					editor.getSession().setUseWrapMode(true);
 					editor.renderer.setShowGutter(false);
 					self.editor = editor;
+					self.editor.on('change', function() {
+						self.getVariables();
+					});
 					self.insight.bind('query',function(event, newVal, oldVal) {
 						self.editor.setValue(newVal);
 						self.element.find('.applyButton').click();
 					});
 
 				});
+			},
+			getVariables: function() {
+				var self = this;
+				var value = this.editor.getValue();
+				var vars = value.match(/\:[a-zA-Z0-9]+\:/g);
+				console.log(vars);
+				if(vars) {
+					vars.forEach(function(item, index) {
+						if(!self.insight.attr('variables.' + item.replace(/\:/g,''))) {
+							self.insight.attr('variables.' + item.replace(/\:/g,''), '');
+						}
+					});
+				}
+				var currentVars = self.insight.attr('variables');
+
+				if(currentVars) {
+						currentVars.each(function(item, index) {
+						if(vars) {
+							if(vars.indexOf(':' + index + ':') == -1) {
+								self.insight.attr('variables').removeAttr(index);
+							}
+						} else {
+							self.insight.attr({variables:{}},true);
+						}
+					});
+				}
+				can.trigger(self.insight.attr('variables'),'length');
+				console.log(self.insight.attr('variables')._data);
+
 			},
 			fetchData: function(element, page) {
 				var self = this;

@@ -4,12 +4,12 @@ exports.controller = function(app, db) {
 
 	app.post('/api/insights', function(req, res) {
 		if(req.session.user) {
-			db.run("INSERT INTO `insights` VALUES(NULL, ?, ?, ?);",[req.body.database_id, req.body.name, req.body.query] , function(err, row) {
+			db.run("INSERT INTO `insights` VALUES(NULL, ?, ?, ?, ?, NULL);",[req.body.database_id, req.body.name, req.body.query, req.body.type] , function(err, row) {
 				if(err) {
 
 					res.send(500, err);
 				} else {
-					res.send(200, {id: this.lastID, database_id: req.body.database_id, name: req.body.name, query: req.body.query});
+					res.send(200, {id: this.lastID, database_id: req.body.database_id, name: req.body.name, query: req.body.query, type: req.body.type, variables: null});
 				}
 			});
 
@@ -26,7 +26,14 @@ exports.controller = function(app, db) {
 
 					res.send(500, err);
 				} else {
-					res.send(200, {id: req.params.id, name: req.body.name, database_id: req.body.database_id, query: req.body.query});
+					db.get("SELECT * FROM `insights` WHERE `id` = ?;",[req.params.id] , function(err, row) {
+						if(err) {
+
+							res.send(500, err);
+						} else {
+							res.send(200, row);
+						}
+					});
 				}
 			});
 

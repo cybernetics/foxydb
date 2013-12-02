@@ -1,0 +1,49 @@
+
+<ul>
+<% if(insight.attr('type') == 0) { %>
+	<li>
+		<h2>
+			<i class="fa fa-question"></i> Variables
+		</h2>
+		<div>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+			cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</div>
+	</li>
+
+	<li>
+		<h2>
+			<i class="fa fa-question"></i> Variables
+		</h2>
+		<div>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+			cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</div>
+	</li>
+<% } else { %>
+	<li>
+		<div class="innerTitle">
+			<h2>Variables</h2>
+			<span>Use <strong>:variable_name:</strong> in the SQL Query editor to add variables</span>
+		</div>
+		<div class="innerContent">
+		<% console.log(insight.attr('variables').attr())%>
+			<% if(!can.Object.same(insight.attr('variables').attr(),{})) { %>
+				<% insight.attr('variables').each(function(item, index) { %>
+					<input placeholder="<%=index%>" value="<%=item%>"></input>
+				<% }) %>
+			<% } else { %>
+				No variables found in Your SQL
+			<% } %>
+		</div>
+	</li>
+<% } %>
+</ul>

@@ -4,12 +4,12 @@ exports.controller = function(app, db) {
 
 	app.post('/api/insights', function(req, res) {
 		if(req.session.user) {
-			db.run("INSERT INTO `insights` VALUES(NULL, ?, ?, ?, ?, NULL);",[req.body.database_id, req.body.name, req.body.query, req.body.type] , function(err, row) {
+			db.run("INSERT INTO `insights` VALUES(NULL, ?, ?, ?, ?, ?);",[req.body.database_id, req.body.name, req.body.query, req.body.type, JSON.stringify(req.body.variables||{})] , function(err, row) {
 				if(err) {
 
 					res.send(500, err);
 				} else {
-					res.send(200, {id: this.lastID, database_id: req.body.database_id, name: req.body.name, query: req.body.query, type: req.body.type, variables: null});
+					res.send(200, {id: this.lastID, database_id: req.body.database_id, name: req.body.name, query: req.body.query, type: req.body.type, variables: req.body.variables||{}});
 				}
 			});
 
@@ -21,7 +21,7 @@ exports.controller = function(app, db) {
 
 	app.put('/api/insights/:id', function(req, res) {
 		if(req.session.user) {
-			db.all("UPDATE `insights` SET database_id=?, name=?, query=? WHERE `id` = ?",[req.body.database_id, req.body.name, req.body.query, req.params.id] , function(err) {
+			db.all("UPDATE `insights` SET database_id=?, name=?, query=?, variables=? WHERE `id` = ?",[req.body.database_id, req.body.name, req.body.query, JSON.stringify(req.body.variables||{}), req.params.id] , function(err) {
 				if(err) {
 
 					res.send(500, err);
@@ -31,6 +31,7 @@ exports.controller = function(app, db) {
 
 							res.send(500, err);
 						} else {
+							row.variables = JSON.parse(row.variables);
 							res.send(200, row);
 						}
 					});
@@ -50,6 +51,7 @@ exports.controller = function(app, db) {
 
 					res.send(500, err);
 				} else {
+					row.variables = JSON.parse(row.variables);
 					res.send(200, row);
 				}
 			});

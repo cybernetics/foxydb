@@ -107,13 +107,21 @@ define([
 								self.insight.attr('variables').removeAttr(index);
 							}
 						} else {
-							self.insight.attr({variables:{}},true);
+
+							can.each(self.insight.attr('variables').attr(),function(item, index) {
+								self.insight.attr('variables').removeAttr(index);
+							});
+
 						}
 					});
 				}
 				can.trigger(self.insight.attr('variables'),'length');
 				console.log(self.insight.attr('variables')._data);
 
+			},
+			'.tools .innerContent input keyup': function(element, event) {
+				var self = this;
+				self.insight.attr('variables.' + element.attr('placeholder'), element.val());
 			},
 			fetchData: function(element, page) {
 				var self = this;
@@ -123,12 +131,16 @@ define([
 				element.html('<span class="spin"><i class="fa fa-spinner fa-spin"></i></spin>');
 				element.width(oldWidth);
 				self.element.find('.queryErrors').hide();
+				var value = self.editor.getValue();
+				can.each(self.insight.attr('variables').attr(),function(item, index) {
+					value = value.replace(new RegExp(':' + index + ':','g'),item);
+				});
 				$.ajax({
 					url: '/api/query/execute',
 					method: 'post',
 					data: {
 						database_id: $('.databaseSelect').val(),
-						query: self.editor.getValue(),
+						query: value,
 						offset: (page-1) * 50,
 						row_count: 50
 					},
@@ -198,11 +210,21 @@ define([
 				} else if($('.databaseSelect').val() === 'new') {
 					self.element.find('.databaseSelect').addClass('error').focus();
 				} else {
-					self.insight.attr({
-						database_id: $('.databaseSelect').val(),
-						name: $('.tabs .active .insightTitle').val().trim(),
-						query: self.editor.getValue()
-					});
+					// var vars = self.insight.attr('variables').attr();
+					// var type = self.insight.attr('type');
+					// self.insight.attr({
+					// 	database_id: $('.databaseSelect').val(),
+					// 	name: $('.tabs .active .insightTitle').val().trim(),
+					// 	query: self.editor.getValue(),
+					// 	variables: vars,
+					// 	type: type
+					// });
+					self.insight.attr('database_id', $('.databaseSelect').val());
+					self.insight.attr('name', $('.tabs .active .insightTitle').val().trim());
+					var value = self.editor.getValue();
+					self.insight.attr('query', value);
+					console.log('insight attr', self.insight.attr(),$('.databaseSelect').val(), self.editor.getValue());
+
 					self.insight.save().then(function(response) {
 						self.insight.attr(response.attr());
 						self.options.id = response.id;

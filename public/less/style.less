@@ -437,6 +437,27 @@ header {
 					.innerContent {
 						margin: 0 -20px;
     					padding: 20px 20px 0;
+    					label {
+    						width: 100%;
+    						margin: 5px 0;
+    						display: block;
+    					}
+    					input {
+							padding: 5px 8px;
+							border: 1px solid @colorLine;
+							border-radius: 3px;
+							margin: 0 0 5px 0;
+							font-size: 14px;
+							font-family: @font;
+							width: 100%;
+							&:focus {
+								border: 1px solid darken(@colorLine, 20%);
+							}
+							&.parsley-error {
+								color: @colorError;
+								border: 1px solid @colorError;
+							}
+						}
 					}
 				}
 			}

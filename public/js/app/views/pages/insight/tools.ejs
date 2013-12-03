@@ -38,6 +38,7 @@
 		<% console.log(insight.attr('variables').attr())%>
 			<% if(!can.Object.same(insight.attr('variables').attr(),{})) { %>
 				<% insight.attr('variables').each(function(item, index) { %>
+					<label><%=index%>:</label>
 					<input placeholder="<%=index%>" value="<%=item%>"></input>
 				<% }) %>
 			<% } else { %>

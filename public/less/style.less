@@ -191,9 +191,9 @@ header {
 		left: 250px;
 		bottom: 0px;
 		z-index: 2;
-		
-		
-		
+
+
+
 		ul.tabsInner {
 			float: left;
 			overflow: hidden;
@@ -217,7 +217,7 @@ header {
 				}
 				ul {
 					display: none;
-					
+
 					right: 0px;
 					top: 40px;
 					background: #fff;
@@ -313,7 +313,7 @@ header {
 				width: 144px;
 				white-space: nowrap;
 				overflow: hidden;
-				text-overflow: ellipsis;	
+				text-overflow: ellipsis;
 			}
 			i {
 				padding: 4px;
@@ -403,8 +403,8 @@ header {
 			position: relative;
 
 			ul {
-				
-				
+
+
 
 				li {
 					background: @colorSidebar;
@@ -417,10 +417,10 @@ header {
 							font-size: 16px;
 						}
 
-						
+
 					    margin: 0 -20px;
     					padding: 0 20px 20px;
-    					
+
     					border-bottom: 1px solid @colorLineHighlight;
     					position: relative;
     					&:after {
@@ -472,6 +472,75 @@ header {
 		overflow: hidden;
 		padding: 20px 20px 1000020px 20px;
 		margin: 0 0 -1000000px 0;
+
+		.structure {
+
+			> ul {
+				padding: 0 0 20px 0;
+				> li {
+					border: 1px solid @colorLine;
+					background: @colorTip;
+					padding: 6px;
+					margin: -1px 0 0 0;
+					i {
+						float: right;
+					}
+					.fa-chevron-up {
+						display: none;
+					}
+					ul {
+						display: none;
+						margin: 10px 0 10px 10px;
+						border-left: 1px solid @colorLine;
+						border-top: 1px solid @colorLine;
+						padding: 3px 0 0 0;
+						li {
+							border: 1px solid @colorLine;
+							background: @colorInnerTitle;
+							padding: 4px;
+							margin: 1px 0 0 5px;
+							position: relative;
+							i {
+								float: right;
+							}
+							&:before {
+								content: " ";
+								display: block;
+								position: absolute;
+								border-top: 1px solid @colorLine;
+								top: 10px;
+								left: -6px;
+								width: 5px;
+							}
+							&:last-child {
+								&:after {
+									content: " ";
+									display: block;
+									position: absolute;
+									background: @colorTip;
+									top: 11px;
+									left: -7px;
+									width: 1px;
+									height: 13px;
+								}
+							}
+						}
+					}
+					&.open {
+						.fa-chevron-up {
+							display: block;
+						}
+						.fa-chevron-down {
+							display: none;
+						}
+						ul {
+							display: block;
+						}
+					}
+				}
+			}
+		}
+
 		form {
 			.row {
 				overflow: hidden;
@@ -595,7 +664,7 @@ header {
 					display: block;
 					background: @colorGreenButton;
 					margin: 17px 0 0 0;
-					
+
 					span {
 						position: absolute;
 						height: 36px;

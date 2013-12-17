@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 var check = require('validator').check;
+var flow = require('flow');
 
 exports.controller = function(app, db) {
 	app.get('/api/databases', function(req, res) {
@@ -9,6 +10,55 @@ exports.controller = function(app, db) {
 					res.send(200, rows);
 				});
 			});
+		} else {
+			res.send(401);
+		}
+	});
+
+	app.get('/api/databases/structure/:database_id', function(req, res) {
+		if(req.session.user) {
+			db.get("SELECT * FROM `databases` WHERE `id` = ?;",req.params.database_id , function(err, row) {
+				if(err) {
+					res.send(500, err);
+				}
+				var connection = mysql.createConnection({
+					host     : row.host,
+					port     : row.port,
+					database : row.name,
+					user     : row.username,
+					password : row.password,
+				});
+				var dbName = row.name;
+				var structure = {};
+				connection.connect(function(err) {
+					if(err) {
+						res.send(400, {error: {text: 'Cannot connect to the database', field: 'host'}});
+					} else {
+						connection.query('SHOW TABLES;', function(err, rows) {
+							if(err) {
+								res.send(500, {errstr: err.message});
+							} else {
+								flow.serialForEach(rows, function(row) {
+									var f = this;
+									connection.query('SHOW COLUMNS FROM ' + row['Tables_in_'+dbName], function(err, rows) {
+										console.log(rows);
+										structure[row['Tables_in_'+dbName]] = rows;
+										f();
+									});
+								}, function(error, newVal) {
+
+								}, function() {
+									connection.end();
+									res.send(structure);
+								});
+							}
+
+						});
+					}
+				});
+			});
+
+
 		} else {
 			res.send(401);
 		}

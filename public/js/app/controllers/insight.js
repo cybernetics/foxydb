@@ -27,7 +27,11 @@ define([
 			edit: function(options) {
 				var self = this;
 				self.options = options;
-				self.insight = new Model.Insight({query:'-- Type your query here', current: true, name: '', type: 1, variables: {}});
+				var type = 0;
+				if(can.route.attr('type')) {
+					type = can.route.attr('type');
+				}
+				self.insight = new Model.Insight({query:'-- Type your query here', current: true, name: '', type: type, variables: {}});
 				Model.Database.findAll().then(function(data) {
 					self.databases = data;
 					if(typeof self.options.id === 'undefined') {
@@ -39,13 +43,12 @@ define([
 								if(!self.insight.attr('variables')) {
 									self.insight.attr('variables', {});
 								}
-								console.log('aaaa',self.insight.attr('variables'));
 
 								$('.tabs .new').removeClass('noshadow');
 								var found = false;
 								Global.tabs.forEach(function(tab) {
 									tab.attr({current: false});
-									if(parseInt(self.insight.attr('id')) === tab.attr('id')){ 
+									if(parseInt(self.insight.attr('id')) === tab.attr('id')){
 										tab.attr('current', true);
 										found = true;
 									}
@@ -54,14 +57,15 @@ define([
 									self.insight.attr({current: true});
 									Global.tabs.push(self.insight);
 								}
-								
+
 								$(window).resize();
 							});
 							Global.tabs.forEach(function(tab, index) {
-								if(typeof tab.attr('id') === 'undefined'){ 
+								if(typeof tab.attr('id') === 'undefined'){
 									tab.destroy();
 								}
 							});
+
 					}
 
 
@@ -84,7 +88,22 @@ define([
 						self.element.find('.applyButton').click();
 					});
 
+						self.getStructure();
+
+
 				});
+			},
+			getStructure: function() {
+				var self = this;
+				if(self.insight.attr('type') == 0) {
+					self.editor.setReadOnly(true);
+					var structure = new can.Map();
+					self.element.find('.structure').html('//js/app/views/pages/insight/structure.ejs', {structure: structure});
+					$.get('/api/databases/structure/'+self.insight.attr('database_id'), function(response) {
+						structure.attr(response);
+					});
+				}
+
 			},
 			getVariables: function() {
 				var self = this;
@@ -263,7 +282,7 @@ define([
 						element.parent().find('.submenu').hide();
 					});
 				}, 50);
-				
+
 			},
 			'.submenu li click': function(element, event) {
 				console.log(1);
@@ -279,7 +298,7 @@ define([
 					self.element.find('.databaseSelect').addClass('error').focus();
 				} else {
 					$('.tabs .active .insightTitle').val('Copy of ' + $('.tabs .active .insightTitle').val().trim());
-					
+
 					var insight = new Model.Insight({
 						database_id: $('.databaseSelect').val(),
 						name: $('.tabs .active .insightTitle').val(),
@@ -292,7 +311,7 @@ define([
 					});
 				}
 
-				
+
 			},
 			'.databaseSelect change': function(element, event) {
 				var self = this;
@@ -303,6 +322,7 @@ define([
 					self.element.find('.sidebar .newDatabase form').parsley();
 				} else {
 					self.element.find('.sidebar .newDatabase').html('');
+					self.getStructure();
 				}
 			},
 			'.sidebar .newDatabase form submit': function(element, event) {
@@ -321,6 +341,10 @@ define([
 						parsleyError(element, data.responseJSON.error);
 					});
 				}
+			},
+			'.sidebar .structure > ul > li click': function(element, event) {
+				event.preventDefault();
+				element.toggleClass('open');
 			}
 
 		}

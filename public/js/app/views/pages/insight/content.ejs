@@ -1,7 +1,11 @@
 <div class="insightInner">
 	<div class="pane">
 		<div class="paneTitle">
-			<h2>SQL Query editor</h2>
+			<h2>SQL Query editor
+				<% if(insight.attr('type') == 0){ %>
+					(Read only mode)
+				<% } %>
+			</h2>
 			<a href="#" class="button saveButton">
 				Save <span><i class="fa fa-angle-down "></i></span>
 				<ul class="submenu">

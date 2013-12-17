@@ -6,5 +6,13 @@ Database<br />
 	<option value="new">New Connection</option>
 </select>
 <div class="newDatabase"></div>
-<div class="tip">Some helpful tips</div>
+<div class="structure"></div>
+<div class="tip">
+	<% if(insight.attr('type') == 0) { %>
+		Drag/Drop columns to create filters.
+	<% } else { %>
+		Use a query editor to make advanced reports.
+	<% } %>
+	<br /><br /> You can always create a new database connection by selecting a 'New Connection' entry from the database dropdown.
+</div>
 <div class="fox"></div>

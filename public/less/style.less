@@ -475,7 +475,7 @@ header {
 		border-right: 1px solid @colorLine;
 		position: relative;
 		float: left;
-		overflow: hidden;
+		// overflow: hidden;
 		padding: 20px 20px 1000020px 20px;
 		margin: 0 0 -1000000px 0;
 
@@ -488,6 +488,15 @@ header {
 					background: @colorTip;
 					padding: 6px;
 					margin: -1px 0 0 0;
+					span {
+						display: inline-block;
+						width: 155px;
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						height: 15px;
+
+					}
 					i {
 						float: right;
 					}

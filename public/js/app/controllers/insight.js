@@ -9,7 +9,9 @@ define([
 	'ace/ace',
 	'ace/mode-sql',
 	'ace/theme-github',
-	'can/util/object'
+	'can/util/object',
+	'jquerypp/event/drag',
+	'jquerypp/event/drop'
 ], function(
 	$,
 	can,
@@ -45,6 +47,7 @@ define([
 					if(typeof self.options.id === 'undefined') {
 							self.insight.attr('database_id',data[0].attr('id'));
 							Global.tabs.push(self.insight);
+							self.setupDragDrop();
 							self.getStructure();
 					} else {
 							Model.Insight.findOne({id: self.options.id}).then(function(response) {
@@ -58,6 +61,7 @@ define([
 
 								self.updateTabs();
 								self.getStructure();
+								self.setupDragDrop();
 								self.element.find('.applyButton').click();
 
 							});
@@ -106,10 +110,20 @@ define([
 				});
 
 			},
+			setupDragDrop: function() {
+				var self = this;
+				if(self.insight.attr('type') == 0) {
+					self.element.find('.dragHere').on({
+						'dropon': function(ev, drop, drag) {
+							console.log(ev,drop,drag);
+						}
+					});
+
+				}
+			},
 			getStructure: function() {
 				var self = this;
 
-				console.log(self.insight.attr('type'));
 
 				if(self.insight.attr('type') == 0) {
 					self.editor.setReadOnly(true);
@@ -117,6 +131,9 @@ define([
 					self.element.find('.structure').html('//js/app/views/pages/insight/structure.ejs', {structure: structure});
 					$.get('/api/databases/structure/'+self.insight.attr('database_id'), function(response) {
 						structure.attr(response);
+						self.element.find('.structure > ul > li > ul > li').on('draginit', function(ev, drag) {
+							drag.ghost();
+						});
 					});
 				}
 
@@ -358,9 +375,10 @@ define([
 					});
 				}
 			},
-			'.sidebar .structure > ul > li click': function(element, event) {
+			'.sidebar .structure > ul > li > span, .sidebar .structure > ul > li > i click': function(element, event) {
 				event.preventDefault();
-				element.toggleClass('open');
+				event.stopPropagation();
+				element.parent().toggleClass('open');
 			}
 
 		}

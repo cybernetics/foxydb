@@ -58,15 +58,35 @@ define([
 
 				options = options || {};
 				controller = can.capitalize(controller);
+				if(['Dashboard','Insight'].indexOf(controller) == -1) {
+					this.element.find('.content').hide();
+					this.element.find('.controller').show();
+					if(this.currentController != controller) {
+						this.element.find('.controller').replaceWith('/js/app/views/layout/controller.ejs', {});
+						this.currentControllerInstance = new Controller[controller](this.element.find('.controller'), options);
+						this.currentController = controller;
 
-				if(this.currentController != controller) {
-					this.element.find('.content').replaceWith('/js/app/views/layout/content.ejs', {});
-					this.currentControllerInstance = new Controller[controller](this.element.find('.content'), options);
-					this.currentController = controller;
+					}
+					if(typeof action != 'undefined') {
+						this.currentControllerInstance[action](options);
+					}
+				} else {
+					if(controller == 'Dashboard') {
+						this.element.find('.content').hide();
+						this.element.find('.dashboard').show();
+					} else if(controller == 'Insight') {
+						this.element.find('.content').hide();
+						var id = options.id || 0;
+						
+						if(this.element.find('.insight#insight_' + id).length == 0) {
+							var el = $('body').append('/js/app/views/layout/insight.ejs', {id: id});
+							var insight = new Controller[controller](this.element.find('.insight#insight_' + id), options);
+							insight.edit(options);
+						}
+						this.element.find('.insight#insight_' + id).show();
 
-				}
-				if(typeof action != 'undefined') {
-					this.currentControllerInstance[action](options);
+					}
+					
 				}
 
 			},

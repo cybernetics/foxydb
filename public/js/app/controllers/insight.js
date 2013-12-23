@@ -23,6 +23,7 @@ define([
 		},
 		{
 			init: function(element, options) {
+
 			},
 			edit: function(options) {
 				var self = this;
@@ -32,12 +33,20 @@ define([
 					type = can.route.attr('type');
 				}
 				self.insight = new Model.Insight({query:'-- Type your query here', current: true, name: '', type: type, variables: {}});
+				//setup editor
+
 				Model.Database.findAll().then(function(data) {
 					self.databases = data;
 
+					self.element.find('.sidebar').html('//js/app/views/pages/insight/sidebar.ejs', {databases: self.databases, insight: self.insight});
+					self.element.find('.inner').html('//js/app/views/pages/insight/content.ejs', {insight: self.insight});
+					self.element.find('.tools').html('//js/app/views/pages/insight/tools.ejs', {insight: self.insight});
+					var editor = ace.edit(self.element.find('.sql')[0]);
+					self.editor = editor;
 					if(typeof self.options.id === 'undefined') {
 							self.insight.attr('database_id',data[0].attr('id'));
 							Global.tabs.push(self.insight);
+							self.getStructure();
 					} else {
 							Model.Insight.findOne({id: self.options.id}).then(function(response) {
 								self.insight.attr(response.attr(), true);
@@ -75,17 +84,13 @@ define([
 					}
 
 
-					self.element.find('.sidebar').html('//js/app/views/pages/insight/sidebar.ejs', {databases: self.databases, insight: self.insight});
-					self.element.find('.inner').html('//js/app/views/pages/insight/content.ejs', {insight: self.insight});
-					self.element.find('.tools').html('//js/app/views/pages/insight/tools.ejs', {insight: self.insight});
-					//setup editor
-					var editor = ace.edit("sql");
-					editor.setTheme("ace/theme/tomorrow");
-					editor.getSession().setMode("ace/mode/sql");
-					document.getElementById('sql').style.fontSize='14px';
-					editor.getSession().setUseWrapMode(true);
-					editor.renderer.setShowGutter(false);
-					self.editor = editor;
+
+					self.editor.setTheme("ace/theme/tomorrow");
+					self.editor.getSession().setMode("ace/mode/sql");
+					$('.sql')[0].style.fontSize='14px';
+					self.editor.getSession().setUseWrapMode(true);
+					self.editor.renderer.setShowGutter(false);
+					
 					self.editor.on('change', function() {
 						self.getVariables();
 					});
@@ -242,11 +247,10 @@ define([
 					// 	variables: vars,
 					// 	type: type
 					// });
-					self.insight.attr('database_id', $('.databaseSelect').val());
+					self.insight.attr('database_id', self.element.find('.databaseSelect').val());
 					self.insight.attr('name', $('.tabs .active .insightTitle').val().trim());
 					var value = self.editor.getValue();
 					self.insight.attr('query', value);
-					console.log('insight attr', self.insight.attr(),$('.databaseSelect').val(), self.editor.getValue());
 
 					self.insight.save().then(function(response) {
 						self.insight.attr(response.attr());
@@ -256,25 +260,21 @@ define([
 				}
 
 			},
-			'#sql textarea keydown': function(element, event) {
-				var self = this;
-				if (event.ctrlKey && event.keyCode == 13) {
-					event.preventDefault();
-
-					self.element.find('.applyButton').click();
-				}
-
-			},
 			'{window} keydown': function(element, event) {
 				var self = this;
-				if (event.ctrlKey && event.shiftKey && event.keyCode == 83) {
-					event.preventDefault();
-					self.element.find('.saveButton .submenu li').click();
-				} else if (event.ctrlKey && event.keyCode == 83) {
-					event.preventDefault();
-					self.element.find('.saveButton').click();
-				}
+				if(self.element.is(':visible')) {
+					if (event.ctrlKey && event.shiftKey && event.keyCode == 83) {
+						event.preventDefault();
+						self.element.find('.saveButton .submenu li').click();
+					} else if (event.ctrlKey && event.keyCode == 83) {
+						event.preventDefault();
+						self.element.find('.saveButton').click();
+					} else if (event.ctrlKey && event.keyCode == 13) {
+						event.preventDefault();
 
+						self.element.find('.applyButton').click();
+					}
+				}
 			},
 
 			'.saveButton span click': function(element, event) {

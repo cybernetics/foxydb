@@ -1,4 +1,5 @@
-<div class="content">
+<%== can.view.render('//js/app/views/layout/controller.ejs', {}); %>
+<div class="content dashboard" <%= (el) -> new Controller.Dashboard(el) %>>
 	<div class="inner"></div>
 	<div class="sidebar"></div>
 	<div class="tools"></div>

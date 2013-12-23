@@ -18,7 +18,7 @@ define([
 		},
 		{
 			init: function(element, options) {
-
+				this.index();
 			},
 			index: function(options) {
 				var self = this;

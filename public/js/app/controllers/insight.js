@@ -34,12 +34,16 @@ define([
 				self.insight = new Model.Insight({query:'-- Type your query here', current: true, name: '', type: type, variables: {}});
 				Model.Database.findAll().then(function(data) {
 					self.databases = data;
+
 					if(typeof self.options.id === 'undefined') {
 							self.insight.attr('database_id',data[0].attr('id'));
 							Global.tabs.push(self.insight);
 					} else {
 							Model.Insight.findOne({id: self.options.id}).then(function(response) {
 								self.insight.attr(response.attr(), true);
+								self.insight.attr({variables:response.attr('variables')});
+								console.log (self.insight.attr('variables'), response);
+
 								if(!self.insight.attr('variables')) {
 									self.insight.attr('variables', {});
 								}
@@ -57,6 +61,8 @@ define([
 									self.insight.attr({current: true});
 									Global.tabs.push(self.insight);
 								}
+								self.getStructure();
+								self.element.find('.applyButton').click();
 
 								$(window).resize();
 							});
@@ -85,16 +91,15 @@ define([
 					});
 					self.insight.bind('query',function(event, newVal, oldVal) {
 						self.editor.setValue(newVal);
-						self.element.find('.applyButton').click();
 					});
-
-						self.getStructure();
-
 
 				});
 			},
 			getStructure: function() {
 				var self = this;
+
+				console.log(self.insight.attr('type'));
+
 				if(self.insight.attr('type') == 0) {
 					self.editor.setReadOnly(true);
 					var structure = new can.Map();
@@ -109,7 +114,7 @@ define([
 				var self = this;
 				var value = this.editor.getValue();
 				var vars = value.match(/\:[a-zA-Z0-9]+\:/g);
-				console.log(vars);
+
 				if(vars) {
 					vars.forEach(function(item, index) {
 						if(!self.insight.attr('variables.' + item.replace(/\:/g,''))) {
@@ -135,7 +140,6 @@ define([
 					});
 				}
 				can.trigger(self.insight.attr('variables'),'length');
-				console.log(self.insight.attr('variables')._data);
 
 			},
 			'.tools .innerContent input keyup': function(element, event) {
@@ -302,7 +306,9 @@ define([
 					var insight = new Model.Insight({
 						database_id: $('.databaseSelect').val(),
 						name: $('.tabs .active .insightTitle').val(),
-						query: self.editor.getValue()
+						query: self.editor.getValue(),
+						variables: self.insight.attr('variables'),
+						type: self.insight.attr('type')
 					});
 					insight.save().then(function(response) {
 						self.insight.attr(response.attr());

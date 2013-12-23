@@ -25,6 +25,11 @@ define([
 			},
 			'.fa-times click': function(element, event) {
 				index = element.parent().index();
+				if(element.parent().hasClass('active')) {
+					can.route.attr({controller: 'dashboard'}, true);
+				}
+				$('#insight_' + element.parent().data('insight').attr('id')).remove();
+
 				Global.tabs.splice(index, 1);
 			},
 			'li click': function(element, event) {

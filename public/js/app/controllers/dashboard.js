@@ -25,13 +25,16 @@ define([
 				
 				Global.state.bind('loggedIn', function (evt, newvalue, oldvalue) {
 					if (newvalue) {
+						Global.insights = new can.Model.List([]);
 						Model.Database.findAll().then(function(data) {
 							if (data.length === 0) {
 								can.route.attr({controller: 'database', action: 'add'}, true);
-								console.log ('ovde sam');
 							} else {
+								Model.Insight.findAll().then(function(data) {
+									Global.insights.attr(data);
+								});
 								self.element.find('.sidebar').html('//js/app/views/pages/dashboard/sidebar.ejs', {});
-								self.element.find('.inner').html('//js/app/views/pages/dashboard/content.ejs', {insights: Model.Insight.findAll()});
+								self.element.find('.inner').html('//js/app/views/pages/dashboard/content.ejs', {insights: Global.insights});
 							}
 						});
 					} else {

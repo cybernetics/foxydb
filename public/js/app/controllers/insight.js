@@ -261,6 +261,9 @@ define([
 					self.insight.save().then(function(response) {
 						self.element.attr('id', 'insight_' + response.id);
 						self.insight.attr(response.attr());
+						if(typeof self.options.id === 'undefined') {
+							Global.insights.push(self.insight);
+						}
 						self.options.id = response.id;
 						can.route.attr('id',self.options.id);
 					});

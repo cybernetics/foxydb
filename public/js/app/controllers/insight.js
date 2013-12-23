@@ -33,8 +33,7 @@ define([
 					type = can.route.attr('type');
 				}
 				self.insight = new Model.Insight({query:'-- Type your query here', current: true, name: '', type: type, variables: {}});
-				//setup editor
-
+				self.element.data('insight', self);
 				Model.Database.findAll().then(function(data) {
 					self.databases = data;
 
@@ -57,23 +56,10 @@ define([
 									self.insight.attr('variables', {});
 								}
 
-								$('.tabs .new').removeClass('noshadow');
-								var found = false;
-								Global.tabs.forEach(function(tab) {
-									tab.attr({current: false});
-									if(parseInt(self.insight.attr('id')) === tab.attr('id')){
-										tab.attr('current', true);
-										found = true;
-									}
-								});
-								if(!found) {
-									self.insight.attr({current: true});
-									Global.tabs.push(self.insight);
-								}
+								self.updateTabs();
 								self.getStructure();
 								self.element.find('.applyButton').click();
 
-								$(window).resize();
 							});
 							Global.tabs.forEach(function(tab, index) {
 								if(typeof tab.attr('id') === 'undefined'){
@@ -99,6 +85,24 @@ define([
 					});
 
 				});
+			},
+			updateTabs: function() {
+				var self = this;
+				$('.tabs .new').removeClass('noshadow');
+				var found = false;
+				Global.tabs.forEach(function(tab) {
+					tab.attr({current: false});
+					if(parseInt(self.insight.attr('id')) === tab.attr('id')){
+						tab.attr('current', true);
+						found = true;
+					}
+				});
+				if(!found) {
+					self.insight.attr({current: true});
+					Global.tabs.push(self.insight);
+				}
+				$(window).resize();
+
 			},
 			getStructure: function() {
 				var self = this;
@@ -253,6 +257,7 @@ define([
 					self.insight.attr('query', value);
 
 					self.insight.save().then(function(response) {
+						self.element.attr('id', 'insight_' + response.id);
 						self.insight.attr(response.attr());
 						self.options.id = response.id;
 						can.route.attr('id',self.options.id);

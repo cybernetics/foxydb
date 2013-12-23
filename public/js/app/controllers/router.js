@@ -82,6 +82,8 @@ define([
 							var el = $('body').append('/js/app/views/layout/insight.ejs', {id: id});
 							var insight = new Controller[controller](this.element.find('.insight#insight_' + id), options);
 							insight.edit(options);
+						} else {
+							this.element.find('.insight#insight_' + id).data('insight').updateTabs();
 						}
 						this.element.find('.insight#insight_' + id).show();
 

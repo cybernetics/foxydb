@@ -61,11 +61,7 @@ define([
 								self.element.find('.applyButton').click();
 
 							});
-							Global.tabs.forEach(function(tab, index) {
-								if(typeof tab.attr('id') === 'undefined'){
-									tab.destroy();
-								}
-							});
+							
 
 					}
 
@@ -102,6 +98,12 @@ define([
 					Global.tabs.push(self.insight);
 				}
 				$(window).resize();
+				Global.tabs.forEach(function(tab, index) {
+					if(typeof tab.attr('id') === 'undefined'){
+						$('#insight_0').remove();
+						tab.destroy();
+					}
+				});
 
 			},
 			getStructure: function() {

@@ -65,7 +65,9 @@ define([
 					this.element.find('.new').addClass('noshadow');	
 					Global.tabs.forEach(function(tab, index) {
 						if(typeof tab.attr('id') === 'undefined'){ 
+							$('#insight_0').remove();
 							tab.destroy();
+
 						}
 					});
 				}

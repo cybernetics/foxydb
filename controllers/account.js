@@ -53,6 +53,15 @@ exports.controller = function(app, db) {
 
 	});
 
+	app.delete('/api/users/logout', function (req, res) {
+		if (req.session.user) {
+			delete req.session.user;
+			res.send(200, {});
+		} else {
+			res.send(401);
+		}
+	});
+
 	app.post('/api/users', function(req, res) {
 
 		//Validate fields

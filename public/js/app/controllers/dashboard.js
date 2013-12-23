@@ -23,14 +23,20 @@ define([
 			index: function(options) {
 				var self = this;
 				
-				
-				Model.Database.findAll().then(function(data) {
-					if (data.length === 0) {
-						can.route.attr({controller: 'database', action: 'add'}, true);
+				Global.state.bind('loggedIn', function (evt, newvalue, oldvalue) {
+					if (newvalue) {
+						Model.Database.findAll().then(function(data) {
+							if (data.length === 0) {
+								can.route.attr({controller: 'database', action: 'add'}, true);
+								console.log ('ovde sam');
+							} else {
+								self.element.find('.sidebar').html('//js/app/views/pages/dashboard/sidebar.ejs', {});
+								self.element.find('.inner').html('//js/app/views/pages/dashboard/content.ejs', {insights: Model.Insight.findAll()});
+							}
+						});
 					} else {
-						self.element.find('.sidebar').html('//js/app/views/pages/dashboard/sidebar.ejs', {});
-						self.element.find('.inner').html('//js/app/views/pages/dashboard/content.ejs', {insights: Model.Insight.findAll()});
-
+						self.element.find('.sidebar').html('');
+						self.element.find('.inner').html('');
 					}
 				});
 			},

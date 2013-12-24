@@ -401,7 +401,53 @@ header {
 			padding: 20px 5px 20px 20px;
 			position: fixed;
 			left: 250px;
+			.editPopup {
+				display: none;
+				left: 200px;
+				padding: 20px 20px 0;
+				position: absolute;
+				top: -15px;
+				width: 250px;	
+				box-shadow: 0 0 5px rgba(0,0,0,0.2);			
+				background: @colorInnerTitle;
+				z-index: 100;
+				&.open {
+					display: block;
+				}
+				.button {
+					display: block;
+					width: 100%;
+				}
+				&:before {
+					background: none repeat scroll 0 0 #FFFFFF;
+					box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+					content: " ";
+					height: 20px;
+					left: -5px;
+					margin-top: -11px;
+					position: absolute;
+					top: 30px;
+					transform: rotate(45deg);
+					width: 20px;
+					z-index: 0;
+				}
+				.innerTitle {
+					background: @colorInnerTitle;
+					padding: 20px;
+					margin: -20px -20px 0;
+					i {
+						position: absolute;
+						top: 20px;
+						right: 20px;
 
+					}
+				}
+				.innerContent {
+					background: @colorInnerTitle;
+					.paperShadow();
+					padding: 20px;
+				}
+			}
 			.columnList {
 				li {
 					border: 1px solid @colorLine;
@@ -412,6 +458,7 @@ header {
 					cursor: pointer;
 					i {
 						float: right;
+						margin: 2px 0 0 0;
 					}
 					&:last-child {
 						margin: -1px 0 10px 0;

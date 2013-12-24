@@ -7,7 +7,7 @@
 			<span>Drag/Drop fields here to create filters</span>
 		</div>
 		<div class="innerContent">
-			<div class="dragHere"><i class="fa fa-share"></i> Drag here</div>
+			<div class="dragHere filters"><i class="fa fa-share"></i> Drag here</div>
 		</div>
 	</li>
 
@@ -17,7 +17,7 @@
 			<span>Drag/Drop fields that You want to show in the report</span>
 		</div>
 		<div class="innerContent">
-			<div class="dragHere"><i class="fa fa-share"></i> Drag here</div>
+			<div class="dragHere fields"><i class="fa fa-share"></i> Drag here</div>
 		</div>
 	</li>
 <% } else { %>
@@ -27,7 +27,6 @@
 			<span>Use <strong>:variable_name:</strong> in the SQL Query editor to add variables</span>
 		</div>
 		<div class="innerContent">
-		<% console.log(insight.attr('variables').attr())%>
 			<% if(!can.Object.same(insight.attr('variables').attr(),{})) { %>
 				<% insight.attr('variables').each(function(item, index) { %>
 					<label><%=index%>:</label>

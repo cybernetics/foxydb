@@ -37,7 +37,6 @@ define([
 
 				event.stopPropagation();
 				event.preventDefault();
-				console.log($(event.target));
 				if($(event.target).is(':not(li)') && $(event.target).is(':not(a)') && $(event.target).is(':not(.fa-plus)')) {
 					return;
 				}
@@ -64,7 +63,6 @@ define([
 			},
 			':controller route': function(){
 				var r = can.route.attr();
-				console.log('tabs route', r);
 				if(r.controller == 'dashboard'){
 					this.element.find('li').removeClass('active');
 					this.element.find('.new').addClass('noshadow');	

@@ -19,7 +19,6 @@ define([
 		{
 			init: function(element, options) {
 				this.element.find('.sidebar').html('/js/app/views/pages/account/sidebar.ejs', {});
-				console.log(parsleyError);
 			},
 			index: function() {
 				this.element.find('.inner').html('/js/app/views/pages/account/login.ejs', {});

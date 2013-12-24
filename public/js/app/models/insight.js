@@ -14,7 +14,6 @@ define([
 			},
 			{
 				sorter: can.compute(function() {
-					console.log(this.attr('current'));
 					return this.attr('current')?0:1;
 				})
 			}

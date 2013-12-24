@@ -28,7 +28,6 @@ define([
 			init: function(element, options) {
 
 				this.element.html('/js/app/views/layout/layout.ejs', {});
-				console.log('init');
 				if($.cookie('loggedIn') == 1) {
 					Global.state.attr('loggedIn', true);
 					$.ajax({
@@ -36,7 +35,6 @@ define([
 						type: 'get',
 						dataType: 'json',
 						success: function(data) {
-							console.log(data);
 							Global.user.attr(data);
 						},
 						error: function(error) {
@@ -49,8 +47,6 @@ define([
 				can.route.ready();
 			},
 			loadPage: function(controller, action, options) {
-				console.log(controller, action, options);
-				console.log($('.content'));
 				if(($.cookie('loggedIn') != 1 && this.options.unauthenticated.indexOf(controller + '/' + action) < 0)){
 					can.route.attr({route: ''}, true);
 					return;
@@ -93,11 +89,9 @@ define([
 
 			},
 			'route': function() {
-				console.log(this.element.html());
 				this.loadPage('account', 'index', can.route.attr());
 			},
 			':controller route': function() {
-				console.log(can.route.attr());
 				this.loadPage(can.route.attr('controller'), 'index', can.route.attr());
 			},
 			':controller/:action route': function() {

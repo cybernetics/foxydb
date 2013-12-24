@@ -4,7 +4,6 @@ define(['jquery', 'can', 'squel', 'can/view/modifiers', 'can/view/ejs', 'app/con
 	}, {
 		init: function(element, options) {
 			
-			console.log(Controller);
 			new Router(this.element);
 		}
 	});

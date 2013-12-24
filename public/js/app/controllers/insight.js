@@ -53,7 +53,6 @@ define([
 							Model.Insight.findOne({id: self.options.id}).then(function(response) {
 								self.insight.attr(response.attr(), true);
 								self.insight.attr({variables:response.attr('variables')});
-								console.log (self.insight.attr('variables'), response);
 
 								if(!self.insight.attr('variables')) {
 									self.insight.attr('variables', {});
@@ -73,7 +72,7 @@ define([
 
 					self.editor.setTheme("ace/theme/tomorrow");
 					self.editor.getSession().setMode("ace/mode/sql");
-					$('.sql')[0].style.fontSize='14px';
+					self.element.find('.sql').css('font-size',12);
 					self.editor.getSession().setUseWrapMode(true);
 					self.editor.renderer.setShowGutter(false);
 					
@@ -115,7 +114,7 @@ define([
 				if(self.insight.attr('type') == 0) {
 					self.element.find('.dragHere').on({
 						'dropon': function(ev, drop, drag) {
-							console.log(ev,drop,drag);
+							console.log(ev, drop, drag);
 						}
 					});
 
@@ -123,7 +122,6 @@ define([
 			},
 			getStructure: function() {
 				var self = this;
-
 
 				if(self.insight.attr('type') == 0) {
 					self.editor.setReadOnly(true);
@@ -316,7 +314,6 @@ define([
 
 			},
 			'.submenu li click': function(element, event) {
-				console.log(1);
 				event.preventDefault();
 				event.stopPropagation();
 				element.parent().hide();

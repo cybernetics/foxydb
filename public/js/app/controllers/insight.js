@@ -53,6 +53,8 @@ define([
 							Model.Insight.findOne({id: self.options.id}).then(function(response) {
 								self.insight.attr(response.attr(), true);
 								self.insight.attr({variables:response.attr('variables')});
+								self.insight.attr({fields:response.attr('fields')});
+								self.insight.attr({filters:response.attr('filters')});
 
 								if(!self.insight.attr('variables')) {
 									self.insight.attr('variables', {});

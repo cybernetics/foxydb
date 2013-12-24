@@ -7,6 +7,13 @@
 			<span>Drag/Drop fields here to create filters</span>
 		</div>
 		<div class="innerContent">
+			<ul class="columnList filters" >
+				<% insight.attr('filters').each(function(item, index) { %>
+				
+					<label><%=index%>:</label>
+					<input placeholder="<%=index%>" value="<%=item%>"></input>
+				<% }) %>
+			</ul>
 			<div class="dragHere filters"><i class="fa fa-share"></i> Drag here</div>
 		</div>
 	</li>
@@ -17,6 +24,12 @@
 			<span>Drag/Drop fields that You want to show in the report</span>
 		</div>
 		<div class="innerContent">
+			<ul class="columnList fields" >
+				<% insight.attr('fields').each(function(item, index) { %>
+					<label><%=index%>:</label>
+					<input placeholder="<%=index%>" value="<%=item%>"></input>
+				<% }) %>
+			</ul>
 			<div class="dragHere fields"><i class="fa fa-share"></i> Drag here</div>
 		</div>
 	</li>

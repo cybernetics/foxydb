@@ -114,7 +114,7 @@ define([
 				if(self.insight.attr('type') == 0) {
 					self.element.find('.dragHere').on({
 						'dropon': function(ev, drop, drag) {
-							console.log(ev, drop, drag);
+							console.log(ev, $(drop), drag);
 						}
 					});
 
@@ -127,6 +127,7 @@ define([
 					self.editor.setReadOnly(true);
 					var structure = new can.Map();
 					self.element.find('.structure').html('//js/app/views/pages/insight/structure.ejs', {structure: structure});
+
 					$.get('/api/databases/structure/'+self.insight.attr('database_id'), function(response) {
 						structure.attr(response);
 						self.element.find('.structure > ul > li > ul > li').on('draginit', function(ev, drag) {
@@ -352,6 +353,7 @@ define([
 					self.element.find('.sidebar .newDatabase form').parsley();
 				} else {
 					self.element.find('.sidebar .newDatabase').html('');
+					self.insight.attr('database_id', element.val());
 					self.getStructure();
 				}
 			},

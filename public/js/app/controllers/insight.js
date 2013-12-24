@@ -140,7 +140,6 @@ define([
 								self.insight.attr('filters.' + id, drag.element.data());
 								self.filterCounter++;
 							}
-
 						}
 					});
 
@@ -199,13 +198,21 @@ define([
 				var self = this,
 					query = new String(),
 					fields = new Array(),
+					field = new String(),
 					filters = new Array(),
 					table = new String(),
 					tables = new Array();
 
 				query = 'SELECT ';
 				self.insight.attr('fields').each(function(item, index) {
-					fields.push('`' + item.table + '`.`' + item.field.Field + '`');
+
+					if (item.field.as) {
+						field = '`' + item.table + '`.`' + item.field.Field + '` AS `' + item.field.as + '`';
+					} else {
+						field = '`' + item.table + '`.`' + item.field.Field + '`';
+					}
+
+					fields.push(field);
 
 					table = '`' + item.table + '`';
 
@@ -320,6 +327,9 @@ define([
 					}
 				}
 			},
+			'.closeButton click': function (element, event) {
+				this.element.find('.editPopup').removeClass('open');
+			},
 			'.saveButton click': function(element, event) {
 				var self = this;
 				event.preventDefault();
@@ -371,7 +381,7 @@ define([
 					}
 				}
 			},
-			'.columnList i.fa-times click': function (element, event) {
+			'.columnList i.removeButton click': function (element, event) {
 				
 				var self = this,
 					removeElement = element.parent('li'),
@@ -383,6 +393,20 @@ define([
 					self.insight.removeAttr('filters.' + id);
 				}
 
+			},
+			'.columnList li span click': function (element, event) {
+				event.preventDefault();
+				event.stopPropagation();
+
+				var self = this;
+				element.siblings('.editPopup').addClass('open');
+			},
+			'.editPopup .button click': function(element, event) {
+				event.preventDefault();
+				var self = this;
+
+				element.parents('li').data('field').attr('field.as', element.siblings('input').val());
+				element.parents('.editPopup').removeClass('open');
 			},
 			'.saveButton span click': function(element, event) {
 				event.preventDefault();

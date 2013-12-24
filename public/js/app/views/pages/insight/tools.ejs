@@ -10,7 +10,7 @@
 			<ul class="columnList filters" >
 				<% insight.attr('filters').each(function(item, index) { %>
 					<li <%= (el) -> el.data('field', item)%>>
-						<span title="<%= item.table %>.<%= item.field.Field%>"><%= item.table %>.<%= item.field.Field%></span> <i class="fa fa-times"></i>
+						<span title="<%= item.table %>.<%= item.field.Field%>"><%= item.table %>.<%= item.field.Field%></span> <i class="fa fa-times removeButton"></i>
 					</li>
 				<% }) %>
 			</ul>
@@ -27,11 +27,11 @@
 			<ul class="columnList fields" >
 				<% insight.attr('fields').each(function(item, index) { %>
 					<li <%= (el) -> el.data('field', item)%>>
-						<span title="<%= item.table %>.<%= item.field.Field%>"><%= item.table %>.<%= item.field.Field%></span> <i class="fa fa-times"></i>
+						<span title="<%= item.table %>.<%= item.field.Field%>"><%= item.table %>.<%= item.field.Field%></span> <i class="fa fa-times removeButton"></i>
 						<div class="editPopup">
 							<div class="innerTitle">
 								<h2>Rename column</h2>
-								<i class="fa fa-times"></i>
+								<i class="fa fa-times closeButton"></i>
 							</div>
 							<div class="innerContent">
 								<input placeholder="<%= item.table %>.<%= item.field.Field%>" value="<%=item.attr('field.as')%>"></input>

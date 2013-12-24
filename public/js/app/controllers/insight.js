@@ -206,7 +206,7 @@ define([
 					if (tables.indexOf(table) == -1) {
 						tables.push (table);
 					}
-					console.log(item.table, item.field.Field);
+					
 				});
 				
 				query = query + fields.join(',') + ' FROM ' + tables.join(',') + ' WHERE';

@@ -94,7 +94,6 @@ define([
 					});
 
 					self.insight.bind('change', function(ev, attr, how, newVal, oldVal) {
-						console.log(attr);
 						if (attr.indexOf('fields.') == 0 || attr.indexOf('filters.') == 0) {
 							self.generateQuery();
 						}
@@ -192,8 +191,27 @@ define([
 
 			},
 			generateQuery: function () {
-				var self = this;
-				console.log (self.insight.attr('fields'));
+				var self = this,
+					query = new String(),
+					fields = new Array(),
+					table = new String(),
+					tables = new Array();
+
+				query = 'SELECT ';
+				self.insight.attr('fields').each(function(item, index) {
+					fields.push('`' + item.table + '`.`' + item.field.Field + '`');
+
+					table = '`' + item.table + '`';
+
+					if (tables.indexOf(table) == -1) {
+						tables.push (table);
+					}
+					console.log(item.table, item.field.Field);
+				});
+				
+				query = query + fields.join(',') + ' FROM ' + tables.join(',') + ' WHERE';
+
+				self.insight.attr('query', query);
 			},
 			'.tools .innerContent input keyup': function(element, event) {
 				var self = this;

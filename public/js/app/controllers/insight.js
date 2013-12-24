@@ -24,6 +24,7 @@ define([
 
 		},
 		{
+			filterCounter: 0,
 			init: function(element, options) {
 
 			},
@@ -92,6 +93,13 @@ define([
 						self.editor.setValue(newVal);
 					});
 
+					self.insight.bind('change', function(ev, attr, how, newVal, oldVal) {
+						console.log(attr);
+						if (attr.indexOf('fields.') == 0 || attr.indexOf('filters.') == 0) {
+							self.generateQuery();
+						}
+					});
+
 				});
 			},
 			updateTabs: function() {
@@ -123,14 +131,12 @@ define([
 				if(self.insight.attr('type') == 0) {
 					self.element.find('.dragHere').on({
 						'dropon': function(ev, drop, drag) {
-
 							if (drop.element.hasClass('fields')) {
-								console.log(drag.element.data('field'));
 								self.insight.attr('fields.' + drag.element.data('table') + '_' + drag.element.data('field').attr('Field'), drag.element.data());
 							} else if (drop.element.hasClass('filters')) {
-
+								self.insight.attr('filters.' + drag.element.data('table') + '_' + drag.element.data('field').attr('Field') + '_' + self.filterCounter, drag.element.data());
+								self.filterCounter++;
 							}
-							console.log(ev, $(drop), drag);
 						}
 					});
 
@@ -184,6 +190,10 @@ define([
 				}
 				can.trigger(self.insight.attr('variables'),'length');
 
+			},
+			generateQuery: function () {
+				var self = this;
+				console.log (self.insight.attr('fields'));
 			},
 			'.tools .innerContent input keyup': function(element, event) {
 				var self = this;

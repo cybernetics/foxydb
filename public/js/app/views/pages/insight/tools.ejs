@@ -9,9 +9,9 @@
 		<div class="innerContent">
 			<ul class="columnList filters" >
 				<% insight.attr('filters').each(function(item, index) { %>
-
-					<label><%=index%>:</label>
-					<input placeholder="<%=index%>" value="<%=item%>"></input>
+					<li <%= (el) -> el.data('field', item)%>>
+						<%= item.table %>.<%= item.field.Field%>
+					</li>
 				<% }) %>
 			</ul>
 			<div class="dragHere filters"><i class="fa fa-share"></i> Drag here</div>

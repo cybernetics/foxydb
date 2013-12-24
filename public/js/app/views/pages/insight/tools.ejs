@@ -10,7 +10,7 @@
 			<ul class="columnList filters" >
 				<% insight.attr('filters').each(function(item, index) { %>
 					<li <%= (el) -> el.data('field', item)%>>
-						<%= item.table %>.<%= item.field.Field%>
+						<%= item.table %>.<%= item.field.Field%> <i class="fa fa-times"></i>
 					</li>
 				<% }) %>
 			</ul>
@@ -27,7 +27,7 @@
 			<ul class="columnList fields" >
 				<% insight.attr('fields').each(function(item, index) { %>
 					<li <%= (el) -> el.data('field', item)%>>
-						<%= item.table %>.<%= item.field.Field%>
+						<%= item.table %>.<%= item.field.Field%> <i class="fa fa-times"></i>
 					</li>
 				<% }) %>
 			</ul>

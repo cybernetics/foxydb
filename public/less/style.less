@@ -402,6 +402,23 @@ header {
 			position: fixed;
 			left: 250px;
 
+			.columnList {
+				li {
+					border: 1px solid @colorLine;
+					background: @colorInnerTitle;
+					padding: 5px;
+					margin: -1px 0 0 0px;
+					position: relative;
+					cursor: pointer;
+					i {
+						float: right;
+					}
+					&:last-child {
+						margin: -1px 0 10px 0;
+					}
+				}
+			}
+
 			> ul {
 
 
@@ -519,8 +536,8 @@ header {
 						li {
 							border: 1px solid @colorLine;
 							background: @colorInnerTitle;
-							padding: 4px;
-							margin: 1px 0 0 5px;
+							padding: 5px;
+							margin: -1px 0 0 5px;
 							position: relative;
 							i {
 								float: right;

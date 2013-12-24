@@ -227,12 +227,12 @@ define([
 				});
 
 				if (!(fields.length + filters.length)){
-					query = '-- Drag fields to create insight';
+					query = '-- Drag fields or filters to create insight';
 				} else {
 					if (!fields.length) {
 						fields.push('*');
 					}
-					
+
 					query = query + fields.join(',') + ' FROM ' + tables.join(',') + ' WHERE';
 				}
 

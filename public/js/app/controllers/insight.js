@@ -123,15 +123,12 @@ define([
 				if(self.insight.attr('type') == 0) {
 					self.element.find('.dragHere').on({
 						'dropon': function(ev, drop, drag) {
-							drop = $(drop);
-							drag = $(drag);
 
-							console.log (drop.hasClass('filters'));
-							if (drop.hasClass('fields')) {
+							if (drop.element.hasClass('fields')) {
+								console.log(drag.element.data('field'));
+								self.insight.attr('fields.' + drag.element.data('table') + '_' + drag.element.data('field').attr('Field'), drag.element.data());
+							} else if (drop.element.hasClass('filters')) {
 
-							} else if (drop.hasClass('filters')) {
-								console.log('test', drag.data('field').attr());
-								self.insight.attr('filters.' + drag.data('field').attr());
 							}
 							console.log(ev, $(drop), drag);
 						}

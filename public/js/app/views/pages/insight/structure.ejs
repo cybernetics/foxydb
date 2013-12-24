@@ -7,7 +7,7 @@
 				<span><%=index%></span> <i class="fa fa-chevron-down"></i><i class="fa fa-chevron-up"></i>
 				<ul>
 					<% item.each(function(subitem) { %>
-						<li <%= (el) -> el.data('field',subitem) %>>
+						<li <%= (el) -> el.data('field',subitem) %> <%= (el) -> el.data('table',index) %>>
 							<%= subitem.Field %> <i class="fa fa-arrows"></i>
 						</li>
 					<% }) %>

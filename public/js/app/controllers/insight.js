@@ -51,34 +51,30 @@ define([
 							self.setupDragDrop();
 							self.getStructure();
 					} else {
-							Model.Insight.findOne({id: self.options.id}).then(function(response) {
-								self.insight.attr(response.attr(), true);
-								self.insight.attr({variables:response.attr('variables')});
-								self.insight.attr({fields:response.attr('fields')});
-								self.insight.attr({filters:response.attr('filters')});
+						Model.Insight.findOne({id: self.options.id}).then(function(response) {
+							self.insight.attr(response.attr(), true);
+							self.insight.attr({variables:response.attr('variables')});
+							self.insight.attr({fields:response.attr('fields')});
+							self.insight.attr({filters:response.attr('filters')});
 
-								if(!self.insight.attr('variables')) {
-									self.insight.attr('variables', {});
-								}
+							if(!self.insight.attr('variables')) {
+								self.insight.attr('variables', {});
+							}
 
-								if(!self.insight.attr('fields')) {
-									self.insight.attr('fields', {});
-								}
+							if(!self.insight.attr('fields')) {
+								self.insight.attr('fields', {});
+							}
 
-								if(!self.insight.attr('filters')) {
-									self.insight.attr('filters', {});
-								}
-								self.updateTabs();
-								self.getStructure();
-								self.setupDragDrop();
-								self.element.find('.applyButton').click();
-
-							});
-							
+							if(!self.insight.attr('filters')) {
+								self.insight.attr('filters', {});
+							}
+							self.updateTabs();
+							self.getStructure();
+							self.setupDragDrop();
+							self.element.find('.applyButton').click();
+						});					
 
 					}
-
-
 
 					self.editor.setTheme("ace/theme/tomorrow");
 					self.editor.getSession().setMode("ace/mode/sql");
@@ -130,12 +126,21 @@ define([
 				if(self.insight.attr('type') == 0) {
 					self.element.find('.dragHere').on({
 						'dropon': function(ev, drop, drag) {
+							var id;
+
 							if (drop.element.hasClass('fields')) {
-								self.insight.attr('fields.' + drag.element.data('table') + '_' + drag.element.data('field').attr('Field'), drag.element.data());
+								id = drag.element.data('table') + '_' + drag.element.data('field').attr('Field');
+								drag.element.data('id', id);
+
+								self.insight.attr('fields.' + id, drag.element.data());
 							} else if (drop.element.hasClass('filters')) {
-								self.insight.attr('filters.' + drag.element.data('table') + '_' + drag.element.data('field').attr('Field') + '_' + self.filterCounter, drag.element.data());
+								id = drag.element.data('table') + '_' + drag.element.data('field').attr('Field') + '_' + self.filterCounter;
+								drag.element.data('id', id);
+
+								self.insight.attr('filters.' + id, drag.element.data());
 								self.filterCounter++;
 							}
+
 						}
 					});
 
@@ -194,6 +199,7 @@ define([
 				var self = this,
 					query = new String(),
 					fields = new Array(),
+					filters = new Array(),
 					table = new String(),
 					tables = new Array();
 
@@ -206,10 +212,29 @@ define([
 					if (tables.indexOf(table) == -1) {
 						tables.push (table);
 					}
-					
+
 				});
-				
-				query = query + fields.join(',') + ' FROM ' + tables.join(',') + ' WHERE';
+
+				self.insight.attr('filters').each(function(item, index) {
+					filters.push('`' + item.table + '`.`' + item.field.Field + '`');
+
+					table = '`' + item.table + '`';
+
+					if (tables.indexOf(table) == -1) {
+						tables.push (table);
+					}
+
+				});
+
+				if (!(fields.length + filters.length)){
+					query = '-- Drag fields to create insight';
+				} else {
+					if (!fields.length) {
+						fields.push('*');
+					}
+					
+					query = query + fields.join(',') + ' FROM ' + tables.join(',') + ' WHERE';
+				}
 
 				self.insight.attr('query', query);
 			},
@@ -346,7 +371,19 @@ define([
 					}
 				}
 			},
+			'.columnList i.fa-times click': function (element, event) {
+				
+				var self = this,
+					removeElement = element.parent('li'),
+					id = removeElement.data('field').attr('id');
 
+				if (removeElement.parent('ul').hasClass('fields')) {
+					self.insight.removeAttr('fields.' + id);
+				} else if (removeElement.parent('ul').hasClass('filters')) {
+					self.insight.removeAttr('filters.' + id);
+				}
+
+			},
 			'.saveButton span click': function(element, event) {
 				event.preventDefault();
 				event.stopPropagation();

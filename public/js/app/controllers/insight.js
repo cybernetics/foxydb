@@ -34,7 +34,7 @@ define([
 				if(can.route.attr('type')) {
 					type = can.route.attr('type');
 				}
-				self.insight = new Model.Insight({query:'-- Type your query here', current: true, name: '', type: type, variables: {}});
+				self.insight = new Model.Insight({query:'-- Type your query here', current: true, name: '', type: type, variables: {}, fields: {}, filters: {}});
 				self.element.data('insight', self);
 				Model.Database.findAll().then(function(data) {
 					self.databases = data;
@@ -58,6 +58,13 @@ define([
 									self.insight.attr('variables', {});
 								}
 
+								if(!self.insight.attr('fields')) {
+									self.insight.attr('fields', {});
+								}
+
+								if(!self.insight.attr('filters')) {
+									self.insight.attr('filters', {});
+								}
 								self.updateTabs();
 								self.getStructure();
 								self.setupDragDrop();

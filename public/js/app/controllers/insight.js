@@ -426,7 +426,10 @@ define([
 				event.preventDefault();
 				event.stopPropagation();
 
-				var self = this;
+				var self = this,
+					popup = element.siblings('.editPopup');
+
+				self.element.find('.editPopup').removeClass('open');
 				element.siblings('.editPopup').addClass('open');
 			},
 			'.editPopup .button click': function(element, event) {

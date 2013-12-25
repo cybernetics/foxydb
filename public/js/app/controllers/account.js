@@ -36,6 +36,10 @@ define([
 							$.cookie('loggedIn',0);
 							Global.user.attr({user: ''}, true);
 							Global.state.attr('loggedIn', false);
+							$('.tabsInner').remove();
+							$.each ($('.controller_insight'), function (key, element) {
+								$(element).remove();
+							});
 							can.route.attr({route: '/'}, true);
 						}
 					});

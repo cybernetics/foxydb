@@ -155,9 +155,37 @@ define([
 
 					$.get('/api/databases/structure/'+self.insight.attr('database_id'), function(response) {
 						structure.attr(response);
-						self.element.find('.structure > ul > li > ul > li').on('draginit', function(ev, drag) {
-							drag.ghost();
-						});
+						self.element.find('.structure > ul > li > ul > li').on(
+							{
+								'draginit': function(ev, drag) {
+									drag.ghost();
+									var drops = self.element.find('.dragHere');
+									drops.each(function(index, drop) {
+										if($(drop).hasClass('hidden')) {
+											$(drop).addClass('dragged');
+											$(drop).css({
+												top: $(drop).prev().position().top,
+												height: $(drop).prev().height(),
+												lineHeight: ($(drop).prev().innerHeight()-10)+'px'
+											});
+										}
+									});
+								},
+							
+								'dragend': function(ev, drag) {
+									var drops = self.element.find('.dragHere');
+									drops.each(function(index, drop) {
+										$(drop).removeClass('dragged');
+										$(drop).css({
+											top: '',
+											height: '',
+											lineHeight: ''
+										});
+									});
+								}
+							}
+						);
+
 					});
 				}
 

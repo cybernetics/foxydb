@@ -11,10 +11,31 @@
 				<% insight.attr('filters').each(function(item, index) { %>
 					<li <%= (el) -> el.data('field', item)%>>
 						<span title="<%= item.table %>.<%= item.field.Field%>"><%= item.table %>.<%= item.field.Field%></span> <i class="fa fa-times removeButton"></i>
+						<div class="editPopup">
+							<div class="innerTitle">
+								<h2>Edit filter</h2>
+								<i class="fa fa-times closeButton"></i>
+							</div>
+							<div class="innerContent">
+								<label><%= item.field.Field %></label>
+								<select>
+									<option value="between">Between</option>
+									<option value="equal">Equal</option>
+									<option value="lt">Less than</option>
+									<option value="lte">Less than or equal</option>
+									<option value="gt">Greater than</option>
+									<option value="gte">Greater than or equal</option>
+									<option value="like">Like</option>
+									<option value="in">In</option>
+								</select>
+								<input placeholder="<%= item.table %>.<%= item.field.Field %>" value="<%=item.attr('field.as')%>"></input>
+								<a href="#" class="button">Update</a>
+							</div>
+						</div>
 					</li>
 				<% }) %>
 			</ul>
-			<div class="dragHere filters"><i class="fa fa-share"></i> Drag here</div>
+			<div class="dragHere filters <%=(Object.keys(insight.attr('filters').attr()).length > 0)?'hidden':''%>">Drag here</div>
 		</div>
 	</li>
 
@@ -41,7 +62,37 @@
 					</li>
 				<% }) %>
 			</ul>
-			<div class="dragHere fields"><i class="fa fa-share"></i> Drag here</div>
+			<div class="dragHere fields <%=(Object.keys(insight.attr('fields').attr()).length > 0)?'hidden':''%>">Drag here</div>
+		</div>
+	</li>
+	<li>
+		<div class="innerTitle">
+			<h2>Relations</h2>
+			<span>Define relations between tables</span>
+		</div>
+		<div class="innerContent">
+			<% if(Object.keys(insight.attr('filters').attr()).length > 1) { %>
+			<ul class="columnList filters" >
+
+				<% insight.attr('filters').each(function(item, index) { %>
+					<li <%= (el) -> el.data('field', item)%>>
+						<span title="<%= item.table %>.<%= item.field.Field%>"><%= item.table %></span>
+						<div class="editPopup">
+							<div class="innerTitle">
+								<h2>Define relation</h2>
+								<i class="fa fa-times closeButton"></i>
+							</div>
+							<div class="innerContent">
+
+								<a href="#" class="button">Update</a>
+							</div>
+						</div>
+					</li>
+				<% }) %>
+			</ul>
+			<% } else { %>
+				Relations can only be defined when multiple tables are used
+			<% } %>
 		</div>
 	</li>
 <% } else { %>

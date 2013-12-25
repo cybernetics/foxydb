@@ -520,6 +520,16 @@ header {
     						padding: 5px;
     						border: 1px dashed @colorLine;
     						background: @colorLineHighlight;
+    						&.hidden {
+    							display: none;
+    							&.dragged {
+    								display: block;
+    								position: absolute;
+    								width: 183px;
+    								background: fadeout(@colorLineHighlight, 20%);
+    							}
+    						}
+
     					}
     					input {
 							padding: 5px 8px;

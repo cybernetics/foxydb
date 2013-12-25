@@ -76,7 +76,7 @@
 
 				<% insight.attr('filters').each(function(item, index) { %>
 					<li <%= (el) -> el.data('field', item)%>>
-						<span title="<%= item.table %>.<%= item.field.Field%>"><%= item.table %></span>
+						<span title="<%= item.table %>"><%= item.table %></span>
 						<div class="editPopup">
 							<div class="innerTitle">
 								<h2>Define relation</h2>

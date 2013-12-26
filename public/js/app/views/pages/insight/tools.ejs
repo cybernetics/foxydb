@@ -18,7 +18,7 @@
 							</div>
 							<div class="innerContent">
 								<label><%= item.field.Field %></label>
-								<select>
+								<select id="filterOperator">
 									<option value="between">Between</option>
 									<option value="equal">Equal</option>
 									<option value="lt">Less than</option>
@@ -29,7 +29,7 @@
 									<option value="in">In</option>
 								</select>
 								<input placeholder="<%= item.table %>.<%= item.field.Field %>" value="<%=item.attr('field.as')%>"></input>
-								<a href="#" class="button">Update</a>
+								<a href="#" class="button" id="saveFilters" >Update</a>
 							</div>
 						</div>
 					</li>
@@ -71,12 +71,12 @@
 			<span>Define relations between tables</span>
 		</div>
 		<div class="innerContent">
-			<% if(Object.keys(insight.attr('filters').attr()).length > 1) { %>
-			<ul class="columnList filters" >
+			<% if(Object.keys(insight.attr('relations').attr()).length > 1) { %>
+			<ul class="columnList relations" >
 
-				<% insight.attr('filters').each(function(item, index) { %>
+				<% insight.attr('relations').each(function(item, index) {%>
 					<li <%= (el) -> el.data('field', item)%>>
-						<span title="<%= item.table %>"><%= item.table %></span>
+						<span title="<%= item %>"><%= item %></span>
 						<div class="editPopup">
 							<div class="innerTitle">
 								<h2>Define relation</h2>

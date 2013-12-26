@@ -4,12 +4,12 @@ exports.controller = function(app, db) {
 
 	app.post('/api/insights', function(req, res) {
 		if(req.session.user) {
-			db.run("INSERT INTO `insights` VALUES(NULL, ?, ?, ?, ?, ?, ?, ?);",[req.body.database_id, req.body.name, req.body.query, req.body.type, JSON.stringify(req.body.variables||{}), JSON.stringify(req.body.fields||{}), JSON.stringify(req.body.filters||{})] , function(err, row) {
+			db.run("INSERT INTO `insights` VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?);",[req.body.database_id, req.body.name, req.body.query, req.body.type, JSON.stringify(req.body.variables||{}), JSON.stringify(req.body.fields||{}), JSON.stringify(req.body.filters||{}), JSON.stringify(req.body.relations||{})] , function(err, row) {
 				if(err) {
 
 					res.send(500, err);
 				} else {
-					res.send(200, {id: this.lastID, database_id: req.body.database_id, name: req.body.name, query: req.body.query, type: req.body.type, variables: req.body.variables||{}, fields: req.body.fields||{}, filters: req.body.filters||{}});
+					res.send(200, {id: this.lastID, database_id: req.body.database_id, name: req.body.name, query: req.body.query, type: req.body.type, variables: req.body.variables||{}, fields: req.body.fields||{}, filters: req.body.filters||{}, relations: req.body.relations||{}});
 				}
 			});
 
@@ -21,7 +21,7 @@ exports.controller = function(app, db) {
 
 	app.put('/api/insights/:id', function(req, res) {
 		if(req.session.user) {
-			db.all("UPDATE `insights` SET database_id=?, name=?, query=?, variables=?, fields=?, filters=? WHERE `id` = ?",[req.body.database_id, req.body.name, req.body.query, JSON.stringify(req.body.variables||{}), JSON.stringify(req.body.fields||{}), JSON.stringify(req.body.filters||{}), req.params.id] , function(err) {
+			db.all("UPDATE `insights` SET database_id=?, name=?, query=?, variables=?, fields=?, filters=?, relations=? WHERE `id` = ?",[req.body.database_id, req.body.name, req.body.query, JSON.stringify(req.body.variables||{}), JSON.stringify(req.body.fields||{}), JSON.stringify(req.body.filters||{}), JSON.stringify(req.body.relations||{}), req.params.id] , function(err) {
 				if(err) {
 
 					res.send(500, err);
@@ -34,6 +34,7 @@ exports.controller = function(app, db) {
 							row.variables = JSON.parse(row.variables);
 							row.filters = JSON.parse(row.filters);
 							row.fields = JSON.parse(row.fields);
+							row.reations = JSON.parse(row.relations);
 							res.send(200, row);
 						}
 					});
@@ -56,6 +57,7 @@ exports.controller = function(app, db) {
 					row.variables = JSON.parse(row.variables);
 					row.filters = JSON.parse(row.filters);
 					row.fields = JSON.parse(row.fields);
+					row.relations = JSON.parse(row.relations);
 					res.send(200, row);
 				}
 			});

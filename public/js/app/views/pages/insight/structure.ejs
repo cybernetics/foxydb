@@ -1,8 +1,8 @@
-<% if(can.Object.same(structure.attr(),{})) { %>
+<% if(can.Object.same(structure,{})) { %>
 	<i class="fa fa-spinner fa-spin"></i> Getting structure
 <% } else { %>
 	<ul>
-		<% structure.each(function(item, index) { %>
+		<% can.each(structure,function(item, index) { %>
 			<li>
 				<span><%=index%></span> <i class="fa fa-chevron-down"></i><i class="fa fa-chevron-up"></i>
 				<ul>

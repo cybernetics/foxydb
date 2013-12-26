@@ -1,7 +1,7 @@
 var progress = require('progress');
 var fs = require('fs');
 
-var version = 2;
+var version = 3;
 var tables = 3; //How many tables we need to create
 exports.install = function(db) {
 
@@ -14,7 +14,7 @@ exports.install = function(db) {
 				db.serialize(function() {
 					db.run("CREATE TABLE `users` (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT, level INTEGER);", function(err, row) { bar.tick() });
 					db.run("CREATE TABLE `databases` (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, title TEXT, type TEXT, host TEXT, port INTEGER, name TEXT, username TEXT, password TEXT);", function(err, row) { bar.tick() });
-					db.run("CREATE TABLE `insights` (id INTEGER PRIMARY KEY AUTOINCREMENT, database_id INTEGER, name TEXT, query TEXT, type INTEGER, variables TEXT, fields TEXT, filters TEXT);", function(err, row) { bar.tick() });
+					db.run("CREATE TABLE `insights` (id INTEGER PRIMARY KEY AUTOINCREMENT, database_id INTEGER, name TEXT, query TEXT, type INTEGER, variables TEXT, fields TEXT, filters TEXT, relations TEXT);", function(err, row) { bar.tick() });
 				});
 			}
 		});
@@ -36,6 +36,11 @@ exports.upgrade = function(db) {
 						});
 					});
 					break;
+				case 3:
+					db.run("ALTER TABLE `insights` ADD COLUMN relations TEXT;", function(err, row) {
+						bar.tick();
+					});
+					break;	
 			}
 			fs.writeFileSync('.version', i);
 		}

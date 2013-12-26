@@ -54,7 +54,7 @@ exports.controller = function(app, db) {
 										cache[req.params.database_id] = structure;
 										setTimeout(function() {
 											delete cache[req.params.database_id];
-										},3600);
+										},3600000);
 										res.send(structure);
 									});
 								}

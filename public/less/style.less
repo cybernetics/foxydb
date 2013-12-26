@@ -390,7 +390,22 @@ header {
 	padding-top: 70px;
 	overflow: hidden;
 	background: url(/images/bg.png) bottom right no-repeat;
-
+	select {
+		width: 100%;
+		margin: 10px 0 20px 0;
+		padding: 5px 8px;
+		border: 1px solid @colorLine;
+		border-radius: 3px;
+		font-size: 14px;
+		font-family: @font;
+		&:focus {
+			border: 1px solid darken(@colorLine, 20%);
+		}
+		&.parsley-error {
+			color: @colorError;
+			border: 1px solid @colorError;
+		}
+	}
 	&.controller_insight {
 		.inner {
 			padding: 20px 20px 20px 520px;
@@ -687,22 +702,7 @@ header {
 				margin: 0 0 20px 0;
 			}
 		}
-		.databaseSelect {
-			width: 100%;
-			margin: 10px 0 20px 0;
-			padding: 5px 8px;
-			border: 1px solid @colorLine;
-			border-radius: 3px;
-			font-size: 14px;
-			font-family: @font;
-			&:focus {
-				border: 1px solid darken(@colorLine, 20%);
-			}
-			&.parsley-error {
-				color: @colorError;
-				border: 1px solid @colorError;
-			}
-		}
+
 
 		&:after {
 			position: absolute;

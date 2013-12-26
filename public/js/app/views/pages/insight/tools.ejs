@@ -20,11 +20,11 @@
 								<label><%= item.field.Field %></label>
 								<select id="filterOperator">
 									<option value="between" <%=(item.attr('field.operator') == 'between'?'selected="selected"':'')%>>Between</option>
-									<option value="equal" <%=(item.attr('field.operator') == 'equal'?'selected="selected"':'')%>>Equal</option>
+									<option value="equal" <%=(item.attr('field.operator') == 'equal'?'selected="selected"':'')%>>Equal to</option>
 									<option value="lt" <%=(item.attr('field.operator') == 'lt'?'selected="selected"':'')%>>Less than</option>
-									<option value="lte" <%=(item.attr('field.operator') == 'lte'?'selected="selected"':'')%>>Less than or equal</option>
+									<option value="lte" <%=(item.attr('field.operator') == 'lte'?'selected="selected"':'')%>>Less than or equal to</option>
 									<option value="gt" <%=(item.attr('field.operator') == 'gt'?'selected="selected"':'')%>>Greater than</option>
-									<option value="gte" <%=(item.attr('field.operator') == 'gte'?'selected="selected"':'')%>>Greater than or equal</option>
+									<option value="gte" <%=(item.attr('field.operator') == 'gte'?'selected="selected"':'')%>>Greater than or equal to</option>
 									<option value="like" <%=(item.attr('field.operator') == 'like'?'selected="selected"':'')%>>Like</option>
 									<option value="in" <%=(item.attr('field.operator') == 'in'?'selected="selected"':'')%>>In</option>
 								</select>
@@ -44,7 +44,7 @@
 									</table>
 								</div>
 								<div <%=(item.attr('field.operator') != 'between' && item.attr('field.operator') != 'like' && item.attr('field.operator') != 'in' ? 'style="display: block;"':'')%> class="operator operator-equal operator-lt operator-lte operator-gt operator-gte">
-									<input name="value" placeholder="To" value="<%=item.attr('field.val.0')%>"></input>
+									<input name="value" placeholder="Value" value="<%=item.attr('field.val.0')%>"></input>
 								</div>
 								<div class="operator operator-like" <%=(item.attr('field.operator') == 'like'?'style="display: block;"':'')%>>
 									<label>Use <strong>%</strong> as a wildcard</label>
@@ -52,7 +52,7 @@
 								</div>
 								<div class="operator operator-in" <%=(item.attr('field.operator') == 'in'?'style="display: block;"':'')%>>
 									<label>Comma separated values</label>
-									<input name="value" placeholder="Value" value="<%=item.attr('field.val.0')%>"></input>
+									<input name="value" placeholder="Values" value="<%=item.attr('field.val.0')%>"></input>
 								</div>
 
 								<a href="#" class="button" id="saveFilters" >Update</a>

@@ -3,7 +3,7 @@
 <% } else { %>
 	<ul>
 		<% can.each(structure,function(item, index) { %>
-			<li>
+			<li class="<%=index;%>" <%= (el) -> el.data('table',item) %>>
 				<span><%=index%></span> <i class="fa fa-chevron-down"></i><i class="fa fa-chevron-up"></i>
 				<ul>
 					<% item.each(function(subitem) { %>

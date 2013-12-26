@@ -18,17 +18,17 @@
 							</div>
 							<div class="innerContent">
 								<label><%= item.field.Field %></label>
-								<select id="filterOperator">
-									<option value="between" <%=(item.attr('field.operator') == 'between'?'selected="selected"':'')%>>Between</option>
-									<option value="equal" <%=(item.attr('field.operator') == 'equal'?'selected="selected"':'')%>>Equal to</option>
-									<option value="lt" <%=(item.attr('field.operator') == 'lt'?'selected="selected"':'')%>>Less than</option>
-									<option value="lte" <%=(item.attr('field.operator') == 'lte'?'selected="selected"':'')%>>Less than or equal to</option>
-									<option value="gt" <%=(item.attr('field.operator') == 'gt'?'selected="selected"':'')%>>Greater than</option>
-									<option value="gte" <%=(item.attr('field.operator') == 'gte'?'selected="selected"':'')%>>Greater than or equal to</option>
-									<option value="like" <%=(item.attr('field.operator') == 'like'?'selected="selected"':'')%>>Like</option>
-									<option value="in" <%=(item.attr('field.operator') == 'in'?'selected="selected"':'')%>>In</option>
+								<select class="filterOperator">
+									<option value="between" <%=(item.attr('field.operator') == 'between'? 'selected="selected"':'')%>>Between</option>
+									<option value="equal" <%=(item.attr('field.operator') == 'equal'? 'selected="selected"':'')%>>Equal to</option>
+									<option value="lt" <%=(item.attr('field.operator') == 'lt'? 'selected="selected"':'')%>>Less than</option>
+									<option value="lte" <%=(item.attr('field.operator') == 'lte'? 'selected="selected"':'')%>>Less than or equal to</option>
+									<option value="gt" <%=(item.attr('field.operator') == 'gt'? 'selected="selected"':'')%>>Greater than</option>
+									<option value="gte" <%=(item.attr('field.operator') == 'gte'? 'selected="selected"':'')%>>Greater than or equal to</option>
+									<option value="like" <%=(item.attr('field.operator') == 'like'? 'selected="selected"':'')%>>Like</option>
+									<option value="in" <%=(item.attr('field.operator') == 'in'? 'selected="selected"':'')%>>In</option>
 								</select>
-								<div class="operator operator-between" <%=(item.attr('field.operator') == 'between'?'style="display: block;"':'')%>>
+								<div class="operator operator-between" <%=(item.attr('field.operator') == 'between'? 'style="display: block;"':'')%>>
 									<table>
 										<tr>
 											<td width="33%">
@@ -46,22 +46,22 @@
 								<div <%=(item.attr('field.operator') != 'between' && item.attr('field.operator') != 'like' && item.attr('field.operator') != 'in' ? 'style="display: block;"':'')%> class="operator operator-equal operator-lt operator-lte operator-gt operator-gte">
 									<input name="value" placeholder="Value" value="<%=item.attr('field.val.0')%>"></input>
 								</div>
-								<div class="operator operator-like" <%=(item.attr('field.operator') == 'like'?'style="display: block;"':'')%>>
+								<div class="operator operator-like" <%=(item.attr('field.operator') == 'like'? 'style="display: block;"':'')%>>
 									<label>Use <strong>%</strong> as a wildcard</label>
 									<input name="value" placeholder="Value" value="<%=item.attr('field.val.0')%>"></input>
 								</div>
-								<div class="operator operator-in" <%=(item.attr('field.operator') == 'in'?'style="display: block;"':'')%>>
+								<div class="operator operator-in" <%=(item.attr('field.operator') == 'in'? 'style="display: block;"':'')%>>
 									<label>Comma separated values</label>
 									<input name="value" placeholder="Values" value="<%=item.attr('field.val.0')%>"></input>
 								</div>
 
-								<a href="#" class="button" id="saveFilters" >Update</a>
+								<a href="#" class="button saveFilters" >Update</a>
 							</div>
 						</div>
 					</li>
 				<% }) %>
 			</ul>
-			<div class="dragHere filters <%=(Object.keys(insight.attr('filters').attr()).length > 0)?'hidden':''%>">Drag here</div>
+			<div class="dragHere filters <%=(Object.keys(insight.attr('filters').attr()).length > 0)? 'hidden':''%>">Drag here</div>
 		</div>
 	</li>
 
@@ -88,7 +88,7 @@
 					</li>
 				<% }) %>
 			</ul>
-			<div class="dragHere fields <%=(Object.keys(insight.attr('fields').attr()).length > 0)?'hidden':''%>">Drag here</div>
+			<div class="dragHere fields <%=(Object.keys(insight.attr('fields').attr()).length > 0)? 'hidden':''%>">Drag here</div>
 		</div>
 	</li>
 	<li>
@@ -102,14 +102,23 @@
 
 				<% insight.attr('relations').each(function(item, index) {%>
 					<li <%= (el) -> el.data('field', item)%>>
-						<span title="<%= item %>"><%= item %></span>
+						<span title="<%= item.table %>"><%= item.table %></span>
 						<div class="editPopup">
 							<div class="innerTitle">
 								<h2>Define relation</h2>
 								<i class="fa fa-times closeButton"></i>
 							</div>
 							<div class="innerContent">
-
+								<select class="relationTable" >
+									<% insight.attr('relations').each(function (relation, index){ %>
+										<% if (item.table != relation.table) { %>
+											<option value="<%=relation.table; %>" ><%=relation.table; %></option>
+										<% } %>
+									<% }); %>
+								</select>
+								<select class="relationColumn" >
+									
+								</select>
 								<a href="#" class="button">Update</a>
 							</div>
 						</div>

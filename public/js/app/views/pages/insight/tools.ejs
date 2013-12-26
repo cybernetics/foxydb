@@ -19,40 +19,40 @@
 							<div class="innerContent">
 								<label><%= item.field.Field %></label>
 								<select id="filterOperator">
-									<option value="between" <%=(item.field.operator == 'between'?'selected="selected"':'')%>>Between</option>
-									<option value="equal" <%=(item.field.operator == 'equal'?'selected="selected"':'')%>>Equal</option>
-									<option value="lt" <%=(item.field.operator == 'lt'?'selected="selected"':'')%>>Less than</option>
-									<option value="lte" <%=(item.field.operator == 'lte'?'selected="selected"':'')%>>Less than or equal</option>
-									<option value="gt" <%=(item.field.operator == 'gt'?'selected="selected"':'')%>>Greater than</option>
-									<option value="gte" <%=(item.field.operator == 'gte'?'selected="selected"':'')%>>Greater than or equal</option>
-									<option value="like" <%=(item.field.operator == 'like'?'selected="selected"':'')%>>Like</option>
-									<option value="in" <%=(item.field.operator == 'in'?'selected="selected"':'')%>>In</option>
+									<option value="between" <%=(item.attr('field.operator') == 'between'?'selected="selected"':'')%>>Between</option>
+									<option value="equal" <%=(item.attr('field.operator') == 'equal'?'selected="selected"':'')%>>Equal</option>
+									<option value="lt" <%=(item.attr('field.operator') == 'lt'?'selected="selected"':'')%>>Less than</option>
+									<option value="lte" <%=(item.attr('field.operator') == 'lte'?'selected="selected"':'')%>>Less than or equal</option>
+									<option value="gt" <%=(item.attr('field.operator') == 'gt'?'selected="selected"':'')%>>Greater than</option>
+									<option value="gte" <%=(item.attr('field.operator') == 'gte'?'selected="selected"':'')%>>Greater than or equal</option>
+									<option value="like" <%=(item.attr('field.operator') == 'like'?'selected="selected"':'')%>>Like</option>
+									<option value="in" <%=(item.attr('field.operator') == 'in'?'selected="selected"':'')%>>In</option>
 								</select>
 								<div class="operator operator-between">
 									<table>
 										<tr>
 											<td width="33%">
-												<input name="value[0]" placeholder="From" value="<%=item.field.val[0]%>"></input>
+												<input name="value[0]" placeholder="From" value="<%=item.attr('field.val.0')%>"></input>
 											</td>
 											<td width="34%" align="center">
 												and
 											</td>
 											<td width="33%">
-											<input name="value[1]" placeholder="To" value="<%=item.field.val[1]%>></input>
+											<input name="value[1]" placeholder="To" value="<%=item.attr('field.val.1')%>"></input>
 											</td>
 										</tr>
 									</table>
 								</div>
 								<div class="operator operator-equal operator-lt operator-lte operator-gt operator-gte">
-									<input name="value" placeholder="To" value="<%=item.field.val[0]%>"></input>
+									<input name="value" placeholder="To" value="<%=item.attr('field.val.0')%>"></input>
 								</div>
 								<div class="operator operator-like">
 									<label>Use <strong>%</strong> as a wildcard</label>
-									<input name="value" placeholder="Value" value="<%=item.field.val[0]%>"></input>
+									<input name="value" placeholder="Value" value="<%=item.attr('field.val.0')%>"></input>
 								</div>
 								<div class="operator operator-in">
 									<label>Comma separated values</label>
-									<input name="value" placeholder="Value" value="<%=item.field.val[0]%>"></input>
+									<input name="value" placeholder="Value" value="<%=item.attr('field.val.0')%>"></input>
 								</div>
 
 								<a href="#" class="button" id="saveFilters" >Update</a>

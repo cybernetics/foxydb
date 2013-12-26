@@ -34,7 +34,7 @@ exports.controller = function(app, db) {
 							row.variables = JSON.parse(row.variables);
 							row.filters = JSON.parse(row.filters);
 							row.fields = JSON.parse(row.fields);
-							row.reations = JSON.parse(row.relations);
+							row.relations = JSON.parse(row.relations);
 							res.send(200, row);
 						}
 					});

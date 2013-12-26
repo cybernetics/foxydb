@@ -19,16 +19,42 @@
 							<div class="innerContent">
 								<label><%= item.field.Field %></label>
 								<select id="filterOperator">
-									<option value="between">Between</option>
-									<option value="equal">Equal</option>
-									<option value="lt">Less than</option>
-									<option value="lte">Less than or equal</option>
-									<option value="gt">Greater than</option>
-									<option value="gte">Greater than or equal</option>
-									<option value="like">Like</option>
-									<option value="in">In</option>
+									<option value="between" <%=(item.field.operator == 'between'?'selected="selected"':'')%>>Between</option>
+									<option value="equal" <%=(item.field.operator == 'equal'?'selected="selected"':'')%>>Equal</option>
+									<option value="lt" <%=(item.field.operator == 'lt'?'selected="selected"':'')%>>Less than</option>
+									<option value="lte" <%=(item.field.operator == 'lte'?'selected="selected"':'')%>>Less than or equal</option>
+									<option value="gt" <%=(item.field.operator == 'gt'?'selected="selected"':'')%>>Greater than</option>
+									<option value="gte" <%=(item.field.operator == 'gte'?'selected="selected"':'')%>>Greater than or equal</option>
+									<option value="like" <%=(item.field.operator == 'like'?'selected="selected"':'')%>>Like</option>
+									<option value="in" <%=(item.field.operator == 'in'?'selected="selected"':'')%>>In</option>
 								</select>
-								<input placeholder="<%= item.table %>.<%= item.field.Field %>" value="<%=item.attr('field.as')%>"></input>
+								<div class="operator operator-between">
+									<table>
+										<tr>
+											<td width="33%">
+												<input name="from" placeholder="From"></input>
+											</td>
+											<td width="34%" align="center">
+												and
+											</td>
+											<td width="33%">
+											<input name="to" placeholder="To"></input>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="operator operator-equal operator-lt operator-lte operator-gt operator-gte">
+									<input name="value" placeholder="To"></input>
+								</div>
+								<div class="operator operator-like">
+									<label>Use <strong>%</strong> as placeholder</label>
+									<input name="value" placeholder="Value"></input>
+								</div>
+								<div class="operator operator-in">
+									<label>Comma separated values</label>
+									<input name="value" placeholder="Value"></input>
+								</div>
+
 								<a href="#" class="button" id="saveFilters" >Update</a>
 							</div>
 						</div>

@@ -32,27 +32,27 @@
 									<table>
 										<tr>
 											<td width="33%">
-												<input name="from" placeholder="From"></input>
+												<input name="value[0]" placeholder="From" value="<%=item.field.val[0]%>"></input>
 											</td>
 											<td width="34%" align="center">
 												and
 											</td>
 											<td width="33%">
-											<input name="to" placeholder="To"></input>
+											<input name="value[1]" placeholder="To" value="<%=item.field.val[1]%>></input>
 											</td>
 										</tr>
 									</table>
 								</div>
 								<div class="operator operator-equal operator-lt operator-lte operator-gt operator-gte">
-									<input name="value" placeholder="To"></input>
+									<input name="value" placeholder="To" value="<%=item.field.val[0]%>"></input>
 								</div>
 								<div class="operator operator-like">
-									<label>Use <strong>%</strong> as placeholder</label>
-									<input name="value" placeholder="Value"></input>
+									<label>Use <strong>%</strong> as a wildcard</label>
+									<input name="value" placeholder="Value" value="<%=item.field.val[0]%>"></input>
 								</div>
 								<div class="operator operator-in">
 									<label>Comma separated values</label>
-									<input name="value" placeholder="Value"></input>
+									<input name="value" placeholder="Value" value="<%=item.field.val[0]%>"></input>
 								</div>
 
 								<a href="#" class="button" id="saveFilters" >Update</a>

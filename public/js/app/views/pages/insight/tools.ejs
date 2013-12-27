@@ -109,25 +109,38 @@
 								<i class="fa fa-times closeButton"></i>
 							</div>
 							<div class="innerContent">
-								<ul class="columnList relationsInner" >
-									
-								</ul>
-								<select class="relationCurrent">
+								<% 
+								if(item.attr('relateto')) { %>
+									<ul class="columnList relationsInner" >
+										<% item.attr('relateto').each(function(rel, index) { %>
+											<li <%= (el) -> el.data('field', item)%>>
+												<span title="<%= rel.field%> = <%= rel.reltable %>.<%= rel.relfield%>"><%= rel.field%> = <%= rel.reltable %>.<%= rel.relfield%></span>
+												<i class="fa fa-times removeButton"></i>
+											</li>
+										<% }) %>
+									</ul>
+								<% } else {%>
+									No relations found.
+								<% }%>								
+								<div class="innerUpdate" style="display: none;">
+									<select class="relationCurrent">
 
-								</select>
-								<select class="relationTable" >
-										<option value="-1" selected="selected" >Select</option>
-									<% var created = 0; %>
-									<% insight.attr('relations').each(function (relation, index){ %>
-										<% if (item.table != relation.table) { %>
-											<option value="<%=relation.table; %>" ><%=relation.table; %></option>
-										<% } %>
-									<% }); %>
-								</select>
-								<select class="relationColumn" disabled="disabled" >
-									<option value="-1" selected="selected" > Select Table</option>
-								</select>
-								<a href="#" class="button relationSave">Update</a>
+									</select>
+									<select class="relationTable" >
+											<option value="-1" selected="selected" >Select</option>
+										<% insight.attr('relations').each(function (relation, index){ %>
+											<% if (item.table != relation.table) { %>
+												<option value="<%=relation.table; %>" ><%=relation.table; %></option>
+											<% } %>
+										<% }); %>
+									</select>
+									<select class="relationColumn" disabled="disabled" >
+										<option value="-1" selected="selected" > Select Table</option>
+									</select>
+									<a href="#" class="button relationSave">Update</a>
+									<a href="#" class="button relationCancel">Cancel</a>
+								</div>
+								<a href="#" class="button relationNew">Add New Relation</a>
 							</div>
 						</div>
 					</li>

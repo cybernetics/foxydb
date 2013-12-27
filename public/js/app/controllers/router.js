@@ -36,15 +36,17 @@ define([
 						dataType: 'json',
 						success: function(data) {
 							Global.user.attr(data);
+							can.route.ready();
 						},
 						error: function(error) {
 							Global.state.attr('loggedIn', false);
 							$.cookie('loggedIn', 0);
 							can.route.attr({route: ''}, true);
+							can.route.ready();
 						}
 					});
 				}
-				can.route.ready();
+				
 			},
 			loadPage: function(controller, action, options) {
 				if(($.cookie('loggedIn') != 1 && this.options.unauthenticated.indexOf(controller + '/' + action) < 0)){

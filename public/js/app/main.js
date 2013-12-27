@@ -18,9 +18,20 @@ define(['jquery', 'can', 'squel', 'can/view/modifiers', 'can/view/ejs', 'app/con
 		tabs: new can.Model.List([]),
 		overflowTabs: new can.Model.List([]),
 		insights: new can.Model.List([])
-	},{});
+	},{
+		init: function() {
+			console.log('asd');
+			Global.state.bind('loggedIn', function (evt, newvalue, oldvalue) {
+				console.log(evt, newvalue, oldvalue);
+				if (!newvalue) {
+					$('.content.insight').remove();	
+				}
+			});
+		}
 
+	});
 
+	new Global();
 
 	new Main($('body'));
 });

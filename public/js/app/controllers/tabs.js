@@ -74,7 +74,15 @@ define([
 						}
 					});
 				}
+				if(r.controller != 'dashboard' && r.controller != 'insight') {
+					this.element.hide();
+				} else {
+					this.element.show();
+				}
 				this.updateSize();
+			},
+			'route': function() {
+				this.element.hide();
 			},
 			updateSize: function() {
 				if(!this.calculating) { 

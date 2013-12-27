@@ -57,6 +57,7 @@ define([
 				options = options || {};
 				controller = can.capitalize(controller);
 				if(['Dashboard','Insight'].indexOf(controller) == -1) {
+					$('.tabs').hide();
 					this.element.find('.content').hide();
 					this.element.find('.controller').show();
 					if(this.currentController != controller) {
@@ -70,9 +71,11 @@ define([
 					}
 				} else {
 					if(controller == 'Dashboard') {
+						$('.tabs').show();
 						this.element.find('.content').hide();
 						this.element.find('.dashboard').show();
 					} else if(controller == 'Insight') {
+						$('.tabs').show();
 						this.element.find('.content').hide();
 						var id = options.id || 0;
 						

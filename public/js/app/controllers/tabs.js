@@ -21,7 +21,6 @@ define([
 					self.updateSize();
 				});
 
-
 			},
 			'.fa-times click': function(element, event) {
 				index = element.parent().index();
@@ -74,15 +73,8 @@ define([
 						}
 					});
 				}
-				if(r.controller != 'dashboard' && r.controller != 'insight') {
-					this.element.hide();
-				} else {
-					this.element.show();
-				}
+
 				this.updateSize();
-			},
-			'route': function() {
-				this.element.hide();
 			},
 			updateSize: function() {
 				if(!this.calculating) { 

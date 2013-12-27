@@ -110,11 +110,7 @@
 							</div>
 							<div class="innerContent">
 								<ul class="columnList relationsInner" >
-									<% insight.attr('_rels').each(function(item, index) { %>
-										<li <%= (el) -> el.data('field', item)%>>
-											<span title="<%= item.table %>.<%= item.field.Field%>"><%= item.table %>.<%= item.field.Field%> </span> <i class="fa fa-times removeButton"></i>
-										</li>
-									<% }) %>
+									
 								</ul>
 								<select class="relationCurrent">
 
@@ -131,7 +127,7 @@
 								<select class="relationColumn" disabled="disabled" >
 									<option value="-1" selected="selected" > Select Table</option>
 								</select>
-								<a href="#" class="button">Update</a>
+								<a href="#" class="button relationSave">Update</a>
 							</div>
 						</div>
 					</li>

@@ -109,8 +109,7 @@
 								<i class="fa fa-times closeButton"></i>
 							</div>
 							<div class="innerContent">
-								<% 
-								if(item.attr('relateto')) { %>
+								<% if(item.attr('relateto')) { %>
 									<ul class="columnList relationsInner" >
 										<% item.attr('relateto').each(function(rel, index) { %>
 											<li <%= (el) -> el.data('field', item)%>>

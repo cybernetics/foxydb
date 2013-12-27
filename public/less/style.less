@@ -393,7 +393,7 @@ header {
 	background: url(/images/bg.png) bottom right no-repeat;
 	select {
 		width: 100%;
-		margin: 10px 0 20px 0;
+		margin: 0 0 10px 0;
 		padding: 5px 8px;
 		border: 1px solid @colorLine;
 		border-radius: 3px;
@@ -407,6 +407,9 @@ header {
 			border: 1px solid @colorError;
 		}
 	}
+	.databaseSelect {
+		margin: 10px 0 20px 0;
+	}
 	&.controller_insight {
 		.inner {
 			padding: 20px 20px 20px 520px;
@@ -417,6 +420,11 @@ header {
 			padding: 20px 5px 20px 20px;
 			position: absolute;
 			left: 250px;
+			.relations {
+				.button {
+					margin: 10px 0 0 0;
+				}
+			}
 			.editPopup {
 				display: none;
 				left: 200px;

@@ -16,13 +16,15 @@ exports.install = function(db) {
 					db.run("CREATE TABLE `databases` (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, title TEXT, type TEXT, host TEXT, port INTEGER, name TEXT, username TEXT, password TEXT);", function(err, row) { bar.tick() });
 					db.run("CREATE TABLE `insights` (id INTEGER PRIMARY KEY AUTOINCREMENT, database_id INTEGER, name TEXT, query TEXT, type INTEGER, variables TEXT, fields TEXT, filters TEXT, relations TEXT);", function(err, row) { bar.tick() });
 				});
+			} else {
+				upgrade(db);
 			}
 		});
 	});
 
 }
 
-exports.upgrade = function(db) {
+function upgrade(db) {
 	var currentVersion = parseInt(fs.readFileSync('.version'));
 	if(currentVersion < version) {
 		console.log('Upgrading the database.')

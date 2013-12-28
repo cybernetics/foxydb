@@ -6,7 +6,6 @@ var db = new sqlite.Database('foxydb.sqlite');
 
 var installer = require('./install.js');
 installer.install(db);
-installer.upgrade(db);
 
 var app = express();
 var server = require('http').createServer(app);

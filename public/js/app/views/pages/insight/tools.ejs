@@ -29,7 +29,7 @@
 									<option value="like" <%=(item.attr('field.operator') == 'like'? 'selected="selected"':'')%>>Like</option>
 									<option value="in" <%=(item.attr('field.operator') == 'in'? 'selected="selected"':'')%>>In</option>
 								</select>
-								<div class="operator operator-between" <%=(item.attr('field.operator') == 'between'? 'style="display: block;"':'')%>>
+								<div class="operator operator-between" <%=(item.attr('field.operator') == 'between'? 'style="display: block;"' : '')%>>
 									<table>
 										<tr>
 											<td width="33%">
@@ -44,7 +44,7 @@
 										</tr>
 									</table>
 								</div>
-								<div <%=(item.attr('field.operator') != 'between' && item.attr('field.operator') != 'like' && item.attr('field.operator') != 'in' ? 'style="display: block;"':'')%> class="operator operator-equal operator-lt operator-lte operator-gt operator-gte">
+								<div <%=(item.attr('field.operator') != 'between' && item.attr('field.operator') != 'like' && item.attr('field.operator') != 'in' ? 'style="display: block;"':'')%> class="operator operator-ne operator-equal operator-lt operator-lte operator-gt operator-gte">
 									<input name="value" placeholder="Value" value="<%=item.attr('field.val.0')%>"></input>
 								</div>
 								<div class="operator operator-like" <%=(item.attr('field.operator') == 'like'? 'style="display: block;"':'')%>>
@@ -55,7 +55,7 @@
 									<label>Comma separated values</label>
 									<input name="value" placeholder="Values" value="<%=item.attr('field.val.0')%>"></input>
 								</div>
-
+								<% console.log (item.attr()); %>
 								<a href="#" class="button saveFilters" >Update</a>
 							</div>
 						</div>

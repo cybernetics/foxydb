@@ -45,6 +45,8 @@ define([
 							can.route.ready();
 						}
 					});
+				} else {
+					can.route.ready();
 				}
 				
 			},
@@ -56,6 +58,7 @@ define([
 
 				options = options || {};
 				controller = can.capitalize(controller);
+
 				if(['Dashboard','Insight'].indexOf(controller) == -1) {
 					$('.tabs').hide();
 					this.element.find('.content').hide();

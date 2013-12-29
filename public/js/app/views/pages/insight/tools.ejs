@@ -19,7 +19,7 @@
 							<div class="innerContent">
 								<label><%= item.field.Field %></label>
 								<select class="filterOperator">
-									<option value="equal" <%=(item.attr('field.operator') == 'equal'? 'selected="selected"':'')%>>Equal to</option>
+									<option value="equal" <%=(item.attr('field.operator') == 'equal' ? 'selected="selected"':'')%>>Equal to</option>
 									<option value="ne" <%=(item.attr('field.operator') == 'ne'? 'selected="selected"':'')%>>Not equal to</option>
 									<option value="between" <%=(item.attr('field.operator') == 'between'? 'selected="selected"':'')%>>Between</option>
 									<option value="lt" <%=(item.attr('field.operator') == 'lt'? 'selected="selected"':'')%>>Less than</option>
@@ -28,6 +28,7 @@
 									<option value="gte" <%=(item.attr('field.operator') == 'gte'? 'selected="selected"':'')%>>Greater than or equal to</option>
 									<option value="like" <%=(item.attr('field.operator') == 'like'? 'selected="selected"':'')%>>Like</option>
 									<option value="in" <%=(item.attr('field.operator') == 'in'? 'selected="selected"':'')%>>In</option>
+									<option value="relation" <%=(item.attr('field.operator') == 'relation'? 'selected="selected"':'')%>>Relation</option>
 								</select>
 								<div class="operator operator-between" <%=(item.attr('field.operator') == 'between'? 'style="display: block;"' : '')%>>
 									<table>
@@ -55,7 +56,19 @@
 									<label>Comma separated values</label>
 									<input name="value" placeholder="Values" value="<%=item.attr('field.val.0')%>"></input>
 								</div>
-								<% console.log (item.attr()); %>
+								<div class="operator operator-relation" <%=(item.attr('field.operator') == 'relation'? 'style="display: block;"':'')%>>
+									<label>Select table and column to make relation</label>
+									<select class="relTables">
+										<!-- Select view -->
+									</select>
+									<input type="hidden" name="relt" class="relt" value="<%=item.attr('field.val.0')%>"> </input>
+
+									<select class="relColumn">
+										<!-- Select view -->
+									</select>
+									<input type="hidden" name="relc" class="relc" value="<%=item.attr('field.val.1')%>"> </input>
+
+								</div>
 								<a href="#" class="button saveFilters" >Update</a>
 							</div>
 						</div>

@@ -1,7 +1,7 @@
 
 <ul>
 <% if(insight.attr('type') == 0) { %>
-	<li>
+	<li class="toolsFilters">
 		<div class="innerTitle">
 			<h2>Filters</h2>
 			<span>Drag/Drop fields here to create filters</span>
@@ -45,18 +45,18 @@
 										</tr>
 									</table>
 								</div>
-								<div <%=(item.attr('field.operator') != 'between' && item.attr('field.operator') != 'like' && item.attr('field.operator') != 'in' ? 'style="display: block;"':'')%> class="operator operator-ne operator-equal operator-lt operator-lte operator-gt operator-gte">
+								<div class="operator operator-ne operator-equal operator-lt operator-lte operator-gt operator-gte">
 									<input name="value" placeholder="Value" value="<%=item.attr('field.val.0')%>"></input>
 								</div>
-								<div class="operator operator-like" <%=(item.attr('field.operator') == 'like'? 'style="display: block;"':'')%>>
+								<div class="operator operator-like">
 									<label>Use <strong>%</strong> as a wildcard</label>
 									<input name="value" placeholder="Value" value="<%=item.attr('field.val.0')%>"></input>
 								</div>
-								<div class="operator operator-in" <%=(item.attr('field.operator') == 'in'? 'style="display: block;"':'')%>>
+								<div class="operator operator-in">
 									<label>Comma separated values</label>
 									<input name="value" placeholder="Values" value="<%=item.attr('field.val.0')%>"></input>
 								</div>
-								<div class="operator operator-relation" <%=(item.attr('field.operator') == 'relation'? 'style="display: block;"':'')%>>
+								<div class="operator operator-relation">
 									<label>Select table and column to make relation</label>
 									<select class="relTables">
 										<!-- Select view -->
@@ -105,7 +105,7 @@
 			<div class="dragHere fields <%=(Object.keys(insight.attr('fields').attr()).length > 0)? 'hidden':''%>">Drag here</div>
 		</div>
 	</li>
-	<li>
+<!-- 	<li>
 		<div class="innerTitle">
 			<h2>Relations</h2>
 			<span>Define relations between tables</span>
@@ -164,7 +164,7 @@
 				Relations can only be defined when multiple tables are used
 			<% } %>
 		</div>
-	</li>
+	</li> -->
 <% } else { %>
 	<li class="toolsPlaceholders">
 		<div class="innerTitle">

@@ -15,9 +15,10 @@ define([
 		},
 		{
 			init: function(element, options) {
-				
+
 			},
 			add: function(options) {
+				// console.log ('eo me');
 				this.element.find('.sidebar').html('//js/app/views/pages/database/sidebar.ejs', {});
 				this.element.find('.inner').html('//js/app/views/pages/database/content.ejs', {});
 				this.element.find('form').parsley();

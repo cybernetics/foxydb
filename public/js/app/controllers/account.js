@@ -67,7 +67,8 @@ define([
 						var user = new Model.User(element.formParams());
 						user.save().then(function(data) {
 							$.cookie('loggedIn',1);
-							Global.user.attr(data);
+							// console.log (data);
+							Global.user.attr(data.attr());
 							Global.state.attr('loggedIn', true);
 							can.route.attr({controller: 'dashboard'}, true);
 						}).fail(function(data) {

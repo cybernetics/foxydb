@@ -29,6 +29,7 @@ define([
 						Model.Database.findAll().then(function(data) {
 							if (data.length === 0) {
 								can.route.attr({controller: 'database', action: 'add'}, true);
+								// window.location.hash = '!database/add';
 							} else {
 								Model.Insight.findAll().then(function(data) {
 									Global.insights.attr(data);

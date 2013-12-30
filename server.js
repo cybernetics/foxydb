@@ -9,7 +9,7 @@ installer.install(db);
 
 var app = express();
 var server = require('http').createServer(app);
-
+GLOBAL.demoMode = config.application.demo || false;
 
 app.configure(function() {
 	app.use(express.logger('dev'));

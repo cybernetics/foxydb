@@ -51,8 +51,9 @@ define([
 							success: function(data) {
 								$.cookie('loggedIn',1);
 								Global.user.attr(data);
-								Global.state.attr('loggedIn', true);
+								
 								can.route.attr({controller: 'dashboard'}, true);
+								Global.state.attr('loggedIn', true);
 							},
 							error: function(error) {
 								parsleyError(element, error.responseJSON.error);

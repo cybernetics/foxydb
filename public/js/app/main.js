@@ -20,9 +20,7 @@ define(['jquery', 'can', 'squel', 'can/view/modifiers', 'can/view/ejs', 'app/con
 		insights: new can.Model.List([])
 	},{
 		init: function() {
-			console.log('asd');
 			Global.state.bind('loggedIn', function (evt, newvalue, oldvalue) {
-				console.log(evt, newvalue, oldvalue);
 				if (!newvalue) {
 					$('.content.insight').remove();	
 				}

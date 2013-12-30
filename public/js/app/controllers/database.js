@@ -15,7 +15,7 @@ define([
 		},
 		{
 			init: function(element, options) {
-
+				
 			},
 			add: function(options) {
 				this.element.find('.sidebar').html('//js/app/views/pages/database/sidebar.ejs', {});

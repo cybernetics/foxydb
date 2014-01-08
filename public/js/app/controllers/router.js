@@ -63,14 +63,10 @@ define([
 					$('.tabs').hide();
 					this.element.find('.content').hide();
 					this.element.find('.controller').show();
-					console.log(controller, action, this.currentController);
 
 					if (typeof action !== 'undefined' && action == 'register') {
-						if (typeof frontconfig.allowRegister == 'undefined' || !frontconfig.allowRegister) {
-							controller = 'Account';
-							action = 'login';
-							options = {controller: 'account', action: action, route: ":/controller/:action"};
-							this.currentController = 'none';
+						if (typeof config.allowRegister !== 'undefined' && !config.allowRegister) {
+							can.route.attr({controller: 'account', action: 'login'}, true);
 						}
 					}
 					

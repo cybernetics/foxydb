@@ -9,6 +9,7 @@
         "mysql": "*",
         "progress": "*",
         "validator": "*",
-        "flow": "*"
+        "flow": "*",
+        "simple-sql-parser": "git+https://github.com/DVSoftware/simpleSqlParser.git"
     }
 }

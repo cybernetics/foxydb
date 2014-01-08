@@ -71,7 +71,6 @@ define([
 					}
 					
 					if(this.currentController != controller) {
-						console.log('udjoh', options);
 						this.element.find('.controller').replaceWith('/js/app/views/layout/controller.ejs', {});
 						this.currentControllerInstance = new Controller[controller](this.element.find('.controller'), options);
 						this.currentController = controller;
@@ -79,7 +78,6 @@ define([
 					}
 
 					if(typeof action != 'undefined') {
-						console.log(action);
 						this.currentControllerInstance[action](options);
 					}
 				} else {

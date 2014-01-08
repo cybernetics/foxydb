@@ -1,5 +1,5 @@
 exports.frontConfig = {
-	allowRegister: false
+	allowRegister: true
 }
 
 exports.application = {

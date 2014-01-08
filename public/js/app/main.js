@@ -30,7 +30,7 @@ define(['jquery', 'can', 'squel', 'can/view/modifiers', 'can/view/ejs', 'app/con
 
 	$(document).ajaxError(function (event, jqxhr, settings, exception) {
 		if (typeof jqxhr.responseJSON === 'undefined') {
-			if (typeof jqxhr.responseText !== 'undefined' && jqxhr.responseText.length){
+			if (jqxhr.status != 404 && typeof jqxhr.responseText !== 'undefined' && jqxhr.responseText.length){
 				$('.errorMessage').html(jqxhr.responseText);
 				$('.errorMessage').stop(true, true).slideDown();
 

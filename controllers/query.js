@@ -21,6 +21,7 @@ exports.controller = function(app, db) {
 						var limitOffset = -1;
 						var limitCount = -1;
 						var totalCount = 0;
+						var time = new Date();
 						var ast = simpleSqlParser.sql2ast(req.body.query);
 						if(typeof ast.LIMIT !== 'undefined') {
 							limitOffset = ast.LIMIT.from;
@@ -45,10 +46,11 @@ exports.controller = function(app, db) {
 									newAst.LIMIT = {nb:req.body.row_count, from: parseInt(req.body.offset)+parseInt(limitOffset)};
 								}
 								connection.query(simpleSqlParser.ast2sql(newAst), function(err, rows) {
+									var timeCompleted = new Date();
 									if(typeof rows.splice === 'undefined') {
-										res.send(200, {data:[], found_rows: 0});
+										res.send(200, {data:[], found_rows: 0, executed_query: simpleSqlParser.ast2sql(newAst), execution_time: timeCompleted.getTime() - time.getTime()});
 									} else {
-										res.send(200, {data: rows, found_rows: totalCount, executed_query: simpleSqlParser.ast2sql(newAst)});
+										res.send(200, {data: rows, found_rows: totalCount, executed_query: simpleSqlParser.ast2sql(newAst), execution_time: timeCompleted.getTime() - time.getTime()});
 									}
 								});
 							}

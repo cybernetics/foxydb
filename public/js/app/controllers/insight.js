@@ -577,6 +577,7 @@ define([
 					self.insight.attr('fields', {});
 					self.insight.attr('filters', {});
 					self.insight.attr('relations', {});
+					self.generateQuery();
 				}
 			},
 			'.saveButton click': function(element, event) {

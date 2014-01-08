@@ -58,6 +58,7 @@ table {
 @colorLink: #329ee9;
 @colorGreenButton: #93bd01;
 @colorError: #f24b1f;
+@colorStats: #93bd01;
 @colorPopupMenu: #000000;
 
 @font: 'Titillium Web', helvetica, sans-serif !important;
@@ -118,6 +119,18 @@ a {
 .error {
 	color: @colorError !important;
 	border: 1px solid @colorError !important;
+}
+
+.errorMessage {
+	display: none;
+	line-height: 1;
+	z-index: 999; 
+	top: 70px;
+	text-align: center;
+	color: @colorInnerTitle;
+	background: lighten(@colorError, 10%);
+	padding: 20px;
+	position: relative;
 }
 
 @-moz-keyframes spin {
@@ -785,7 +798,7 @@ header {
 					position: relative;
 					display: block;
 					background: @colorGreenButton;
-					margin: 17px 0 0 0;
+					margin: 17px 0 0 5px;
 
 					span {
 						position: absolute;
@@ -833,6 +846,12 @@ header {
 			.queryErrors {
 				color: @colorInnerTitle;
 				background: lighten(@colorError, 10%);
+				padding: 20px;
+				display: none;
+			}
+			.queryStats {
+				color: @colorInnerTitle;
+				background: @colorStats;
 				padding: 20px;
 				display: none;
 			}

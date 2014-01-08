@@ -43,7 +43,6 @@ exports.controller = function(app, db) {
 									flow.serialForEach(rows, function(row) {
 										var f = this;
 										connection.query('SHOW COLUMNS FROM ' + row['Tables_in_'+dbName], function(err, rows) {
-											console.log(rows);
 											structure[row['Tables_in_'+dbName]] = rows;
 											f();
 										});

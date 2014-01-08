@@ -494,6 +494,7 @@ define([
 				element.html('<span class="spin"><i class="fa fa-spinner fa-spin"></i></spin>');
 				element.width(oldWidth);
 				self.element.find('.queryErrors').hide();
+				self.element.find('.queryStats').hide();
 				var value = self.editor.getValue();
 				can.each(self.insight.attr('variables').attr(),function(item, index) {
 					value = value.replace(new RegExp(':' + index + ':','g'),item);
@@ -525,7 +526,7 @@ define([
 							self.element.find('.next').addClass('disabled');
 						}
 						self.page = page;
-
+						self.element.find('.queryStats').html('Query executed in ' + data.execution_time + 'ms').show();
 						//if(Math.ceil(data.found_rows/50) <= page)
 					},
 
@@ -576,6 +577,7 @@ define([
 					self.insight.attr('fields', {});
 					self.insight.attr('filters', {});
 					self.insight.attr('relations', {});
+					self.generateQuery();
 				}
 			},
 			'.saveButton click': function(element, event) {
@@ -788,7 +790,9 @@ define([
 							self.element.find('.sidebar').html('//js/app/views/pages/insight/sidebar.ejs', {databases: self.databases, insight: self.insight});
 						});
 					}).fail(function(data) {
-						parsleyError(element, data.responseJSON.error);
+						if (typeof data.responseJSON != 'undefined'){
+							parsleyError(element, data.responseJSON.error);
+						}
 					});
 				}
 			},

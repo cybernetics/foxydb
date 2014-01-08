@@ -30,7 +30,9 @@ define([
 					database.save().then(function(data) {
 						can.route.attr({controller: 'dashboard'}, true);
 					}).fail(function(data) {
-						parsleyError(element, data.responseJSON.error);
+						if (typeof data.responseJSON != 'undefined'){
+							parsleyError(element, data.responseJSON.error);
+						}
 					});
 				}
 			}

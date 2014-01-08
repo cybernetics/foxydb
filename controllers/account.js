@@ -65,6 +65,10 @@ exports.controller = function(app, db) {
 	app.post('/api/users', function(req, res) {
 
 		//Validate fields
+		if(typeof GLOBAL.frontConfig.allowRegister !== 'undefined' && !GLOBAL.frontConfig.allowRegister) {
+			return res.send(401, "Registration is disabled by administrator.");
+		}
+
 		try {
 			check(req.body.name, {
 				notEmpty: 'Name is required'

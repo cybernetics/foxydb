@@ -63,12 +63,20 @@ define([
 					$('.tabs').hide();
 					this.element.find('.content').hide();
 					this.element.find('.controller').show();
+
+					if (typeof action !== 'undefined' && action == 'register') {
+						if (typeof config.allowRegister !== 'undefined' && !config.allowRegister) {
+							can.route.attr({controller: 'account', action: 'login'}, true);
+						}
+					}
+					
 					if(this.currentController != controller) {
 						this.element.find('.controller').replaceWith('/js/app/views/layout/controller.ejs', {});
 						this.currentControllerInstance = new Controller[controller](this.element.find('.controller'), options);
 						this.currentController = controller;
 
 					}
+
 					if(typeof action != 'undefined') {
 						this.currentControllerInstance[action](options);
 					}

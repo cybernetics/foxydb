@@ -16,7 +16,7 @@ app.configure(function() {
 	app.use(express.bodyParser());
 	app.use(express.cookieParser());
 	app.use(express.session({secret: config.application.sessionSecret}));
-	app.use(express['static'](__dirname + '/public'));
+	//app.use(express['static'](__dirname + '/public'));
 });
 
 fs.readdirSync('./controllers').forEach(function (file) {
@@ -27,9 +27,14 @@ fs.readdirSync('./controllers').forEach(function (file) {
 });
 
 app.get('*', function(req, res) {
-	res.sendfile(__dirname + '/public/index.html');
+	if(req.url === '/') {
+		fs.readFile(__dirname + '/public/index.html', {encoding: 'utf8'}, function (err, contents) {
+			res.send(200, contents.replace(":config_placeholder:", JSON.stringify(config.frontConfig)));
+		});
+	} else {
+		res.sendfile(__dirname + '/public' + req.url);
+	}
 });
-
 
 
 

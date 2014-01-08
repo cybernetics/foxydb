@@ -63,13 +63,27 @@ define([
 					$('.tabs').hide();
 					this.element.find('.content').hide();
 					this.element.find('.controller').show();
+					console.log(controller, action, this.currentController);
+
+					if (typeof action !== 'undefined' && action == 'register') {
+						if (typeof frontconfig.allowRegister == 'undefined' || !frontconfig.allowRegister) {
+							controller = 'Account';
+							action = 'login';
+							options = {controller: 'account', action: action, route: ":/controller/:action"};
+							this.currentController = 'none';
+						}
+					}
+					
 					if(this.currentController != controller) {
+						console.log('udjoh', options);
 						this.element.find('.controller').replaceWith('/js/app/views/layout/controller.ejs', {});
 						this.currentControllerInstance = new Controller[controller](this.element.find('.controller'), options);
 						this.currentController = controller;
 
 					}
+
 					if(typeof action != 'undefined') {
+						console.log(action);
 						this.currentControllerInstance[action](options);
 					}
 				} else {

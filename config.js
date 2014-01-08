@@ -1,5 +1,6 @@
 exports.frontConfig = {
-	allowRegister: true
+	allowRegister: true,
+	baseURL: 'http://www.foxydb.com/'
 }
 
 exports.application = {

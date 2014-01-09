@@ -327,6 +327,8 @@ define([
 								}
 								default: {
 									where = item.field.val[0];
+									where = '\'' + where.replace(/\'/g, "\'") + '\'';
+
 									break;
 								}
 							}
@@ -655,12 +657,13 @@ define([
 
 					self.element.find('.editPopup').removeClass('open');
 					element.siblings('.editPopup').addClass('open');
+
+					if(parentUl.hasClass('filters')) {
+						element.parent().find('.editPopup .operator').hide();
+						element.parent().find('.editPopup .operator-' + element.parent().find('.editPopup .filterOperator').val()).show();
+					}
 				}
-				if(parentUl.hasClass('filters')) {
-					element.parent().find('.editPopup .operator').hide();
-					element.parent().find('.editPopup .operator-' + element.parent().find('.editPopup .filterOperator').val()).show();
-				}
-			},			
+			},
 			'.saveFilters click': function(element, event) {
 				event.preventDefault();
 
@@ -676,7 +679,7 @@ define([
 						if ($(item).parents('div').hasClass('operator-relation')) {
 							values.push('`' + value + '`');
 						 } else {
-						 	values.push('\'' + value + '\'');
+						 	values.push(value);
 						 }
 					} else {
 						$(item).addClass('error');

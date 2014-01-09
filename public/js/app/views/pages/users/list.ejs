@@ -1,0 +1,36 @@
+<div class="insightInner">
+	<div class="pane">
+		<div class="paneTitle">
+			<h2>Manage Users</h2>
+			<a href="#!users/new" class="button newUser">
+				New User <span><i class="fa fa-plus"></i></span>
+			</a>
+		</div>
+		<div class="resultsTable">
+				
+				
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>E-Mail</th>
+						<th>Level</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% can.each(users, function(item) { %>
+						<tr>
+							<td><%=item.attr('name')%></td>
+							<td><%=item.attr('email')%></td>
+							<td><%=(item.attr('level') == 0?'Administrator':'User')%></td>
+							<td><a <%= (el) -> el.data('user', item) %>href="#" class="delete"><i class="fa fa-times"></i> Delete</a> <a href="#!users/edit&id=<%= item.id %>" class="edit"><i class="fa fa-pencil"></i> Edit</a></td>
+						</tr>
+					<% }) %>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+
+</div>

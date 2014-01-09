@@ -3,6 +3,7 @@ define([
 	'can',
 	'can/route',
 	'app/controllers/account',
+	'app/controllers/users',
 	'app/controllers/database',
 	'app/controllers/dashboard',
 	'app/controllers/tabs',
@@ -31,7 +32,7 @@ define([
 				if($.cookie('loggedIn') == 1) {
 					Global.state.attr('loggedIn', true);
 					$.ajax({
-						url: '/api/users',
+						url: '/api/user',
 						type: 'get',
 						dataType: 'json',
 						success: function(data) {

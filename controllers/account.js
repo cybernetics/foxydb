@@ -3,7 +3,7 @@ var crypto = require('crypto')
 
 exports.controller = function(app, db) {
 
-	app.get('/api/users', function(req, res) {
+	app.get('/api/user', function(req, res) {
 		if(req.session.user) {
 			db.serialize(function() {
 				db.get("SELECT * FROM `users` WHERE `id` = ?;",req.session.user.id , function(err, row) {
@@ -18,7 +18,20 @@ exports.controller = function(app, db) {
 			res.send(404);
 		}
 	});
-
+	app.get('/api/users', function(req, res) {
+		if(req.session.user && req.session.user.level == 0) {
+			db.serialize(function() {
+				db.all("SELECT name, email, level FROM `users`;" , function(err, rows) {
+					if(err) {
+						res.send(500, err);
+					}
+					res.send(200, rows);
+				});
+			});
+		} else {
+			res.send(401, 'Only administrators are allowed to manage users');
+		}
+	});
 	app.post('/api/users/login', function(req, res) {
 
 		try {
@@ -45,7 +58,7 @@ exports.controller = function(app, db) {
 				if(typeof row == 'undefined') {
 					res.send(404, {error: {text: 'Wrong E-Mail or password', field: 'email'}});
 				} else {
-					req.session.user = {loggedIn: true, id: row.id};
+					req.session.user = {loggedIn: true, id: row.id, level: row.level};
 					res.send(row);
 				}
 			});
@@ -105,8 +118,8 @@ exports.controller = function(app, db) {
 						if(err) {
 							res.send(500, err);
 						} else {
-							req.session.user = {loggedIn: true, id: this.lastID};
-							res.send(200, {id: this.lastID, name: req.body.name, email: req.body.email});
+							req.session.user = {loggedIn: true, id: this.lastID, level: 0};
+							res.send(200, {id: this.lastID, name: req.body.name, email: req.body.email, level: 0});
 						}
 					})
 				} else {

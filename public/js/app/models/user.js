@@ -6,7 +6,8 @@ define([
 		can.Model(
 			'Model.User',
 			{
-				'create': 'POST /api/users'
+				'create': 'POST /api/users',
+				'findAll': 'GET /api/users'
 			},
 			{
 

@@ -1,5 +1,5 @@
 var check = require('validator').check;
-var crypto = require('crypto')
+var crypto = require('crypto');
 
 exports.controller = function(app, db) {
 
@@ -18,10 +18,65 @@ exports.controller = function(app, db) {
 			res.send(404);
 		}
 	});
+	app.get('/api/user/:id', function(req, res) {
+		if(req.session.user && req.session.user.level == 0) {
+			db.serialize(function() {
+				db.get("SELECT name, email, level, id FROM `users` WHERE `id` = ?;",req.params.id , function(err, row) {
+					if(typeof row == 'undefined') {
+						res.send(404);
+					} else {
+						res.send(200, row);
+					}
+				});
+			});
+		} else {
+			res.send(401, 'Only administrators are allowed to manage users');
+		}
+	});
+	app.put('/api/user/:id', function(req, res) {
+		if (req.session.user && req.session.user.level == 0) {
+			db.serialize(function() {
+				var query;
+				var values = [];
+
+				if (typeof req.body.password === 'undefined' || !req.body.password.length) {
+					query = "UPDATE `users` SET `name` = ?, `email` = ?, `level` = ? WHERE `id` = ?;";
+					values = [req.body.name, req.body.email, req.body.level, req.params.id];
+				} else {
+					var shasum = crypto.createHash('sha1');
+					shasum.update(req.body.password);
+
+					query = "UPDATE `users` SET `name` = ?, `email` = ?, `password` = ?, `level` = ? WHERE `id` = ?;";
+					values = [req.body.name, req.body.email, shasum.digest('hex'), req.body.level, req.params.id];
+				}
+
+				db.run(query, values, function(err) {
+					if (err) {
+						res.send(500, {error: err});
+					} else {
+						res.send(200, {});
+					}
+				});
+			});
+		}
+	});
+	app.delete('/api/user/:id', function(req, res) {
+		if (req.session.user && req.session.user.level == 0) {
+			db.serialize(function() {
+				db.run('DELETE FROM `users` WHERE `id` = ?', [req.params.id], function(err) {
+					if (err) {
+						res.send(500, {error: err});
+					} else {
+						res.send(200, {});
+					}
+				});
+			});
+		}
+	});
 	app.get('/api/users', function(req, res) {
 		if(req.session.user && req.session.user.level == 0) {
 			db.serialize(function() {
-				db.all("SELECT name, email, level FROM `users`;" , function(err, rows) {
+				db.all("SELECT name, email, level, id FROM `users`;" , function(err, rows) {
 					if(err) {
 						res.send(500, err);
 					}
@@ -78,7 +133,7 @@ exports.controller = function(app, db) {
 	app.post('/api/users', function(req, res) {
 
 		//Validate fields
-		if(typeof GLOBAL.frontConfig.allowRegister !== 'undefined' && !GLOBAL.frontConfig.allowRegister) {
+		if(typeof GLOBAL.frontConfig.allowRegister !== 'undefined' && !GLOBAL.frontConfig.allowRegister && (!req.session.user || req.session.user && req.session.user.level != 0)) {
 			return res.send(401, "Registration is disabled by administrator.");
 		}
 
@@ -107,6 +162,11 @@ exports.controller = function(app, db) {
 		} catch (e) {
 			res.send(400, {error: {text: e.message, field: 'password'}});
 		}
+		var level = 1;
+
+		if (req.session.user && req.session.user.level == 0) {
+			level = req.body.level || 1;
+		}
 
 		//Check if E-Mail is already used
 		db.serialize(function() {
@@ -114,12 +174,15 @@ exports.controller = function(app, db) {
 				if(typeof row == 'undefined') {
 					var shasum = crypto.createHash('sha1');
 					shasum.update(req.body.password);
-					db.run("INSERT INTO `users` VALUES(NULL, ?, ?, ?, 0)", [req.body.name, req.body.email, shasum.digest('hex')], function(err) {
+					db.run("INSERT INTO `users` VALUES(NULL, ?, ?, ?, ?)", [req.body.name, req.body.email, shasum.digest('hex'), level], function(err) {
 						if(err) {
 							res.send(500, err);
 						} else {
-							req.session.user = {loggedIn: true, id: this.lastID, level: 0};
-							res.send(200, {id: this.lastID, name: req.body.name, email: req.body.email, level: 0});
+							if (!req.session.user) {
+								req.session.user = {loggedIn: true, id: this.lastID, level: level};
+							}
+
+							res.send(200, {id: this.lastID, name: req.body.name, email: req.body.email, level: level});
 						}
 					})
 				} else {

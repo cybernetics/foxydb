@@ -9,6 +9,8 @@
 		<div class="innerContent">
 			<ul class="columnList filters" >
 				<% insight.attr('filters').each(function(item, index) { %>
+					<% if (typeof item.attr('field.val.0') !== 'undefined' && item.attr('field.val.0').length) item.attr('field.val.0', item.attr('field.val.0').replace(/\"/, '')) %>
+					<% if (typeof item.attr('field.val.1') !== 'undefined' && item.attr('field.val.1').length) item.attr('field.val.1', item.attr('field.val.1').replace(/\"/, '')) %>
 					<li <%= (el) -> el.data('field', item)%>>
 						<span title="<%= item.table %>.<%= item.field.Field%>"><%= item.table %>.<%= item.field.Field%></span> <i class="fa fa-times removeButton"></i>
 						<div class="editPopup">

@@ -1,0 +1,28 @@
+<div class="create pane">
+	<form>
+		<div class="paneTitle">
+			<h2>Create User</h2>
+		</div>
+		<div class="paneContent">
+
+			<div class="row">
+				<label>Name</label> <input name="name" type="text" parsley-required="true" parsley-required-message="Name is required"></input>
+			</div>
+			<div class="row">
+				<label>E-Mail</label> <input name="email" type="text" parsley-required="true" parsley-type="email" parsley-type-email-message="Invalid E-Mail" parsley-required-message="E-Mail is required"></input>
+			</div>
+			<div class="row">
+				<label>Administrator</label> <input name="level" value="0" type="checkbox" ></input>
+			</div>
+			<div class="row">
+				<label>Password</label> <input name="password" type="password" id="password" parsley-required="true" parsley-minlength="6" parsley-required-message="Password is required"></input>
+			</div>
+			<div class="row">
+				<label>Repeat Password</label> <input name="repeat_password" type="password" parsley-required="true" parsley-minlength="6" parsley-required-message="Repeat password is required" parsley-equalto="#password" parsley-equalto-message="Passwords does not match" parsley-minlength-message="Passwords must be at least 6 characters long"></input>
+			</div>
+		</div>
+		<div class="paneButtons">
+			<button type="submit">Create</button>
+		</div>
+	</form>
+</div>

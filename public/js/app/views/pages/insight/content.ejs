@@ -6,6 +6,7 @@
 					(Read only mode)
 				<% } %>
 			</h2>
+			<% if(Global.user.attr('level') == 0) { %>
 			<a href="#" class="button clearButton">
 				Clear All <span><i class="fa fa-times"></i></span>
 			</a>
@@ -15,6 +16,7 @@
 					<li>Save as a Copy</li>
 				</ul>
 			</a>
+			<% } %>
 		</div>
 
 		<div class="queryEditor">

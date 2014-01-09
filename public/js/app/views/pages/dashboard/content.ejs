@@ -1,30 +1,31 @@
-<div class="pane pane50pct">
-		<div class="paneTitle">
-			<h2>New insight from editor</h2>
+<% if(Global.user.attr('level') == 0) { %>
+	<div class="pane pane50pct">
+			<div class="paneTitle">
+				<h2>New insight from editor</h2>
 
-		</div>
-		<div class="paneContent">
-			Build a new insight from our drag and drop editor.
-		</div>
-		<div class="paneButtons">
-			<a href="#!insight/edit&type=0" class="button">Get started</a>
-		</div>
-	</form>
-</div>
-<div class="pane pane50pct last">
-		<div class="paneTitle">
-			<h2>New insight from query</h2>
+			</div>
+			<div class="paneContent">
+				Build a new insight from our drag and drop editor.
+			</div>
+			<div class="paneButtons">
+				<a href="#!insight/edit&type=0" class="button">Get started</a>
+			</div>
+		</form>
+	</div>
+	<div class="pane pane50pct last">
+			<div class="paneTitle">
+				<h2>New insight from query</h2>
 
-		</div>
-		<div class="paneContent">
-			Write your own custom query using SQL.
-		</div>
-		<div class="paneButtons">
-			<a href="#!insight/edit&type=1" class="button">Get started</a>
-		</div>
-	</form>
-</div>
-
+			</div>
+			<div class="paneContent">
+				Write your own custom query using SQL.
+			</div>
+			<div class="paneButtons">
+				<a href="#!insight/edit&type=1" class="button">Get started</a>
+			</div>
+		</form>
+	</div>
+<% } %>
 <h3>Saved Insights</h3>
 
 <ul class="insights">
@@ -33,9 +34,10 @@
 		<a href="#!insight/edit&id=<%=item.attr('id')%>">
 			<i class="fa fa-bars"></i> <%=item.attr('name')%>
 		</a>
-		<a class="delete" href="#"><i class="fa fa-times"></i></a>
-		<a class="edit" href="#!insight/edit&id=<%=item.attr('id')%>"><i class="fa fa-pencil"></i></a>
-
+		<% if(Global.user.attr('level') == 0) { %>
+			<a class="delete" href="#"><i class="fa fa-times"></i></a>
+			<a class="edit" href="#!insight/edit&id=<%=item.attr('id')%>"><i class="fa fa-pencil"></i></a>
+		<% } %>
 	</li>
 <% }) %>
 </ul>

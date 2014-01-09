@@ -1,7 +1,7 @@
 <ul class="tabsInner">
 	<% Global.tabs.each(function(insight) { %>
 		<% controller.updateSize() %>
-		<li <%= (el) -> el.data('insight',insight) %> <%= insight.attr('current')?'class="active"':''%>><input type="text" placeholder="Insight title" class="insightTitle" value="<%=insight.attr('name')%>" /><a href="#!insight/edit&id=<%=insight.attr('id')%>"><%=insight.attr('name')%></a><i class="fa fa-times"></i></li>
+		<li <%= (el) -> el.data('insight',insight) %> <%= insight.attr('current')?'class="active"':''%>><input <%= (Global.user.attr('level') == 1?'disabled="disabled"':'') %> type="text" placeholder="Insight title" class="insightTitle" value="<%=insight.attr('name')%>" /><a href="#!insight/edit&id=<%=insight.attr('id')%>"><%=insight.attr('name')%></a><i class="fa fa-times"></i></li>
 	<% }) %>
 </ul>
 <ul class="tabsControls">

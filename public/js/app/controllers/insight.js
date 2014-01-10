@@ -56,7 +56,6 @@ define([
 			            		return true;
 			            	}
 			            });
-			            console.log(self.fields);
 			            var filteredFields = self.fields.filter(function(element) {
 			            	if(element.toUpperCase().indexOf(prefix.toUpperCase()) !== -1){
 			            		return true;
@@ -101,7 +100,6 @@ define([
 					});
 					self.editor.completers = [sqlCompleter];
 					
-					console.log(self.editor);
 					if(typeof self.options.id === 'undefined') {
 							self.insight.attr('database_id',data[0].attr('id'));
 							Global.tabs.push(self.insight);
@@ -254,7 +252,7 @@ define([
 					self.editor.setReadOnly(true);
 				}
 
-				self.element.find('.structure').html('//js/app/views/pages/insight/structure.ejs', {structure: {}});
+				self.element.find('.structure').html('//js/app/views/pages/insight/structure.ejs', {structure: {}, insight: self.insight});
 
 				$.get('/api/databases/structure/'+self.insight.attr('database_id'), function(response) {
 					var res = {};
@@ -270,7 +268,7 @@ define([
 							}
 						})
 					});
-					self.element.find('.structure').html('//js/app/views/pages/insight/structure.ejs', {structure: res});
+					self.element.find('.structure').html('//js/app/views/pages/insight/structure.ejs', {structure: res, insight: self.insight});
 					$(window).resize();
 					if(self.insight.attr('type') == 0) {
 						//setup drag/drop

@@ -30,6 +30,7 @@ exports.controller = function(app, db) {
 								} else {
 									res.send(500, {errstr: 'Something went wrong, please submit a bug report, with a query you used'});
 								}
+								connection.end();
 							});
 						} else {
 							if(typeof ast.LIMIT !== 'undefined') {
@@ -41,6 +42,7 @@ exports.controller = function(app, db) {
 							connection.query(simpleSqlParser.ast2sql(ast), function(err, rows) {
 								if(err) {
 									res.send(500, {errstr: err.message});
+									connection.end();
 								} else {
 									totalCount = limitCount;
 									if(rows.length > 0) {
@@ -56,16 +58,21 @@ exports.controller = function(app, db) {
 									}
 									connection.query(simpleSqlParser.ast2sql(newAst), function(err, rows) {
 										var timeCompleted = new Date();
-										if(typeof rows.splice === 'undefined') {
-											res.send(200, {data:[], found_rows: 0, executed_query: simpleSqlParser.ast2sql(newAst), execution_time: timeCompleted.getTime() - time.getTime()});
+										if(err) {
+											res.send(500, {errstr: err.message});
 										} else {
-											res.send(200, {data: rows, found_rows: totalCount, executed_query: simpleSqlParser.ast2sql(newAst), execution_time: timeCompleted.getTime() - time.getTime()});
+											if(typeof rows.splice === 'undefined') {
+												res.send(200, {data:[], found_rows: 0, executed_query: simpleSqlParser.ast2sql(newAst), execution_time: timeCompleted.getTime() - time.getTime()});
+											} else {
+												res.send(200, {data: rows, found_rows: totalCount, executed_query: simpleSqlParser.ast2sql(newAst), execution_time: timeCompleted.getTime() - time.getTime()});
+											}
 										}
+										connection.end();
 									});
 								}
 							});
 						}
-						connection.end();
+						
 						
 					}
 				});

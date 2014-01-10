@@ -75,7 +75,7 @@ exports.controller = function(app, db) {
 	app.post('/api/databases', function(req, res) {
 		if(GLOBAL.demoMode) {
 			res.send(401, 'Creating databases is disabled in demo mode');
-		} else if(req.session.user) {
+		} else if(req.session.user && req.session.level == 0) {
 			try {
 				check(req.body.title, {
 					notEmpty: 'Title is required'

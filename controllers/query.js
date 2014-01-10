@@ -23,39 +23,50 @@ exports.controller = function(app, db) {
 						var totalCount = 0;
 						var time = new Date();
 						var ast = simpleSqlParser.sql2ast(req.body.query);
-						if(typeof ast.LIMIT !== 'undefined') {
-							limitOffset = ast.LIMIT.from;
-							limitCount = ast.LIMIT.nb;
-						}
-						ast.SELECT = [{name: 'COUNT(*) AS cnt'}];
-
-						connection.query(simpleSqlParser.ast2sql(ast), function(err, rows) {
-							if(err) {
-								res.send(500, {errstr: err.message});
-							} else {
-								totalCount = limitCount;
-								if(rows.length > 0) {
-									totalCount = rows[0].cnt;	
-								}
-									
-								var newAst = simpleSqlParser.sql2ast(req.body.query);
-
-								if(limitOffset === -1) {
-									newAst.LIMIT = {nb:req.body.row_count, from: req.body.offset};
+						if(Object.keys(ast).length == 0) {
+							connection.query(req.body.query, function(err, rows) {
+								if(err) {
+									res.send(500, {errstr: err.message});
 								} else {
-									newAst.LIMIT = {nb:req.body.row_count, from: parseInt(req.body.offset)+parseInt(limitOffset)};
+									res.send(500, {errstr: 'Something went wrong, please submit a bug report, with a query you used'});
 								}
-								connection.query(simpleSqlParser.ast2sql(newAst), function(err, rows) {
-									var timeCompleted = new Date();
-									if(typeof rows.splice === 'undefined') {
-										res.send(200, {data:[], found_rows: 0, executed_query: simpleSqlParser.ast2sql(newAst), execution_time: timeCompleted.getTime() - time.getTime()});
-									} else {
-										res.send(200, {data: rows, found_rows: totalCount, executed_query: simpleSqlParser.ast2sql(newAst), execution_time: timeCompleted.getTime() - time.getTime()});
-									}
-								});
+							});
+						} else {
+							if(typeof ast.LIMIT !== 'undefined') {
+								limitOffset = ast.LIMIT.from;
+								limitCount = ast.LIMIT.nb;
 							}
-							connection.end();
-						});
+							ast.SELECT = [{name: 'COUNT(*) AS cnt'}];
+
+							connection.query(simpleSqlParser.ast2sql(ast), function(err, rows) {
+								if(err) {
+									res.send(500, {errstr: err.message});
+								} else {
+									totalCount = limitCount;
+									if(rows.length > 0) {
+										totalCount = rows[0].cnt;	
+									}
+										
+									var newAst = simpleSqlParser.sql2ast(req.body.query);
+
+									if(limitOffset === -1) {
+										newAst.LIMIT = {nb:req.body.row_count, from: req.body.offset};
+									} else {
+										newAst.LIMIT = {nb:req.body.row_count, from: parseInt(req.body.offset)+parseInt(limitOffset)};
+									}
+									connection.query(simpleSqlParser.ast2sql(newAst), function(err, rows) {
+										var timeCompleted = new Date();
+										if(typeof rows.splice === 'undefined') {
+											res.send(200, {data:[], found_rows: 0, executed_query: simpleSqlParser.ast2sql(newAst), execution_time: timeCompleted.getTime() - time.getTime()});
+										} else {
+											res.send(200, {data: rows, found_rows: totalCount, executed_query: simpleSqlParser.ast2sql(newAst), execution_time: timeCompleted.getTime() - time.getTime()});
+										}
+									});
+								}
+							});
+						}
+						connection.end();
+						
 					}
 				});
 			});

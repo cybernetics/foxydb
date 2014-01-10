@@ -9,6 +9,7 @@ define([
 	'ace/ace',
 	'ace/mode-sql',
 	'ace/theme-github',
+	'ace/ext-language_tools',
 	'can/util/object',
 	'jquerypp/event/drag',
 	'jquerypp/event/drop'
@@ -24,12 +25,59 @@ define([
 
 		},
 		{
+			langTools: null,
 			operators: {between: 'BETWEEN', equal: '=', ne: '<>', lt: '<', lte: '<=', gt: '>', gte: '>=', like: 'LIKE', in: 'IN', relation: 'relation'},
 			init: function(element, options) {
 
 			},
+			tables: [],
+			fields: [],
 			edit: function(options) {
 				var self = this;
+
+				var sqlCompleter = {
+					sqlKeywords: ['SELECT', 'FROM', 'DISTINCT', 'WHERE', 'AND', 'OR', 'ORDER BY', 'GROUP BY', 'HAVING', 'LIKE', 'IN', 'JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'FULL JOIN', 'BETWEEN', 'UNION', 'NOT', 'NULL'],
+					sqlFunctions: ['AVG()', 'COUNT()', 'FIRST()', 'LAST()', 'MAX()', 'MIN()', 'SUM()', 'MID()', 'LEN()', 'ROUND()', 'NOW()', 'CONCAT()'],
+					getCompletions: function(editor, session, pos, prefix, callback) {
+						if (prefix.length === 0) { callback(null, []); return }
+			            var results = [];
+			            var filteredKeywords = this.sqlKeywords.filter(function(element) {
+			            	if(element.indexOf(prefix.toUpperCase()) !== -1){
+			            		return true;
+			            	}
+			            });
+			            var filteredFunctions = this.sqlFunctions.filter(function(element) {
+			            	if(element.indexOf(prefix.toUpperCase()) !== -1){
+			            		return true;
+			            	}
+			            });
+			            var filteredTables = self.tables.filter(function(element) {
+			            	if(element.toUpperCase().indexOf(prefix.toUpperCase()) !== -1){
+			            		return true;
+			            	}
+			            });
+			            console.log(self.fields);
+			            var filteredFields = self.fields.filter(function(element) {
+			            	if(element.toUpperCase().indexOf(prefix.toUpperCase()) !== -1){
+			            		return true;
+			            	}
+			            });
+			            filteredKeywords.forEach(function(item) {
+			            	results.push({name: item, value: item, score: 0, meta: 'Keyword'});
+			            });
+			            filteredFunctions.forEach(function(item) {
+			            	results.push({name: item, value: item, score: 0, meta: 'Function'});
+			            });
+			            filteredTables.forEach(function(item) {
+			            	results.push({name: item, value: item, score: 0, meta: 'Table'});
+			            });
+			            filteredFields.forEach(function(item) {
+			            	results.push({name: item, value: item, score: 0, meta: 'Field'});
+			            });
+			            callback(null, results);
+					}
+				};
+
 				self.options = options;
 				var type = 0;
 				if(can.route.attr('type')) {
@@ -43,9 +91,17 @@ define([
 					self.element.find('.sidebar').html('//js/app/views/pages/insight/sidebar.ejs', {databases: self.databases, insight: self.insight});
 					self.element.find('.inner').html('//js/app/views/pages/insight/content.ejs', {insight: self.insight});
 					self.element.find('.tools').html('//js/app/views/pages/insight/tools.ejs', {insight: self.insight});
+					self.langTools = ace.require("ace/ext/language_tools");
 					var editor = ace.edit(self.element.find('.sql')[0]);
 					self.editor = editor;
+					//setup autocomplete
 
+					self.editor.setOptions({
+						enableBasicAutocompletion: true
+					});
+					self.editor.completers = [sqlCompleter];
+					
+					console.log(self.editor);
 					if(typeof self.options.id === 'undefined') {
 							self.insight.attr('database_id',data[0].attr('id'));
 							Global.tabs.push(self.insight);
@@ -84,7 +140,7 @@ define([
 					}
 
 					self.editor.setTheme("ace/theme/tomorrow");
-					self.editor.getSession().setMode("ace/mode/sql");
+					self.editor.getSession().setMode("ace/mode/mysql");
 					self.element.find('.sql').css('font-size',12);
 					self.editor.getSession().setUseWrapMode(true);
 					self.editor.renderer.setShowGutter(false);
@@ -196,15 +252,28 @@ define([
 
 				if(self.insight.attr('type') == 0) {
 					self.editor.setReadOnly(true);
-					self.element.find('.structure').html('//js/app/views/pages/insight/structure.ejs', {structure: {}});
+				}
 
-					$.get('/api/databases/structure/'+self.insight.attr('database_id'), function(response) {
-						var res = {};
-						can.each(response, function(item, index) {
-							res[index] = new can.Map(item);
-						});
-						self.element.find('.structure').html('//js/app/views/pages/insight/structure.ejs', {structure: res});
-						$(window).resize();
+				self.element.find('.structure').html('//js/app/views/pages/insight/structure.ejs', {structure: {}});
+
+				$.get('/api/databases/structure/'+self.insight.attr('database_id'), function(response) {
+					var res = {};
+					can.each(response, function(item, index) {
+						res[index] = new can.Map(item);
+					});
+					self.tables = Object.keys(res);
+					self.fields = [];
+					Object.keys(res).forEach(function(table) {
+						Object.keys(res[table]).forEach(function(field) {
+							if(typeof res[table][field].Field !== 'undefined') {
+								self.fields.push(res[table][field].Field);
+							}
+						})
+					});
+					self.element.find('.structure').html('//js/app/views/pages/insight/structure.ejs', {structure: res});
+					$(window).resize();
+					if(self.insight.attr('type') == 0) {
+						//setup drag/drop
 						self.element.find('.structure > ul > li > ul > li').on(
 							{
 								'draginit': function(ev, drag) {
@@ -235,9 +304,8 @@ define([
 								}
 							}
 						);
-
-					});
-				}
+					}
+				});
 
 			},
 			getVariables: function() {

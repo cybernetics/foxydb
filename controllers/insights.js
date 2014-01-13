@@ -84,11 +84,7 @@ exports.controller = function(app, db) {
 		}
 	});
 	app.delete('/api/insights/:id', function(req, res) {
-<<<<<<< HEAD
 		if(req.session.user && req.session.user.level == 0) {
-=======
-		if(req.session.user && req.session.level == 0) {
->>>>>>> da6e42579b954c42587500eb5526200393295c86
 			db.all("DELETE FROM `insights` WHERE `id` = ?",[req.params.id] , function(err) {
 				if(err) {
 

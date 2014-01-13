@@ -7,7 +7,10 @@ define([
 			'Model.Database',
 			{
 				'findAll': 'GET /api/databases',
-				'create': 'POST /api/databases'
+				'findOne': 'GET /api/database/{id}',
+				'create': 'POST /api/databases',
+				'update': 'PUT /api/database/{id}',
+				'delete': 'DELETE /api/database/{id}'
 			},
 			{
 

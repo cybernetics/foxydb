@@ -1,0 +1,33 @@
+<div class="insightInner">
+	<div class="pane">
+		<div class="paneTitle">
+			<h2>Manage Databases</h2>
+		</div>
+		<div class="resultsTable">
+				
+				
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Host</th>
+						<th>Database</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% can.each(database, function(item) { %>
+						<tr>
+							<td><%=item.attr('title')%></td>
+							<td><%=item.attr('host')%></td>
+							<td><%=item.attr('name')%></td>
+							<td><a <%= (el) -> el.data('database', item) %>href="#" class="delete"><i class="fa fa-times"></i> Delete</a> <a href="#!database/edit&id=<%= item.id %>" class="edit"><i class="fa fa-pencil"></i> Edit</a></td>
+						</tr>
+					<% }) %>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+
+</div>

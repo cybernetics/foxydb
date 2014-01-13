@@ -40,7 +40,7 @@ define([
 					var database = new Model.Database(element.formParams());
 					database.save().then(function(data) {
 						Model.Database.findAll().then(function(data) {
-							can.route.attr({controller: 'database', action: 'list'}, {});
+							can.route.attr({controller: 'database', action: 'list'}, true);
 						});
 					}).fail(function(data) {
 						if (typeof data.responseJSON != 'undefined'){

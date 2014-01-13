@@ -52,6 +52,8 @@ define([
 				
 			},
 			loadPage: function(controller, action, options) {
+				var self = this;
+
 				if(($.cookie('loggedIn') != 1 && this.options.unauthenticated.indexOf(controller + '/' + action) < 0)){
 					can.route.attr({route: ''}, true);
 					return;
@@ -83,9 +85,15 @@ define([
 					}
 				} else {
 					if(controller == 'Dashboard') {
-						$('.tabs').show();
-						this.element.find('.content').hide();
-						this.element.find('.dashboard').show();
+						Model.Database.findAll().then(function(data) {
+							if (data.length === 0) {
+								can.route.attr({controller: 'database', action: 'add'}, true);
+							} else {
+								$('.tabs').show();
+								self.element.find('.content').hide();
+								self.element.find('.dashboard').show();
+							}
+						});
 					} else if(controller == 'Insight') {
 						$('.tabs').show();
 						this.element.find('.content').hide();

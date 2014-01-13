@@ -37,7 +37,7 @@ define([
 
 				var sqlCompleter = {
 					sqlKeywords: ['SELECT', 'FROM', 'DISTINCT', 'WHERE', 'AND', 'OR', 'ORDER BY', 'GROUP BY', 'HAVING', 'LIKE', 'IN', 'JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'FULL JOIN', 'BETWEEN', 'UNION', 'NOT', 'NULL'],
-					sqlFunctions: ['AVG()', 'COUNT()', 'FIRST()', 'LAST()', 'MAX()', 'MIN()', 'SUM()', 'MID()', 'LEN()', 'ROUND()', 'NOW()', 'CONCAT()'],
+					sqlFunctions: ['AVG()', 'COUNT()', 'FIRST()', 'LAST()', 'MAX()', 'MIN()', 'SUM()', 'MID()', 'LEN()', 'ROUND()', 'NOW()', 'CONCAT()', 'RAND()'],
 					getCompletions: function(editor, session, pos, prefix, callback) {
 						if (prefix.length === 0) { callback(null, []); return }
 			            var results = [];

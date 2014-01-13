@@ -1,0 +1,32 @@
+<div class="updateDatabase pane">
+	<form <%= (el) -> el.data('database', database) %>>
+		<div class="paneTitle">
+			<% console.log(database) %>
+			<h2>Update Database <%= database.name %></h2>
+		</div>
+		<div class="paneContent">
+
+			<div class="row">
+				<label>Name</label> <input name="title" type="text" value="<%= database.title %>" parsley-required="true" parsley-required-message="Name is required"></input>
+			</div>
+			<div class="row">
+				<label>Host</label> <input name="host" type="text" value="<%= database.host %>" parsley-required="true" parsley-required="true" parsley-required-message="Host is required"></input>
+			</div>
+			<div class="row">
+				<label>Port</label> <input name="port" type="text" value="<%= database.port %>" parsley-required="true" parsley-type="digits" parsley-type-message="Port must be number" parsley-required-message="Port is required"></input>
+			</div>
+			<div class="row">
+				<label>Database</label> <input name="name" type="text" value="<%= database.name%>" parsley-required="true" ></input>
+			</div>
+			<div class="row">
+				<label>Username</label> <input name="username" type="text" value="<%= database.username%>" parsley-required="true" parsley-required-message="Username is required"></input>
+			</div>
+			<div class="row">
+				<label>Password</label> <input name="password" type="password" value="<%= database.password%>" ></input>
+			</div>
+		</div>
+		<div class="paneButtons">
+			<button type="submit">Save</button>
+		</div>
+	</form>
+</div>

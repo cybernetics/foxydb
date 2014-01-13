@@ -22,7 +22,6 @@ define([
 			},
 			index: function(options) {
 				var self = this;
-				
 				Global.state.bind('loggedIn', function (evt, newvalue, oldvalue) {
 					if (newvalue) {
 						Global.insights = new can.Model.List([]);
@@ -36,6 +35,7 @@ define([
 								});
 								self.element.find('.sidebar').html('//js/app/views/pages/dashboard/sidebar.ejs', {});
 								self.element.find('.inner').html('//js/app/views/pages/dashboard/content.ejs', {insights: Global.insights});
+
 							}
 						});
 					} else {

@@ -3,7 +3,11 @@ var mysql = require('mysql');
 exports.controller = function(app, db) {
 
 	app.post('/api/insights', function(req, res) {
+<<<<<<< Updated upstream
 		if(req.session.user) {
+=======
+		if(req.session.user && req.session.user.level == 0) {
+>>>>>>> Stashed changes
 			db.run("INSERT INTO `insights` VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?);",[req.body.database_id, req.body.name, req.body.query, req.body.type, JSON.stringify(req.body.variables||{}), JSON.stringify(req.body.fields||{}), JSON.stringify(req.body.filters||{}), JSON.stringify(req.body.relations||{})] , function(err, row) {
 				if(err) {
 
@@ -20,7 +24,7 @@ exports.controller = function(app, db) {
 	});
 
 	app.put('/api/insights/:id', function(req, res) {
-		if(req.session.user) {
+		if(req.session.user && req.session.user.level == 0) {
 			db.all("UPDATE `insights` SET database_id=?, name=?, query=?, variables=?, fields=?, filters=?, relations=? WHERE `id` = ?",[req.body.database_id, req.body.name, req.body.query, JSON.stringify(req.body.variables||{}), JSON.stringify(req.body.fields||{}), JSON.stringify(req.body.filters||{}), JSON.stringify(req.body.relations||{}), req.params.id] , function(err) {
 				if(err) {
 
@@ -84,7 +88,11 @@ exports.controller = function(app, db) {
 		}
 	});
 	app.delete('/api/insights/:id', function(req, res) {
+<<<<<<< Updated upstream
 		if(req.session.user) {
+=======
+		if(req.session.user && req.session.user.level == 0) {
+>>>>>>> Stashed changes
 			db.all("DELETE FROM `insights` WHERE `id` = ?",[req.params.id] , function(err) {
 				if(err) {
 

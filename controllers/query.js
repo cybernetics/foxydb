@@ -37,7 +37,7 @@ exports.controller = function(app, db) {
 												}
 
 												Object.keys(data).forEach(function (test) {
-													cur.push(data[test]);
+													cur.push('"' + data[test] + '"');
 												});
 
 												contents = contents + '\n' + cur.join(',');

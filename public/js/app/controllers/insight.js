@@ -554,6 +554,15 @@ define([
 				var self = this;
 				self.insight.attr('variables.' + element.attr('placeholder'), element.val());
 			},
+			'.exportButton click': function(element, event) {
+				event.preventDefault();
+				var self = this;
+				var value = self.editor.getValue();
+				self.element.find('.exportQuery').val(value);
+				self.element.find('.exportDB').val(self.element.find('.databaseSelect').val());
+				
+				self.element.find('.exportForm').submit();
+			},
 			fetchData: function(element, page) {
 				var self = this;
 				var oldContent = element.html();

@@ -172,7 +172,7 @@ button, a.button {
 }
 
 a.button.disabled, button.disabled {
-	background: lighten(desaturate(@colorGreenButton,100%),50%);
+	background: lighten(desaturate(@colorGreenButton,100%),50%) !important;
 	cursor: default;
 }
 header {
@@ -882,7 +882,7 @@ header {
 					float: left;
 				}
 
-				.edit, .delete {
+				.rename, .edit, .delete {
 					float: right;
 					margin: 15px 0 0 10px;
 					color: @colorLine;

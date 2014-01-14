@@ -17,7 +17,7 @@
 				</ul>
 			</a>
 			<% } %>
-			<a href="#" class="button exportButton">
+			<a <%= (el) -> el.data('export', false) %> href="#" class="button exportButton">
 				Export <span><i class="fa fa-download "></i></span>
 			</a>
 			<form class="exportForm" action="/api/query/export" method="post" target="_new" style="display: none;">

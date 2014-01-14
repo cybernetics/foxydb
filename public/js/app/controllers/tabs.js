@@ -22,7 +22,7 @@ define([
 				});
 
 			},
-			'.fa-times click': function(element, event) {
+			'.icon.delete click': function(element, event) {
 				index = element.parent().index();
 				if(element.parent().hasClass('active')) {
 					can.route.attr({controller: 'dashboard'}, true);
@@ -36,7 +36,7 @@ define([
 
 				event.stopPropagation();
 				event.preventDefault();
-				if($(event.target).is(':not(li)') && $(event.target).is(':not(a)') && $(event.target).is(':not(.fa-plus)')) {
+				if($(event.target).is(':not(li)') && $(event.target).is(':not(a)') && $(event.target).is(':not(.icon.plus)')) {
 					return;
 				}
 				if($(event.target).hasClass('active')) {
@@ -45,6 +45,8 @@ define([
 				if(element.hasClass('new')) {
 					can.route.attr({controller: 'dashboard'}, true);
 					element.addClass('noshadow');
+				} else if(element.hasClass('drop')) {
+
 				} else {
 					this.element.find('.new').removeClass('noshadow');
 					element.addClass('active')
@@ -54,11 +56,8 @@ define([
 				Global.tabs.forEach(function(tab) {
 					tab.attr({current: false});
 				});
-				
+				this.element.find('.drop').dropdown('hide');
 				this.updateSize();
-			},
-			'.drop li click': function(element, event) {
-				$('.tabs .drop').removeClass('open');
 			},
 			':controller route': function(){
 				var r = can.route.attr();
@@ -79,7 +78,7 @@ define([
 			updateSize: function() {
 				if(!this.calculating) { 
 					this.calculating = true;
-					var usableWidth = $('header').width()-250-$('.tabsControls .new').width()-30;
+					var usableWidth = $('header').width()-$('header .left').width()-$('header .right').width()-$('.tabsNew .new').width()-30;
 					var totalWidth = 0;
 					var visibleWidth = 0;
 					var lastVisibleIndex = 0;
@@ -114,14 +113,6 @@ define([
 			},
 			'{window} resize': function(element, event) {
 				this.updateSize();
-			},
-			'.drop click': function(element, event) {
-				element.addClass('open');
-				setTimeout(function() {
-					$('html').one('click', function(){
-						element.removeClass('open');
-					});
-				}, 50);
 			}
 
 		}

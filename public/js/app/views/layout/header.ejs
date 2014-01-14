@@ -1,22 +1,32 @@
-<header>
-	<a class="logo" href="#!dashboard">FoxyDB</a>
-	<div class="tabs" <%= (el) -> new Controller.Tabs(el) %>>
+<header class="ui menu fixed inverted">
+	<div class="menu left">
+		<div class="item">
+			<a class="logo" href="#!dashboard">FoxyDB</a>
+		</div>
 
 	</div>
 	<% if(Global.state.attr('loggedIn')) { %>
-		<span class="user"><%= Global.user.attr('name') %> <i class="fa fa-angle-down "></i>
-			<ul>
-				<% if(Global.user.attr('level') == 0) { %>
-					<li><a href="#!users"><i class="fa fa-user"></i> Manage Users</a></li>
-					<li><a href="#!database/list"><i class="fa fa-bars"></i> Manage Databases</a></li>
-				<% } %>
-				<li><a href="#!account/logout"><i class="fa fa-sign-out"></i> Log Out</a></li>
-				
-				<% if (typeof config.baseURL !== 'undefined' && config.baseURL.length) { %>
-					<li><a href="<%=config.baseURL%>"><i class="fa fa-home"></i> Back to Site</a></li>
-				<% } %>
-			</ul>
-		</span>
+		<div class="menu right">
+			<div class="ui item dropdown" <%= (el) -> el.dropdown() %>>
+				<img class="ui avatar image" src="http://www.gravatar.com/avatar/<%= MD5(Global.user.attr('email').toLowerCase()) %>" /> <%= Global.user.attr('name') %>
+				<i class="dropdown icon"></i>
+				<ul class="menu">
+					<% if(Global.user.attr('level') == 0) { %>
+						<li class="item"><a href="#!users"><i class="user icon"></i> Manage Users</a></li>
+						<li class="item"><a href="#!database/list"><i class="reorder icon"></i> Manage Databases</a></li>
+					<% } %>
+					<li class="item"><a href="#!account/logout"><i class="sign out icon"></i> Log Out</a></li>
+					
+					<% if (typeof config.baseURL !== 'undefined' && config.baseURL.length) { %>
+						<li class="item"><a href="<%=config.baseURL%>"><i class="home icon"></i> Back to Site</a></li>
+					<% } %>
+				</ul>
+			</div>
+
+		</div>
 	<% } %>
 </header>
+<div class="tabs" <%= (el) -> new Controller.Tabs(el) %>>
+
+</div>
 <div class="errorMessage" ></div>

@@ -393,7 +393,7 @@
     */
     , ulErrorManagement: function () {
       this.ulError = '#' + this.hash;
-      this.ulTemplate = $( this.options.errors.errorsWrapper ).attr( 'id', this.hash ).addClass( 'parsley-error-list' );
+      this.ulTemplate = $( this.options.errors.errorsWrapper ).attr( 'id', this.hash ).addClass( 'parsley-error-list ui red pointing above ui label' );
     }
 
     /**
@@ -447,6 +447,7 @@
       this.removeErrors();
       this.ParsleyInstance.validatedOnce = false;
       this.errorClassHandler.removeClass( this.options.successClass ).removeClass( this.options.errorClass );
+      this.errorClassHandler.parent().removeClass( this.options.successClass ).removeClass( this.options.errorClass );
 
       for ( var constraint in this.constraints ) {
         this.constraints[ constraint ].valid = null;
@@ -992,6 +993,7 @@
       if ( true === this.valid ) {
         this.UI.removeErrors();
         this.UI.errorClassHandler.removeClass( this.options.errorClass ).addClass( this.options.successClass );
+        this.UI.errorClassHandler.parent().removeClass( this.options.errorClass ).addClass( this.options.successClass );
 
         return true;
       } else if ( false === this.valid ) {
@@ -1007,6 +1009,7 @@
         }
 
         this.UI.errorClassHandler.removeClass( this.options.successClass ).addClass( this.options.errorClass );
+        this.UI.errorClassHandler.parent().removeClass( this.options.successClass ).addClass( this.options.errorClass );
         return false;
       }
 
@@ -1493,7 +1496,7 @@
     , focus: 'first'                            // 'fist'|'last'|'none' which error field would have focus first on form validation
     , validationMinlength: 3                    // If trigger validation specified, only if value.length > validationMinlength
     , successClass: 'parsley-success'           // Class name on each valid input
-    , errorClass: 'parsley-error'               // Class name on each invalid input
+    , errorClass: 'parsley-error error'               // Class name on each invalid input
     , errorMessage: false                       // Customize an unique error message showed if one constraint fails
     , validators: {}                            // Add your custom validators functions
     , showErrors: true                          // Set to false if you don't want Parsley to display error messages

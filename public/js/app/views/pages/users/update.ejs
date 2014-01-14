@@ -1,28 +1,26 @@
-<div class="updateUser pane">
-	<form <%= (el) -> el.data('user', user) %>>
-		<div class="paneTitle">
-			<h2>Update User <%= user.name %></h2>
-		</div>
-		<div class="paneContent">
+<h3 class="ui header left floated">Update User <%= user.name %></h3>
+<div class="ui clearing divider"></div>
 
-			<div class="row">
-				<label>Name</label> <input name="name" type="text" value="<%= user.name %>" parsley-required="true" parsley-required-message="Name is required"></input>
-			</div>
-			<div class="row">
-				<label>E-Mail</label> <input name="email" type="text" value="<%= user.email %>" parsley-required="true" parsley-type="email" parsley-type-email-message="Invalid E-Mail" parsley-required-message="E-Mail is required"></input>
-			</div>
-			<div class="row">
-				<label>Administrator</label> <input name="level" value="0" type="checkbox" <%= (user.level == 0 ? 'checked="checked"' : '')%> ></input>
-			</div>
-			<div class="row">
-				<label>Password</label> <input name="password" type="password" id="password" parsley-minlength="6" parsley-required-message="Password is required"></input>
-			</div>
-			<div class="row">
-				<label>Repeat Password</label> <input name="repeat_password" type="password" parsley-minlength="6" parsley-required-message="Repeat password is required" parsley-equalto="#password" parsley-equalto-message="Passwords does not match" parsley-minlength-message="Passwords must be at least 6 characters long"></input>
+<form <%= (el) -> el.data('user', user) %> class="ui form update">
+
+		<div class="field">
+			<label>Name</label> <input name="name" type="text" value="<%= user.name %>" parsley-required="true" parsley-required-message="Name is required"></input>
+		</div>
+		<div class="field">
+			<label>E-Mail</label> <input name="email" type="text" value="<%= user.email %>" parsley-required="true" parsley-type="email" parsley-type-email-message="Invalid E-Mail" parsley-required-message="E-Mail is required"></input>
+		</div>
+		<div class="field">
+			<div class="ui toggle checkbox" <%= (el) -> el.checkbox() %>>
+				<input name="level" value="0" <%= (user.level == 0 ? 'checked="checked"' : '')%> type="checkbox" ></input><label>Administrator</label>
 			</div>
 		</div>
-		<div class="paneButtons">
-			<button type="submit">Update</button>
+		<div class="two fields">
+			<div class="field">
+				<label>Password</label> <input name="password" type="password" id="password" parsley-minlength="6"></input>
+			</div>
+			<div class="field">
+				<label>Repeat Password</label> <input name="repeat_password" type="password" parsley-minlength="6" parsley-equalto="#password" parsley-equalto-message="Passwords does not match" parsley-minlength-message="Passwords must be at least 6 characters long"></input>
+			</div>
 		</div>
-	</form>
-</div>
+		<button class="ui green submit button" type="submit">Update</button>
+</form>

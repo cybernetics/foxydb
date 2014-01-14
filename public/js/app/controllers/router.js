@@ -8,7 +8,8 @@ define([
 	'app/controllers/dashboard',
 	'app/controllers/tabs',
 	'app/controllers/insight',
-	'jquery-cookie/jquery.cookie'
+	'jquery-cookie/jquery.cookie',
+	 '../../../semantic/javascript/semantic.min'
 ], function(
 	$,
 	can
@@ -29,6 +30,7 @@ define([
 			init: function(element, options) {
 
 				this.element.html('/js/app/views/layout/layout.ejs', {});
+				console.log(this.element.find('.dropdown'));
 				if($.cookie('loggedIn') == 1) {
 					Global.state.attr('loggedIn', true);
 					$.ajax({
@@ -62,7 +64,7 @@ define([
 
 				if(['Dashboard','Insight'].indexOf(controller) == -1) {
 					$('.tabs').hide();
-					this.element.find('.content').hide();
+					this.element.find('.pagecontent').hide();
 					this.element.find('.controller').show();
 
 					if (typeof action !== 'undefined' && action == 'register') {
@@ -84,11 +86,11 @@ define([
 				} else {
 					if(controller == 'Dashboard') {
 						$('.tabs').show();
-						this.element.find('.content').hide();
+						this.element.find('.pagecontent').hide();
 						this.element.find('.dashboard').show();
 					} else if(controller == 'Insight') {
 						$('.tabs').show();
-						this.element.find('.content').hide();
+						this.element.find('.pagecontent').hide();
 						var id = options.id || 0;
 						
 						if(this.element.find('.insight#insight_' + id).length == 0) {
@@ -103,6 +105,7 @@ define([
 					}
 					
 				}
+				$(window).resize();
 
 			},
 			'route': function() {
@@ -113,6 +116,11 @@ define([
 			},
 			':controller/:action route': function() {
 				this.loadPage(can.route.attr('controller'), can.route.attr('action'), can.route.attr());
+			},
+			'{window} resize': function(element, event) {
+				console.log(this.element.find('header').height(),this.element.find('.pagecontent'));
+				this.element.find('.pagecontent.dashboard, .pagecontent.controller').css('padding-top',this.element.find('header').height()+'px');
+				this.element.find('.tabs').css('top',(this.element.find('header').height()-this.element.find('.tabs').height())+'px');
 			}
 		}
 	);

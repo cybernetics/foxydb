@@ -43,990 +43,191 @@ table {
 	border-spacing: 0;
 }
 
-
-
-//VARS
-@colorHeader: #222222;
-@colorText: #888888;
-@colorContent: #f6f6f6;
-@colorSidebar: #eeeeee;
-@colorLine: #d6d6d6;
-@colorLineHighlight: #f4f4f4;
-@colorTip: #f4f4f4;
-@colorInnerTitle: #ffffff;
-@colorInnerContent: #fbfbfb;
-@colorLink: #329ee9;
-@colorGreenButton: #93bd01;
-@colorError: #f24b1f;
-@colorStats: #93bd01;
-@colorPopupMenu: #000000;
-
-@font: 'Titillium Web', helvetica, sans-serif !important;
-
-//MIXINS
-
-.box-sizing (@type: border-box) {
-	box-sizing: @type; -moz-box-sizing: @type; -ms-box-sizing: @type; -webkit-box-sizing: @type;
-}
-
-.paperShadow () {
-	position: relative;
-	&:before, &:after {
-		//background: rgba(0,0,0,0.1);
-		bottom: 15px;
-		box-shadow: 10px 15px 10px rgba(0,0,0,0.1);
-		content: " ";
-		left: 0px;
-		max-width: 300px;
-		position: absolute;
-		top: 15px;
-		transform: rotate(-3deg);
-		width: 50%;
-		z-index: -1;
-	}
-	&:after {
-		left: auto;
-		right: 0px;
-		transform: rotate(3deg);
-		box-shadow: -10px 15px 10px rgba(0,0,0,0.1);
-	}
-}
-
-//STYLES
-
-* {
-	.box-sizing(border-box);
-}
+@font: 'Alegreya Sans', sans-serif;
 
 html {
 	font-family: @font;
-	font-size: 14px;
 	font-weight: 300;
-	color: @colorText;
-	background: @colorContent;
-	height: 100%;
-}
+	color: #666;
 
-body {
-	height: 100%;
 }
 
 a {
-	color: @colorLink;
 	text-decoration: none;
+	color: #666;
+	&:hover {
+		color: #333;
+	}
 }
 
-.error {
-	color: @colorError !important;
-	border: 1px solid @colorError !important;
-}
 
-.errorMessage {
-	display: none;
-	line-height: 1;
-	z-index: 999; 
-	top: 70px;
-	text-align: center;
-	color: @colorInnerTitle;
-	background: lighten(@colorError, 10%);
-	padding: 20px;
-	position: relative;
-}
-
-@-moz-keyframes spin {
-  0% { -moz-transform: rotate(0deg); }
-  100% { -moz-transform: rotate(359deg); }
-}
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(359deg); }
-}
-@-o-keyframes spin {
-  0% { -o-transform: rotate(0deg); }
-  100% { -o-transform: rotate(359deg); }
-}
-@-ms-keyframes spin {
-  0% { -ms-transform: rotate(0deg); }
-  100% { -ms-transform: rotate(359deg); }
-}
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(359deg); }
-}
-
-strong {
-	font-weight: bold;
-}
-button, a.button {
-	background: @colorGreenButton;
-	color: @colorInnerTitle;
-	border: 0;
-	padding: 6px 10px;
-	font-size: 16px;
-	font-family: @font;
-	border-radius: 3px;
-	//margin: 0 auto;
-	display: inline-block;
-	line-height: 24px;
-	text-align: center;
-}
-
-a.button.disabled, button.disabled {
-	background: lighten(desaturate(@colorGreenButton,100%),50%);
-	cursor: default;
-}
 header {
-	background: @colorHeader;
-	height: 70px;
-	line-height: 70px;
-	padding: 0 0 0 20px;
-	color: @colorText;
-	position: absolute;
-	z-index: 1;
-	top: 0;
-	left: 0;
-	width: 100%;
-	right: 0;
 	.logo {
 		display: inline-block;
-		width: 77px;
+		width: 110px;
 		height: 50px;
 		background: url("/images/logo.png") no-repeat;
-		margin: 10px 0 0 0;
 		color: #fff;
 		font-size: 32px;
 		font-weight: bold;
 		line-height: 42px;
 		padding: 0 0 0 75px;
+		
 	}
-	.tabs {
-		display: none;
-		position: absolute;
-		left: 250px;
-		bottom: 0px;
-		z-index: 2;
+
+	.menu.left > .item:first-child{
+		padding: 0.25em 0.95em !important;
+	}
+
+	.ui.avatar.image {
+		display: inline-block !important;
+	}
 
 
+}
+.tabs {
+	position: fixed !important;
+	left: 220px;
+	z-index: 1000 !important;
+	.tabsInner, .tabsNew {
+		overflow: hidden;
+		height: 40px;
+		
+		
+		
+		
+	}
 
-		ul.tabsInner {
-			float: left;
+	ul.tabsDrop {
+		> li {
 			overflow: hidden;
 			height: 40px;
 		}
-		ul.tabsControls {
-			float: right;
-			> li {
-				overflow: hidden;
-				height: 40px;
-			}
-			.drop {
-				background: @colorInnerTitle;
-				display: none;
-				width: auto;
-				i {
-					font-size: 20px;
-    				margin: -6px 0 0;
-    				position: relative;
-
-				}
-				ul {
-					display: none;
-
-					right: 0px;
-					top: 40px;
-					background: #fff;
-					box-shadow: 0 0 6px rgba(0,0,0,0.1);
-					position: absolute;
-					&:after {
-						width: 29px;
-						height: 5px;
-						background: #fff;
-						right: 0;
-						top: -5px;
-						content: " ";
-						display: block;
-						position: absolute;
-					}
-					li {
-						background: #fff;
-						border-bottom: 1px solid #f0f0f0;
-						i {
-							font-size: 14px;
-							margin: 0;
-							position: absolute;
-						}
-						&:after {
-							display: none;
-						}
-					}
-
-				}
-				&.open {
-					overflow: visible;
-					&:after {
-						display: none;
-					}
-					ul {
-						display: block;
-					}
-
-				}
-			}
-		}
-		ul > li {
-			cursor: pointer;
-			float: left;
-			height: 40px;
-			background: @colorContent;
-			display: inline-block;
-			border-radius: 4px 4px 0 0;
-			margin: 0 4px 0 0;
-			padding: 4px;
-			position: relative;
-			line-height: 14px;
-			width: 171px;
-			input {
-				display: none;
-				padding: 6px 8px;
-				border: 1px solid @colorLine;
-				border-radius: 3px;
-				margin: 0 4px 0 0;
-				font-size: 14px;
-				font-family: @font;
-				width: 140px;
-				&:focus {
-					border: 1px solid darken(@colorLine, 20%);
-				}
-				overflow: hidden;
-
-
+		.drop {
+			display: none;
+			width: auto;
+			.icon.dropdown {
+				margin: -6px 0 0;
+				position: relative !important;
+				padding-left: 10px;
+				padding-right: 10px;
 
 			}
-
-			.fa-times {
-				cursor: pointer;
-			}
-
-			&:after {
-				left: 0;
-				bottom:-13px;
-				position: absolute;
-				height: 10px;
-				right: 0;
-				content: " ";
-				display: block;
-				box-shadow: 0 0 6px rgba(0,0,0,1);
-
-
-			}
-			a {
-				display: inline-block;
-				position: relative;
-				padding: 10px 4px 10px 8px;
-				color: @colorText;
-				width: 144px;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-			}
-			i {
-				padding: 4px;
-				position: absolute;
-				top: 10px;
+			ul.menu.dropdown.ui li.item {
+				padding-right: 30px !important;
 			}
 			&.active {
-				input {
-					display: inline-block;
-				}
-				a {
-					display: none;
-				}
+				overflow: visible;
 				&:after {
 					display: none;
 				}
-			}
-			&.new {
-				background: @colorGreenButton;
-				width: auto;
-					color: #fff;
+				ul {
+					display: block;
+				}
 				a {
-					color: #fff;
-					padding: 10px 8px 10px 28px;
-					width: auto;
-				}
-				i {
-					padding: 4px 4px 4px 8px;
-				}
-				&.noshadow:after {
-					box-shadow: none;
+					display: inline !important;
 				}
 			}
 		}
 	}
-
-	.user {
-		float: right;
-		color: @colorText;
-		padding: 8px;
+	ul {
+		float: left;
+		border-bottom: 0 !important;
+	}
+	ul.menu.tabular.ui > li {
+		cursor: pointer;
+		float: left;
+		height: 40px;
+		display: inline-block;
+		border-radius: 4px 4px 0 0 !important;
+		margin: 0 4px 0 0;
+		padding: 4px !important;
 		position: relative;
-		line-height: 10px;
-		i {
-			font-weight: bold;
+		width: 171px;
+		background: #fff !important;
+		border: 0 !important;
+		input {
+			font-family: @font;
+			display: none;
+			margin: 0 4px 0 0 !important;
+			font-size: 1em !important;
+			width: 142px;
+			padding: 6px 8px !important;
+			overflow: hidden;
 		}
 
-		ul {
-			display: none;
-			white-space: nowrap;
+		&:after {
+			left: 0;
+			bottom:-13px;
+			position: absolute;
+			height: 10px;
 			right: 0;
+			content: " ";
+			display: block;
+			box-shadow: 0 0 6px rgba(0,0,0,1);
+
+
 		}
-		&:hover {
-			background: @colorPopupMenu;
-			color: @colorInnerTitle;
-			ul {
-				position: absolute;
-				display: block;
-				background: @colorPopupMenu;
-				padding: 10px;
-				li {
-					padding: 5px;
-					a {
-						color: @colorText;
-					}
-				}
+		a {
+			display: inline-block;
+			position: relative;
+			padding: 9px 4px 10px 10px;
+			width: 132px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		i {
+			padding: 1px;
+			position: absolute;
+			top: 10px;
+		}
+		&.active {
+			input {
+				display: inline-block;
 			}
+			a {
+				display: none;
+			}
+			&:after {
+				display: none;
+			}
+		}
+		&.new {
+			width: auto;
+			a {
+				padding: 9px 8px 10px 28px;
+				width: auto;
+			}
+			i {
+				padding: 2px 4px 4px 8px;
+			}
+			&.noshadow:after {
+				box-shadow: none;
+			}
+		}
+		&.drop {
+			width: auto;
 		}
 	}
 }
-
-.content {
-	position: relative;
-	min-height: 100%;
-	padding-top: 70px;
+.sidebar {
+	min-height: 1000px;
+	background: #f6f6f6;
 	overflow: hidden;
-	background: url(/images/bg.png) bottom right no-repeat;
-	select {
-		width: 100%;
-		margin: 0 0 10px 0;
-		padding: 5px 8px;
-		border: 1px solid @colorLine;
-		border-radius: 3px;
-		font-size: 14px;
-		font-family: @font;
-		&:focus {
-			border: 1px solid darken(@colorLine, 20%);
-		}
-		&.parsley-error {
-			color: @colorError;
-			border: 1px solid @colorError;
-		}
+	.fox {
+		width: 209px;
+		height: 264px;
+		margin: 20px -20px;
+		background: url(/images/tip.png) no-repeat;
 	}
-	.databaseSelect {
-		margin: 10px 0 20px 0;
-	}
-	&.controller_insight {
-		.inner {
-			padding: 20px 20px 20px 520px;
-			margin: 0 0 -1000000px -500px;
-		}
-		.tools {
-			width: 250px;
-			padding: 20px 5px 20px 20px;
-			float: left;
-			.relations {
-				.button {
-					margin: 10px 0 0 0;
-				}
-			}
-			.editPopup {
-				display: none;
-				left: 200px;
-				padding: 20px 20px 0;
-				position: absolute;
-				top: -15px;
-				width: 250px;	
-				box-shadow: 0 0 5px rgba(0,0,0,0.2);			
-				background: @colorInnerTitle;
-				z-index: 100;
-				.operator {
-					display: none;
-				}
-				&.open {
-					display: block;
-				}
-				.button {
-					display: block;
-					width: 100%;
-				}
-				&:before {
-					background: none repeat scroll 0 0 #FFFFFF;
-					box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-					content: " ";
-					height: 20px;
-					left: -5px;
-					margin-top: -11px;
-					position: absolute;
-					top: 30px;
-					transform: rotate(45deg);
-					-webkit-transform: rotate(45deg);
-					width: 20px;
-					z-index: 0;
-				}
-				.innerTitle {
-					background: @colorInnerTitle;
-					padding: 20px;
-					margin: -20px -20px 0;
-					i {
-						position: absolute;
-						top: 20px;
-						right: 20px;
 
-					}
-				}
-				.innerContent {
-					background: @colorInnerTitle;
-					.paperShadow();
-					padding: 20px;
-				}
-			}
-			.columnList {
-				li {
-					border: 1px solid @colorLine;
-					background: @colorInnerTitle;
-					padding: 5px;
-					margin: -1px 0 0 0px;
-					position: relative;
-					cursor: pointer;
-					i {
-						float: right;
-						margin: 2px 0 0 0;
-					}
-					&:last-child {
-						margin: -1px 0 10px 0;
-					}
-					span {
-						display: inline-block;
-						width: 155px;
-						white-space: nowrap;
-						overflow: hidden;
-						text-overflow: ellipsis;
-						height: 15px;
-
-					}
-				}
-			}
-
-			> ul {
-
-
-
-				> li {
-					background: @colorSidebar;
-					border: 1px solid @colorLine;
-					margin: 0 0 10px 0;
-					padding: 20px;
-					.innerTitle {
-						h2 {
-							color: @colorHeader;
-							font-size: 16px;
-						}
-
-
-					    margin: 0 -20px;
-    					padding: 0 20px 20px;
-
-    					border-bottom: 1px solid @colorLineHighlight;
-    					position: relative;
-    					&:after {
-							position: absolute;
-							bottom: 0px;
-							left: 0;
-							width: 100%;
-							content: " ";
-							height: 1px;
-							background: @colorLine;
-    					}
-					}
-
-					.innerContent {
-						margin: 0 -20px;
-    					padding: 20px 20px 0;
-    					label {
-    						width: 100%;
-    						margin: 5px 0;
-    						display: block;
-    					}
-    					.dragHere {
-    						text-align: center;
-    						padding: 5px;
-    						border: 1px dashed @colorLine;
-    						background: @colorLineHighlight;
-    						&.hidden {
-    							display: none;
-    							&.dragged {
-    								display: block;
-    								position: absolute;
-    								width: 183px;
-    								background: fadeout(@colorLineHighlight, 20%);
-    							}
-    						}
-
-    					}
-    					input {
-							padding: 5px 8px;
-							border: 1px solid @colorLine;
-							border-radius: 3px;
-							margin: 0 0 5px 0;
-							font-size: 14px;
-							font-family: @font;
-							width: 100%;
-							&:focus {
-								border: 1px solid darken(@colorLine, 20%);
-							}
-							&.parsley-error {
-								color: @colorError;
-								border: 1px solid @colorError;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	.sidebar {
-		width: 250px;
-		background: @colorSidebar;
-		border-right: 1px solid @colorLine;
+	.tip {
 		position: relative;
-		float: left;
-		// overflow: hidden;
-		padding: 20px 20px 1000020px 20px;
-		margin: 0 0 -1000000px 0;
-
-		.structure {
-			margin: 0 0 20px 0;
-
-			> ul {
-				border-top: 1px solid @colorLine;
-				border-bottom: 1px solid @colorLine;
-				overflow: hidden;
-				overflow-y: scroll;
-
-				> li {
-					border: 1px solid @colorLine;
-					background: @colorTip;
-					padding: 6px;
-					margin: -1px 0 0 0;
-					span {
-						display: inline-block;
-						width: 155px;
-						white-space: nowrap;
-						overflow: hidden;
-						text-overflow: ellipsis;
-						height: 15px;
-
-					}
-					i {
-						float: right;
-					}
-					.fa-chevron-up {
-						display: none;
-						cursor: pointer;
-					}
-					.fa-chevron-down {
-						cursor: pointer;
-					}
-					.fa-arrows {
-						cursor: move;
-					}
-					ul {
-						display: none;
-						margin: 10px 0 10px 10px;
-						border-left: 1px solid @colorLine;
-						border-top: 1px solid @colorLine;
-						padding: 3px 0 0 0;
-						li {
-							border: 1px solid @colorLine;
-							background: @colorInnerTitle;
-							padding: 5px;
-							margin: -1px 0 0 5px;
-							position: relative;
-							i {
-								float: right;
-							}
-							&:before {
-								content: " ";
-								display: block;
-								position: absolute;
-								border-top: 1px solid @colorLine;
-								top: 10px;
-								left: -6px;
-								width: 5px;
-							}
-							&:last-child {
-								&:after {
-									content: " ";
-									display: block;
-									position: absolute;
-									background: @colorTip;
-									top: 11px;
-									left: -7px;
-									width: 1px;
-									height: 13px;
-								}
-							}
-						}
-					}
-					&.open {
-						.fa-chevron-up {
-							display: block;
-						}
-						.fa-chevron-down {
-							display: none;
-						}
-						ul {
-							display: block;
-						}
-					}
-				}
-			}
-		}
-
-		form {
-			.row {
-				overflow: hidden;
-				label {
-					float: left;
-					width: 200px;
-					display: block;
-					line-height: 18px;
-				}
-				input {
-					float: left;
-					padding: 5px 8px;
-					border: 1px solid @colorLine;
-					border-radius: 3px;
-					margin: 0 0 5px 0;
-					font-size: 14px;
-					font-family: @font;
-					width: 100%;
-					&:focus {
-						border: 1px solid darken(@colorLine, 20%);
-					}
-					&.parsley-error {
-						color: @colorError;
-						border: 1px solid @colorError;
-					}
-				}
-
-				.parsley-error-list {
-					clear: both;
-					padding: 0 0 10px 240px;
-					color: @colorError;
-				}
-			}
-			button {
-				width: 100%;
-				margin: 0 0 20px 0;
-			}
-		}
-
-
-		&:after {
-			position: absolute;
-			right: 0px;
-			height: 100%;
-			content: " ";
-			width: 1px;
-			background: @colorLineHighlight;
-		}
-
-		.tip {
-			padding: 20px;
-			background: @colorTip;
-			border-radius: 2px;
-			border: 1px solid @colorLine;
-			position: relative;
-			&:after {
-				content:" ";
-				border-top: 10px solid @colorTip;
-				border-left: 10px solid fadeout(@colorTip, 100%);
-				border-right: 10px solid fadeout(@colorTip, 100%);
-				bottom: -10px;
-				position: absolute;
-				right: 60px;
-			}
-			&:before {
-				content:" ";
-				border-top: 11px solid @colorLine;
-				border-left: 11px solid fadeout(@colorLine, 100%);
-				border-right: 11px solid fadeout(@colorLine, 100%);
-				bottom: -11px;
-				position: absolute;
-				right: 59px;
-			}
-		}
-
-		.fox {
-			width: 209px;
-			height: 264px;
-			margin: 20px -20px;
-			background: url(/images/tip.png) no-repeat;
-		}
-	}
-	.inner {
-		padding: 20px 20px 20px 270px;
-		border-bottom: 1000000px solid transparent;
-		position: relative;
-		min-height: 100%;
-		float: right;
-		width: 100%;
-		margin: 0 0 -1000000px -250px;
-
-		.insightInner {
-			.sql {
-				width: 100%;
-				height: 150px;
-				margin: -2px 0 0 0;
-			}
-			.paneTitle {
-				h2 {
-					float: left;
-				}
-				a.button {
-					float: right;
-					padding: 6px 60px 6px 10px;
-					position: relative;
-					display: block;
-					background: @colorGreenButton;
-					margin: 17px 0 0 5px;
-
-					span {
-						position: absolute;
-						height: 36px;
-						width: 36px;
-						border-radius: 0 3px 3px 0;
-
-						top: 0;
-						right: 0;
-						background: darken(@colorGreenButton, 20%);
-						text-align: center;
-						line-height: 36px;
-						i {
-							line-height: 36px;
-						}
-					}
-					.submenu {
-						background: #445800;
-						font-size: 14px;
-						left: 0;
-						position: absolute;
-						right: 0;
-						top: 35px;
-						z-index: 10;
-						display: none;
-					}
-				}
-			}
-			.queryEditor {
-				position: relative;
-				.applyButton {
-					position: absolute;
-					right: 30px;
-					bottom: 10px;
-					opacity: 0.5;
-					z-index: 1000;
-					&:hover {
-						opacity: 1;
-					}
-					i {
-						line-height: 24px;
-					}
-				}
-			}
-			.queryErrors {
-				color: @colorInnerTitle;
-				background: lighten(@colorError, 10%);
-				padding: 20px;
-				display: none;
-			}
-			.queryStats {
-				color: @colorInnerTitle;
-				background: @colorStats;
-				padding: 20px;
-				display: none;
-			}
-		}
-		h3 {
-			line-height: 50px;
-			font-size: 18px;
-			display: block;
-			clear: both;
-		}
-
-		.insights {
-			li {
-				width: 100%;
-				background: @colorInnerTitle;
-				padding: 0 10px;
-				border-left: 4px solid @colorLink;
-				box-shadow: 0 0 6px rgba(0,0,0,0.1);
-				.paperShadow();
-				margin: 0 0 5px 0;
-				height: 40px;
-				display: block;
-				> a {
-					color: @colorHeader;
-					font-size: 14px;
-					line-height: 40px;
-					display: block;
-					float: left;
-				}
-
-				.edit, .delete {
-					float: right;
-					margin: 15px 0 0 10px;
-					color: @colorLine;
-					&:hover {
-						color: @colorHeader;
-					}
-				}
-			}
-		}
-
-		.pane {
-			box-shadow: 0 0 6px rgba(0,0,0,0.1);
-			margin: 0 0 20px 0;
-			.paperShadow();
-			&.noborder {
-				.paneTitle {
-					border: 0;
-					&:after {
-						background: none;
-					}
-				}
-			}
-			&.pane50pct {
-				width: e("calc(50% - 10px)");
-				margin-right: 20px;
-				float: left;
-				&.last {
-					margin-right: 0;
-				}
-			}
-			.paneTitle {
-				line-height: 68px;
-				height: 70px;
-				background: @colorInnerTitle;
-				padding: 0 20px;
-				border-bottom: 1px solid @colorLineHighlight;
-				position: relative;
-				.page {
-					float: right;
-				}
-				&:after {
-					position: absolute;
-					bottom: 1px;
-					left: 0;
-					width: 100%;
-					content: " ";
-					height: 1px;
-					background: @colorLine;
-				}
-				h2 {
-					color: @colorHeader;
-					font-size: 18px;
-					float: left;
-				}
-				.help {
-					float: right;
-				}
-			}
-			.paneContent {
-				background: @colorTip;
-				padding: 20px;
-				border-bottom: 1px solid @colorLine;
-			}
-			.paneButtons {
-				background: @colorInnerTitle;
-				padding: 20px;
-				.next {
-					float: right;
-				}
-				i {
-					line-height: 24px;
-				}
-
-			}
-
-			.resultsTable {
-				overflow: auto;
-    			overflow-y: hidden;
-    			background: @colorInnerTitle;
-    			table {
-    				border-collapse: separate;
-    				width: 100%;
-	    			thead {
-	    				background: @colorContent;
-	    				font-weight: bold;
-	    				th {
-	    					padding: 7px;
-	    					text-align: left;
-	    					border-left: 1px solid @colorInnerTitle;
-	    					border-right: 1px solid @colorLine;
-	    					border-bottom: 1px solid @colorInnerTitle;
-	    					white-space: nowrap;
-	    				}
-	    			}
-	    			tbody {
-	    				tr:nth-child(even) {
-	    					background: @colorContent;
-	    				}
-	    				td {
-	    					padding: 7px;
-	    					text-align: left;
-	    					border: 1px solid @colorLine;
-	    					border-left: 1px solid @colorInnerTitle;
-	    					border-bottom: 1px solid @colorInnerTitle;
-	    				}
-	    			}
-	    		}
-			}
-
-			form {
-				.row {
-					overflow: hidden;
-					label {
-						float: left;
-						width: 240px;
-						display: block;
-						line-height: 34px;
-					}
-					input {
-						float: left;
-						padding: 5px 8px;
-						border: 1px solid @colorLine;
-						border-radius: 3px;
-						margin: 0 0 10px 0;
-						font-size: 14px;
-						font-family: @font;
-						&:focus {
-							border: 1px solid darken(@colorLine, 20%);
-						}
-						&.parsley-error {
-							color: @colorError;
-							border: 1px solid @colorError;
-						}
-					}
-					.parsley-error-list {
-						clear: both;
-						padding: 0 0 10px 240px;
-						color: @colorError;
-					}
-				}
-			}
-		}
-	}
-	.clear {
-		clear: both;
+		top: auto !important;
+		bottom: auto !important;
+		left: auto !important;
+		right: auto !important;
+		margin-left: 0 !important;
 	}
 }

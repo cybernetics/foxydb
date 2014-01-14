@@ -9,7 +9,8 @@ require.config({
     },
     map: {
 	  '*': {
-	    'less': 'require-less/less',
+        'less': 'require-less/less',
+        'css': 'require-css/css',
 	    'text': 'requirejs-text/text',
 	    'ejs': 'canjs-require-ejs/src/plugin/ejs'
 	  }

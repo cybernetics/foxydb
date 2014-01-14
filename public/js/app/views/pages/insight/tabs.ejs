@@ -1,18 +1,23 @@
-<ul class="tabsInner">
-	<% Global.tabs.each(function(insight) { %>
-		<% controller.updateSize() %>
-		<li <%= (el) -> el.data('insight',insight) %> <%= insight.attr('current')?'class="active"':''%>><input <%= (Global.user.attr('level') == 1?'disabled="disabled"':'') %> type="text" placeholder="Insight title" class="insightTitle" value="<%=insight.attr('name')%>" /><a href="#!insight/edit&id=<%=insight.attr('id')%>"><%=insight.attr('name')%></a><i class="fa fa-times"></i></li>
+
+
+
+<ul class="ui menu top attached tabular tabsInner">
+  <% Global.tabs.each(function(insight) { %>
+		<% controller.updateSize(); %>
+		<li <%= (el) -> el.data('insight',insight) %> class="item ui input <%= insight.attr('current')?'active':''%>"><input <%= (Global.user.attr('level') == 1?'disabled="disabled"':'') %> type="text" placeholder="Insight title" class="insightTitle" value="<%=insight.attr('name')%>" /><a href="#!insight/edit&id=<%=insight.attr('id')%>"><%=insight.attr('name')%></a><i class="icon delete"></i></li>
 	<% }) %>
 </ul>
-<ul class="tabsControls">
-	<li class="drop">
-		<i class="fa fa-angle-down"></i>
-		<ul>
+<ul class="ui menu top attached tabular tabsDrop">
+	<li class="ui item drop dropdown" <%= (el) -> el.dropdown() %>>
+		<i class="icon dropdown"></i>
+		<ul class="menu dropdown ui">
 			<% Global.overflowTabs.each(function(insight) { %>
 				<% controller.updateSize() %>
-				<li <%= (el) -> el.data('insight',insight) %>><a href="#!insight/edit&id=<%=insight.attr('id')%>"><%=insight.attr('name')%></a><i class="fa fa-times"></i></li>
+				<li class="item" <%= (el) -> el.data('insight',insight) %>><a href="#!insight/edit&id=<%=insight.attr('id')%>"><%=insight.attr('name')%></a><i class="icon delete"></i></li>
 			<% }) %>
 		</ul>
 	</li>
-	<li class="new"><i class="fa fa-plus"></i> <a href="#!dashboard">New Tab</a></li>
+</ul>
+<ul class="ui menu top attached tabular tabsNew">
+	<li class="ui item new"><i class="icon plus"></i> <a href="#!dashboard">New Tab</a></li>
 </ul>

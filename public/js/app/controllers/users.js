@@ -25,12 +25,12 @@ define([
 			},
 			new: function(element, options) {
 				this.element.find('.inner').html('/js/app/views/pages/users/new.ejs', {});
-				this.element.find('form').parsley();
+				//this.element.find('form').parsley();
 			},
 			edit: function(element, options) {
 				if (typeof element.id !== 'undefined') {
 					this.element.find('.inner').html('/js/app/views/pages/users/update.ejs', {user: Model.User.findOne({id: element.id})});
-					this.element.find('form').parsley();				
+					//this.element.find('form').parsley();				
 				} else {
 					can.route.attr({controller: 'users'}, true);
 				}
@@ -48,7 +48,7 @@ define([
 					});
 				}
 			},
-			'.create form submit': function(element, event) {
+			'form.create submit': function(element, event) {
 				event.preventDefault();
 				if(element.parsley('validate')) {
 					var user = new Model.User(element.formParams());
@@ -61,7 +61,7 @@ define([
 					});
 				}
 			},
-			'.updateUser form submit': function(element, event) {
+			'form.update submit': function(element, event) {
 				event.preventDefault();
 
 				if (element.parsley('validate')) {

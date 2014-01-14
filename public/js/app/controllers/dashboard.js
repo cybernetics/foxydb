@@ -44,10 +44,10 @@ define([
 					}
 				});
 			},
-			'.insights .delete click': function(element, event) {
+			'.remove click': function(element, event) {
 				event.preventDefault();
 				if(confirm('Are You sure?')) {
-					var insight = element.parent().data('insight')
+					var insight = element.parents('.item').data('insight')
 					insight.destroy();
 				}
 			}

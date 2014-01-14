@@ -1,5 +1,5 @@
-	<form data-validate="parsley">
-			<div class="row">
+	<form data-validate="parsley" class="ui form small">
+			<div class="field">
 				<label>Name</label> <input name="title" type="text" parsley-required="true"></input>
 			</div>
 <!--			<div class="row">
@@ -8,22 +8,22 @@
 					<option value="mysql">MySQL</option>
 				</select>
 			</div>-->
-			<div class="row">
+			<div class="field">
 				<label>Database Hostname</label> <input name="host" type="text" value="localhost" parsley-required="true"></input>
 			</div>
-			<div class="row">
+			<div class="field">
 				<label>Database Port</label> <input name="port" type="text" value="3306" parsley-required="true" parsley-type="digits"></input>
 			</div>
-			<div class="row">
+			<div class="field">
 				<label>Database Name</label> <input name="name" type="text" parsley-required="true"></input>
 			</div>
-			<div class="row">
+			<div class="field">
 				<label>Database Username</label> <input name="username" type="text" parsley-required="true"></input>
 			</div>
-			<div class="row">
+			<div class="field">
 				<label>Database Password</label> <input name="password" type="password" ></input>
 			</div>
 
 		</div>
-		<button type="submit">Connect to the Database</button>
+		<button type="submit" class="ui submit button">Connect to the Database</button>
 	</form>

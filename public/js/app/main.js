@@ -1,4 +1,6 @@
-define(['jquery', 'can', 'squel', 'can/view/modifiers', 'can/view/ejs', 'app/controllers/router', 'less!../../less/style'], function($, can, squel, undefined, undefined, Router) {
+define(['jquery', 'can', 'squel', 'can/view/modifiers', 'can/view/ejs', 'app/controllers/router', 'less!../../less/style', 'css!../../semantic/css/semantic.min', 'md5'], function($, can, squel, undefined, undefined, Router) {
+	window.jQuery = $;
+
 	Main = can.Control({
 
 	}, {
@@ -9,7 +11,8 @@ define(['jquery', 'can', 'squel', 'can/view/modifiers', 'can/view/ejs', 'app/con
 
 	Global = can.Construct({
 		user: new can.Map({
-			name: ''
+			name: '',
+			email: ''
 		}),
 		state: new can.Map({
 			loggedIn: false
@@ -21,7 +24,7 @@ define(['jquery', 'can', 'squel', 'can/view/modifiers', 'can/view/ejs', 'app/con
 		init: function() {
 			Global.state.bind('loggedIn', function (evt, newvalue, oldvalue) {
 				if (!newvalue) {
-					$('.content.insight').remove();	
+					$('.pagecontent.insight').remove();	
 				}
 			});
 		}

@@ -192,7 +192,6 @@ define([
 					}
 				});
 				if(!found) {
-					console.log ('not found');
 					self.insight.attr({current: true});
 					Global.tabs.push(self.insight);
 				}
@@ -431,6 +430,7 @@ define([
 				}
 
 				self.insight.attr('query', query + ';');
+				self.editor.setValue(self.insight.attr('query'));
 			},
 			'.relationCancel click': function (element, event) {
 				event.preventDefault();
@@ -659,10 +659,15 @@ define([
 				var self = this;
 
 				if (confirm('You are about to clear query')) {
-					self.insight.attr('fields', {});
-					self.insight.attr('filters', {});
-					self.insight.attr('relations', {});
-					self.generateQuery();
+					if (self.insight.attr('type') == 0) {
+						self.insight.attr('fields', {});
+						self.insight.attr('filters', {});
+						self.insight.attr('relations', {});
+						self.generateQuery();
+					} else {
+						self.insight.attr('variables', {});
+						self.editor.setValue('-- Type your query here');
+					}
 				}
 			},
 			'.saveButton click': function(element, event) {

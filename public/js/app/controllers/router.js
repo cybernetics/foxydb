@@ -49,11 +49,14 @@ define([
 						}
 					});
 				} else {
+					$.cookie('loggedIn', 0);
 					can.route.ready();
 				}
 				
 			},
 			loadPage: function(controller, action, options) {
+				var self = this;
+
 				if(($.cookie('loggedIn') != 1 && this.options.unauthenticated.indexOf(controller + '/' + action) < 0)){
 					can.route.attr({route: ''}, true);
 					return;
@@ -85,9 +88,15 @@ define([
 					}
 				} else {
 					if(controller == 'Dashboard') {
-						$('.tabs').show();
-						this.element.find('.pagecontent').hide();
-						this.element.find('.dashboard').show();
+						Model.Database.findAll().then(function(data) {
+							if (data.length === 0) {
+								can.route.attr({controller: 'database', action: 'add'}, true);
+							} else {
+								$('.tabs').show();
+								self.element.find('.content').hide();
+								self.element.find('.dashboard').show();
+							}
+						});
 					} else if(controller == 'Insight') {
 						$('.tabs').show();
 						this.element.find('.pagecontent').hide();
@@ -109,7 +118,11 @@ define([
 
 			},
 			'route': function() {
-				this.loadPage('account', 'index', can.route.attr());
+				if (!Global.state.attr('loggedIn')) {
+					this.loadPage('account', 'index', can.route.attr());
+				} else {
+					this.loadPage('dashboard', 'index', can.route.attr());
+				}
 			},
 			':controller route': function() {
 				this.loadPage(can.route.attr('controller'), 'index', can.route.attr());
@@ -119,7 +132,7 @@ define([
 			},
 			'{window} resize': function(element, event) {
 				console.log(this.element.find('header').height(),this.element.find('.pagecontent'));
-				this.element.find('.pagecontent.dashboard, .pagecontent.controller').css('padding-top',this.element.find('header').height()+'px');
+				this.element.find('.pagecontent').css('padding-top',this.element.find('header').height()+'px');
 				this.element.find('.tabs').css('top',(this.element.find('header').height()-this.element.find('.tabs').height())+'px');
 			}
 		}

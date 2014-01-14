@@ -172,19 +172,25 @@ exports.controller = function(app, db) {
 		db.serialize(function() {
 			db.get("SELECT * FROM `users` WHERE `email` = ?;",req.body.email , function(err, row) {
 				if(typeof row == 'undefined') {
-					var shasum = crypto.createHash('sha1');
-					shasum.update(req.body.password);
-					db.run("INSERT INTO `users` VALUES(NULL, ?, ?, ?, ?)", [req.body.name, req.body.email, shasum.digest('hex'), level], function(err) {
-						if(err) {
-							res.send(500, err);
-						} else {
-							if (!req.session.user) {
-								req.session.user = {loggedIn: true, id: this.lastID, level: level};
-							}
-
-							res.send(200, {id: this.lastID, name: req.body.name, email: req.body.email, level: level});
+					db.get("SELECT `id` FROM `users` LIMIT 1;", function(err, row) {
+						if (typeof row == 'undefined') {
+							level = 0;
 						}
-					})
+						
+						var shasum = crypto.createHash('sha1');
+						shasum.update(req.body.password);
+						db.run("INSERT INTO `users` VALUES(NULL, ?, ?, ?, ?)", [req.body.name, req.body.email, shasum.digest('hex'), level], function(err) {
+							if(err) {
+								res.send(500, err);
+							} else {
+								if (!req.session.user) {
+									req.session.user = {loggedIn: true, id: this.lastID, level: level};
+								}
+
+								res.send(200, {id: this.lastID, name: req.body.name, email: req.body.email, level: level});
+							}
+						})
+					});
 				} else {
 					res.send(400, {error: {text: 'E-Mail already used', field: 'email'}});
 				}

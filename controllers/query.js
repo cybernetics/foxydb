@@ -2,11 +2,74 @@ var mysql = require('mysql');
 var simpleSqlParser = require('simple-sql-parser');
 
 exports.controller = function(app, db) {
+	app.post('/api/query/export', function(req,res) {
+		if (req.session.user) {
+			if (typeof req.body.exportQuery !== 'undefined' && req.body.exportQuery.length) {
+				db.serialize(function() {
+					db.get("SELECT * FROM `databases` WHERE `id` = ?;", req.body.exportDB, function (err, row) {
+						var connection = mysql.createConnection({
+							host     : row.host,
+							port 	 : row.port,
+							database : row.name,
+							user     : row.username,
+							password : row.password,
+						});
 
+						connection.connect(function(err) {
+							if (err) {
+								res.send(500, 'Cannot connect to database.');
+							} else {
+								connection.query(req.body.exportQuery, function(err, row) {
+									if (err) {
+										res.send(500, 'Error, Something went wrong. Please check Your query.');
+									} else {
+										if (typeof row.fieldCount !== 'undefined' && !row.fieldCount) {
+											res.send(200, 'Result is empty.');
+										} else {
+											var header = new String();
+											var contents = new String();
+
+											row.forEach(function (data) {
+												var cur = [];
+
+												if (!header.length) {
+													header = Object.keys(data).join(',');
+												}
+
+												Object.keys(data).forEach(function (test) {
+													cur.push('"' + data[test] + '"');
+												});
+
+												contents = contents + '\n' + cur.join(',');
+											});
+
+											contents = header + contents;
+
+											var time = new Date().getTime();
+											var filename = 'foxyexport-' + time +'.csv';
+
+										  	res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+  											res.setHeader('Content-type', 'application/octet-stream');
+
+											res.send(contents);
+										}
+									}
+									connection.end();
+								});
+							}
+						});
+					});
+				});
+			} else {
+				res.send(500);
+			}
+		} else {
+			res.send(401);
+		}
+	});
 	app.post('/api/query/execute', function(req, res) {
 		if(req.session.user) {
 			db.get("SELECT * FROM `databases` WHERE `id` = ?;",req.body.database_id , function(err, row) {
-				// console.log(err, row, req.body);
 				var connection = mysql.createConnection({
 					host     : row.host,
 					port 	 : row.port,

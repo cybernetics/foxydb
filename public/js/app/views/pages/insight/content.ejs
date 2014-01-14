@@ -17,6 +17,13 @@
 				</ul>
 			</a>
 			<% } %>
+			<a <%= (el) -> el.data('export', false) %> href="#" class="button exportButton">
+				Export <span><i class="fa fa-download "></i></span>
+			</a>
+			<form class="exportForm" action="/api/query/export" method="post" target="_new" style="display: none;">
+				<input name="exportQuery" class="exportQuery" ></input>
+				<input name="exportDB" class="exportDB" ></input>
+			</form>
 		</div>
 
 		<div class="queryEditor">

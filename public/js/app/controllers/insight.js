@@ -192,6 +192,7 @@ define([
 					}
 				});
 				if(!found) {
+					console.log ('not found');
 					self.insight.attr({current: true});
 					Global.tabs.push(self.insight);
 				}
@@ -351,6 +352,9 @@ define([
 				var	relations = new Array();
 				var operator;
 
+				self.element.find('.exportButton').data('export', false);
+				self.element.find('.exportButton').addClass('disabled');
+
 				query = 'SELECT ';
 				self.insight.attr('fields').each(function(item, index) {
 
@@ -405,13 +409,6 @@ define([
 					table = '`' + item.table + '`';
 
 					if (tables.indexOf(table) == -1) {
-						/*
-						if(typeof self.insight.attr('relations.'+item.table+'.relateto') !== 'undefined') {
-							self.insight.attr('relations.'+item.table+'.relateto').each(function (item, index) {
-								relations.push('`'+item.table+'`.`'+item.field+'` = `'+item.reltable+'`.`'+item.relfield+'`');
-							});
-						}
-						*/
 						tables.push (table);
 					}
 
@@ -556,12 +553,15 @@ define([
 			},
 			'.exportButton click': function(element, event) {
 				event.preventDefault();
-				var self = this;
-				var value = self.editor.getValue();
-				self.element.find('.exportQuery').val(value);
-				self.element.find('.exportDB').val(self.element.find('.databaseSelect').val());
-				
-				self.element.find('.exportForm').submit();
+
+				if (element.data('export') == true) {
+					var self = this;
+					var value = self.editor.getValue();
+					self.element.find('.exportQuery').val(value);
+					self.element.find('.exportDB').val(self.element.find('.databaseSelect').val());
+					
+					self.element.find('.exportForm').submit();
+				}
 			},
 			fetchData: function(element, page) {
 				var self = this;
@@ -589,7 +589,13 @@ define([
 						var fields = [];
 						if(data.data.length > 0) {
 							fields = Object.keys(data.data[0]);
+							self.element.find('.exportButton').data('export', true);
+							self.element.find('.exportButton').removeClass('disabled');
+						} else {
+							self.element.find('.exportButton').data('export', false);
+							self.element.find('.exportButton').addClass('disabled');
 						}
+
 						self.element.find('.results').html('//js/app/views/pages/insight/results.ejs', {fields: fields, results: data.data, count: Math.ceil(data.found_rows/50), page: page});
 						if(page > 1) {
 							self.element.find('.previous').removeClass('disabled');
@@ -609,6 +615,8 @@ define([
 
 					error: function(error) {
 						self.element.find('.queryErrors').html(error.responseJSON.errstr).show();
+						self.element.find('.exportButton').data('export', false);
+						self.element.find('.exportButton').addClass('disabled');
 					},
 					complete: function() {
 						element.removeClass('loading');

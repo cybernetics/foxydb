@@ -114,7 +114,11 @@ define([
 
 			},
 			'route': function() {
-				this.loadPage('account', 'index', can.route.attr());
+				if (!Global.state.attr('loggedIn')) {
+					this.loadPage('account', 'index', can.route.attr());
+				} else {
+					this.loadPage('dashboard', 'index', can.route.attr());
+				}
 			},
 			':controller route': function() {
 				this.loadPage(can.route.attr('controller'), 'index', can.route.attr());

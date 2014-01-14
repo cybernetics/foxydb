@@ -47,6 +47,7 @@ define([
 						}
 					});
 				} else {
+					$.cookie('loggedIn', 0);
 					can.route.ready();
 				}
 				

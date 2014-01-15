@@ -19,7 +19,7 @@ define([
 			},
 			list: function(element, options) {
 				this.element.find('.inner').html('//js/app/views/pages/database/list.ejs', {database: Model.Database.findAll()});
-				this.element.find('.sidebar').html('//js/app/views/pages/insight/database.ejs', {});
+				this.element.find('.sidebar').html('//js/app/views/pages/database/sidebar.ejs', {custom: 'Edit, delete or create new database within a second.'});
 			},
 			edit: function(element, options) {
 				if (typeof element.id !== 'undefined' && element.id) {

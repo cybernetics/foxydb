@@ -107,9 +107,7 @@ define([
 							self.getStructure();
 					} else {
 						Model.Insight.findOne({id: self.options.id}).then(function(response) {
-						 	// can.batch.start(function() {
-						 		// 
-						 	// });
+
 							if(!response.attr('variables')) {
 								response.attr('variables', {});
 							}
@@ -136,7 +134,6 @@ define([
 							self.getStructure();
 							self.setupDragDrop();
 							self.element.find('.applyButton').click();
-							// can.batch.stop();
 							
 						});					
 
@@ -572,6 +569,9 @@ define([
 				if (element.data('export') == true) {
 					var self = this;
 					var value = self.editor.getValue();
+					can.each(self.insight.attr('variables').attr(),function(item, index) {
+						value = value.replace(new RegExp(':' + index + ':','g'),item);
+					});
 					self.element.find('.exportQuery').val(value);
 					self.element.find('.exportDB').val(self.element.find('.databaseSelect').val());
 					
@@ -684,6 +684,9 @@ define([
 						self.insight.attr('variables', {});
 						self.insight.attr('query', '-- Type your query here');
 					}
+					
+					self.element.find('.exportButton').data('export', false);
+					self.element.find('.exportButton').addClass('disabled');
 				}
 			},
 			'.saveButton click': function(element, event) {

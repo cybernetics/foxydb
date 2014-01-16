@@ -51,7 +51,6 @@ exports.controller = function(app, db) {
 		if(req.session.user) {
 			db.get("SELECT * FROM `insights` WHERE `id` = ?;",[req.params.id] , function(err, row) {
 				if(err) {
-
 					res.send(500, err);
 				} else {
 					row.variables = JSON.parse(row.variables);

@@ -107,9 +107,9 @@ define([
 							self.getStructure();
 					} else {
 						Model.Insight.findOne({id: self.options.id}).then(function(response) {
-						 	can.batch.start(function() {
-						 		self.element.find('.applyButton').click();
-						 	});
+						 	// can.batch.start(function() {
+						 		// 
+						 	// });
 							if(!response.attr('variables')) {
 								response.attr('variables', {});
 							}
@@ -135,7 +135,8 @@ define([
 							self.updateTabs();
 							self.getStructure();
 							self.setupDragDrop();
-							can.batch.stop();
+							self.element.find('.applyButton').click();
+							// can.batch.stop();
 							
 						});					
 
@@ -560,8 +561,9 @@ define([
 					this.element.find('.relationColumn:visible').attr('disabled', true);
 				}
 			},
-			'.tools .toolsPlaceholders input keyup': function(element, event) {
+			'.toolsPlaceholders input keyup': function(element, event) {
 				var self = this;
+
 				self.insight.attr('variables.' + element.attr('placeholder'), element.val());
 			},
 			'.exportButton click': function(element, event) {

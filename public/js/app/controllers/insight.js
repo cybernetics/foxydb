@@ -901,7 +901,7 @@ define([
 				element.parent().toggleClass('open');
 			},
 			'{window} resize': function() {
-				var h = window.innerHeight-400;
+				var h = window.innerHeight-300;
 				if(h < 200) {
 					h = 200;
 				}

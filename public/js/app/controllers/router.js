@@ -103,7 +103,7 @@ define([
 						var id = options.id || 0;
 						
 						if(this.element.find('.insight#insight_' + id).length == 0) {
-							var el = $('body').append('/js/app/views/layout/insight.ejs', {id: id});
+							var el = $('.pageContent').after('/js/app/views/layout/insight.ejs', {id: id});
 							var insight = new Controller[controller](this.element.find('.insight#insight_' + id), options);
 							insight.edit(options);
 						} else {

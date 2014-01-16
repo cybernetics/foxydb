@@ -8,7 +8,7 @@
         "sqlite3": "*",
         "mysql": "*",
         "progress": "*",
-        "validator": "*",
+        "validator": "2.0.0",
         "flow": "*",
         "simple-sql-parser": "git+https://github.com/DVSoftware/simpleSqlParser.git"
     }

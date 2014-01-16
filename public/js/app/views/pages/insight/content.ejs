@@ -1,45 +1,52 @@
-<div class="insightInner">
-	<div class="pane">
-		<div class="paneTitle">
-			<h2>SQL Query editor
-				<% if(insight.attr('type') == 0){ %>
-					(Read only mode)
-				<% } %>
-			</h2>
-			<% if(Global.user.attr('level') == 0) { %>
-			<a href="#" class="button clearButton">
-				Clear All <span><i class="fa fa-times"></i></span>
-			</a>
-			<a href="#" class="button saveButton">
-				Save <span><i class="fa fa-angle-down "></i></span>
-				<ul class="submenu">
-					<li>Save as a Copy</li>
-				</ul>
-			</a>
-			<% } %>
-			<a <%= (el) -> el.data('export', false) %> href="#" class="button exportButton">
-				Export <span><i class="fa fa-download "></i></span>
-			</a>
-			<form class="exportForm" action="/api/query/export" method="post" target="_new" style="display: none;">
-				<input name="exportQuery" class="exportQuery" ></input>
-				<input name="exportDB" class="exportDB" ></input>
-			</form>
-		</div>
+<h3 class="ui header left floated">
+	SQL Query editor
+	<% if(insight.attr('type') == 0){ %>
+		(Read only mode)
+	<% } %>
+</h3>
+<% if(Global.user.attr('level') == 0) { %>
 
-		<div class="queryEditor">
-			<div class="sql"><%=insight.attr('query')%></div>
-			<a href="#" class="button applyButton">Apply</a>
+	<div class="ui green icon small buttons right floated">
+		<a class="ui button saveButton" href="#">
+			<span class="text">Save</span>
+		</a>
+		<div class="ui floating dropdown icon button" <%= (el) -> el.dropdown() %>>
+			<i class="icon dropdown"></i>
+			<div class="menu">
+				<div class="item saveCopy">
+					Save as a Copy
+				</div>
+			</div>
 		</div>
-		<div class="queryErrors">
-
-		</div>
-		<div class="queryStats">
-
-		</div>
-
 	</div>
+	<a class="ui red icon labeled small button right floated dropdown clearButton" href="#">
+		<span class="text">Clear All</span>
+		<i class="icon delete"></i>
+	</a>
 
-	<div class="results">
+<% } %>
+<a class="ui labeled icon small button right floated dropdown exportButton" href="#">
+	<span class="text">Export</span>
+	<i class="icon download"></i>
+	<form class="exportForm" action="/api/query/export" method="post" target="_new" style="display: none;">
+		<input name="exportQuery" class="exportQuery" ></input>
+		<input name="exportDB" class="exportDB" ></input>
+	</form>
+</a>
+<div class="ui clearing divider"></div>
 
-	</div>
+<div class="queryEditor">
+	<div class="sql ui segment attached"><%=insight.attr('query')%></div>
+	<a href="#" class="ui mini button applyButton">Apply</a>
+</div>
+
+<div class="queryErrors message ui red">
+
+</div>
+<div class="queryStats message ui green">
+
+</div>
+
+<div class="results">
+
 </div>

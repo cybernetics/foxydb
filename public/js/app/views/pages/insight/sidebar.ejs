@@ -1,13 +1,15 @@
-<div class="field">
-	<label>Database</label>
-	<select class="databaseSelect">
-		<% can.each(databases, function(database) {%>
-			<option value="<%=database.attr('id')%>" <%=(database.attr('id')===insight.attr('database_id')?'selected="selected"':'')%>><%=database.attr('title')%></option>
-		<% }) %>
-		<% if(Global.user.attr('level') == 0) { %>
-			<option value="new">New Connection</option>
-		<% } %>
-	</select>
+<div class="ui form">
+	<div class="field">
+		<label>Database</label>
+		<select class="databaseSelect">
+			<% can.each(databases, function(database) {%>
+				<option value="<%=database.attr('id')%>" <%=(database.attr('id')===insight.attr('database_id')?'selected="selected"':'')%>><%=database.attr('title')%></option>
+			<% }) %>
+			<% if(Global.user.attr('level') == 0) { %>
+				<option value="new">New Connection</option>
+			<% } %>
+		</select>
+	</div>
 </div>
 <div class="newDatabase"></div>
 <div class="structure"></div>

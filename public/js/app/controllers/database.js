@@ -19,11 +19,13 @@ define([
 			},
 			list: function(element, options) {
 				this.element.find('.inner').html('//js/app/views/pages/database/list.ejs', {database: Model.Database.findAll()});
-				this.element.find('.sidebar').html('//js/app/views/pages/insight/database.ejs', {});
+				this.element.find('.sidebar').html('//js/app/views/pages/database/sidebar.ejs', {custom: 'Edit, delete or create new database within a second.'});
 			},
 			edit: function(element, options) {
 				if (typeof element.id !== 'undefined' && element.id) {
 					this.element.find('.inner').html('//js/app/views/pages/database/edit.ejs', {database: Model.Database.findOne({id: element.id})});
+				this.element.find('.sidebar').html('//js/app/views/pages/database/sidebar.ejs', {});
+
 				} else {
 					can.route.attr({controller: 'database', action: 'list'}, true);
 				}
@@ -32,22 +34,6 @@ define([
 				this.element.find('.sidebar').html('//js/app/views/pages/database/sidebar.ejs', {});
 				this.element.find('.inner').html('//js/app/views/pages/database/content.ejs', {});
 				this.element.find('form').parsley();
-			},
-			'.sidebar form submit': function(element, event) {
-				event.preventDefault();
-				var self = this;
-				if(element.parsley('validate')) {
-					var database = new Model.Database(element.formParams());
-					database.save().then(function(data) {
-						Model.Database.findAll().then(function(data) {
-							can.route.attr({controller: 'database', action: 'list'}, true);
-						});
-					}).fail(function(data) {
-						if (typeof data.responseJSON != 'undefined'){
-							parsleyError(element, data.responseJSON.error);
-						}
-					});
-				}
 			},
 			'.delete click': function(element, event) {
 				event.preventDefault();
@@ -62,7 +48,7 @@ define([
 					});
 				}
 			},
-			'.updateDatabase form submit': function(element, event) {
+			'form.updateDatabase submit': function(element, event) {
 				event.preventDefault();
 
 				if(element.parsley('validate')) {
@@ -78,7 +64,7 @@ define([
 					});
 				}
 			},
-			'.database form submit': function(element, event) {
+			'form.database submit': function(element, event) {
 				event.preventDefault();
 				if(element.parsley('validate')) {
 					var database = new Model.Database(element.formParams());

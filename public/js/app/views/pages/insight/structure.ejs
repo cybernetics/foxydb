@@ -1,18 +1,22 @@
 <% if(can.Object.same(structure,{})) { %>
-	<i class="fa fa-spinner fa-spin"></i> Getting structure
+	<div class="ui message"><i class="icon loading"></i> Getting structure</div>
 <% } else { %>
-	<ul>
+	<div class="ui fluid vertical small menu accordion" <%= (el) -> el.accordion() %>>
 		<% can.each(structure,function(item, index) { %>
-			<li class="<%=index;%>" <%= (el) -> el.data('table',item) %>>
-				<span><%=index%></span> <i class="fa fa-chevron-down"></i><i class="fa fa-chevron-up"></i>
-				<ul>
+		<div class="item">
+			<div class="title <%=index;%>" <%= (el) -> el.data('table',item) %>>
+				<i class="dropdown icon"></i><%=index%>
+			</div>
+			<div class="content">
+				<div class=" ui fluid celled selection list">
 					<% item.each(function(subitem) { %>
-						<li <%= (el) -> el.data('field',subitem) %> <%= (el) -> el.data('table',index) %>>
-							<%= subitem.Field %> <%==(insight.attr('type') == 0?'<i class="fa fa-arrows"></i>':'')%>
-						</li>
+						<div <%= (el) -> el.data('field',subitem) %> <%= (el) -> el.data('table',index) %> class="item" title="<%= subitem.Type %>">
+							<%==(insight.attr('type') == 0?'<i class="icon move"></i>':'')%><%= subitem.Field %>
+						</div>
 					<% }) %>
-				</ul>
-			</li>
+				</div>
+			</div>
+		</div>
 		<% }) %>
-	</ul>
+	</div>
 <% } %>

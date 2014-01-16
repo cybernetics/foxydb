@@ -41,7 +41,7 @@ define([
 						}
 					});
 				},
-				'.login form submit': function(element, event) {
+				'form.login submit': function(element, event) {
 					event.preventDefault();
 					if(element.parsley('validate')) {
 						$.ajax({
@@ -61,7 +61,7 @@ define([
 						});
 					}
 				},
-				'.register form submit': function(element, event) {
+				'form.register submit': function(element, event) {
 					event.preventDefault();
 					if(element.parsley('validate')) {
 						var user = new Model.User(element.formParams());

@@ -107,6 +107,9 @@ define([
 							self.getStructure();
 					} else {
 						Model.Insight.findOne({id: self.options.id}).then(function(response) {
+						 	can.batch.start(function() {
+						 		self.element.find('.applyButton').click();
+						 	});
 							if(!response.attr('variables')) {
 								response.attr('variables', {});
 							}
@@ -128,11 +131,12 @@ define([
 							self.insight.attr({fields:response.attr('fields')});
 							self.insight.attr({filters:response.attr('filters')});
 							self.insight.attr({relations:response.attr('relations')});
-
+							
 							self.updateTabs();
 							self.getStructure();
 							self.setupDragDrop();
-							self.element.find('.applyButton').click();
+							can.batch.stop();
+							
 						});					
 
 					}
@@ -269,21 +273,29 @@ define([
 						})
 					});
 					self.element.find('.structure').html('//js/app/views/pages/insight/structure.ejs', {structure: res, insight: self.insight});
+					//self.element.find('.structure .list .item').popup();
 					$(window).resize();
 					if(self.insight.attr('type') == 0) {
 						//setup drag/drop
-						self.element.find('.structure > ul > li > ul > li').on(
+						self.element.find('.structure .list .item').on(
 							{
 								'draginit': function(ev, drag) {
-									drag.ghost();
+									
+									var newDrag = drag.ghost();
+									newDrag.addClass('ghost');
+									self.element.find('.structure').append(newDrag.remove());
+									drag.representative(self.element.find('.structure .ghost'));
+									
 									var drops = self.element.find('.dragHere');
 									drops.each(function(index, drop) {
 										if($(drop).hasClass('hidden')) {
 											$(drop).addClass('dragged');
 											$(drop).css({
-												top: $(drop).prev().position().top,
-												height: $(drop).prev().height(),
-												lineHeight: ($(drop).prev().innerHeight()-10)+'px'
+												top: Math.floor($(drop).prev().position().top)-1,
+												left: $(drop).prev().position().left-1,
+												height: $(drop).prev().outerHeight()+2,
+												width: $(drop).prev().width()+2,
+												lineHeight: ($(drop).prev().innerHeight()-16)+'px'
 											});
 										}
 									});
@@ -296,6 +308,7 @@ define([
 										$(drop).css({
 											top: '',
 											height: '',
+											width: '',
 											lineHeight: ''
 										});
 									});
@@ -568,8 +581,8 @@ define([
 				var oldContent = element.html();
 				var oldWidth = element.width();
 				element.addClass('loading');
-				element.html('<span class="spin"><i class="fa fa-spinner fa-spin"></i></spin>');
-				element.width(oldWidth);
+				//element.html('<span class="spin"><i class="fa fa-spinner fa-spin"></i></spin>');
+				//element.width(oldWidth);
 				self.element.find('.queryErrors').hide();
 				self.element.find('.queryStats').hide();
 				var value = self.editor.getValue();
@@ -597,6 +610,7 @@ define([
 						}
 
 						self.element.find('.results').html('//js/app/views/pages/insight/results.ejs', {fields: fields, results: data.data, count: Math.ceil(data.found_rows/50), page: page});
+						self.element.find('.results .resultsContent').width(self.element.find('.results').width());
 						if(page > 1) {
 							self.element.find('.previous').removeClass('disabled');
 						} else if(!self.element.find('.previous').hasClass('disabled')) {
@@ -620,7 +634,7 @@ define([
 					},
 					complete: function() {
 						element.removeClass('loading');
-						element.html(oldContent);
+						//element.html(oldContent);
 
 					}
 
@@ -651,7 +665,7 @@ define([
 				}
 			},
 			'.closeButton click': function (element, event) {
-				this.element.find('.editPopup').removeClass('open');
+				this.element.find('.editPopup').removeClass('visible');
 			},
 			'.clearButton click': function (element, event) {
 				event.preventDefault();
@@ -666,18 +680,20 @@ define([
 						self.generateQuery();
 					} else {
 						self.insight.attr('variables', {});
-						self.editor.setValue('-- Type your query here');
+						self.insight.attr('query', '-- Type your query here');
 					}
 				}
 			},
 			'.saveButton click': function(element, event) {
 				var self = this;
 				event.preventDefault();
-				$('.tabs .active .insightTitle').removeClass('error');
+				$('.tabs .active .insightTitle').parent().removeClass('error');
 				if($('.tabs .active .insightTitle').val().trim() === ''){
-					$('.tabs .active .insightTitle').addClass('error').focus();
+					$('.tabs .active .insightTitle').parent().addClass('error');
+					$('.tabs .active .insightTitle').focus();
 				} else if(self.element.find('.databaseSelect').val() === 'new') {
-					self.element.find('.databaseSelect').addClass('error').focus();
+					self.element.find('.databaseSelect').parent().addClass('error');
+					self.element.find('.databaseSelect').focus();
 				} else {
 					// var vars = self.insight.attr('variables').attr();
 					// var type = self.insight.attr('type');
@@ -710,7 +726,7 @@ define([
 				if(self.element.is(':visible')) {
 					if (event.ctrlKey && event.shiftKey && event.keyCode == 83) {
 						event.preventDefault();
-						self.element.find('.saveButton .submenu li').click();
+						self.element.find('.saveButton .menu div').click();
 					} else if (event.ctrlKey && event.keyCode == 83) {
 						event.preventDefault();
 						self.element.find('.saveButton').click();
@@ -724,43 +740,42 @@ define([
 			'.columnList i.removeButton click': function (element, event) {
 				
 				var self = this,
-					removeElement = element.parent('li'),
+					removeElement = element.parent('.item'),
 					id = removeElement.data('field').attr('id');
 
-				if (removeElement.parent('ul').hasClass('fields')) {
+				if (removeElement.parent('.list').hasClass('fields')) {
 					self.insight.removeAttr('fields.' + id);
-				} else if (removeElement.parent('ul').hasClass('filters')) {
+				} else if (removeElement.parent('.list').hasClass('filters')) {
 					self.insight.removeAttr('filters.' + id);
 				}
 
 			},
-			'.columnList li span click': function (element, event) {
+			'.columnList .item click': function (element, event) {
 				event.preventDefault();
 				event.stopPropagation();
-				var parentUl = element.parents('ul.columnList');
+				var parentUl = element.parents('.columnList');
 
 				if (!$(parentUl).hasClass('relations')) {
 					var self = this;
-					var	popup = element.siblings('.editPopup');
 
-					self.element.find('.editPopup').removeClass('open');
-					element.siblings('.editPopup').addClass('open');
+					self.element.find('.editPopup').removeClass('visible');
+					element.find('.editPopup').addClass('visible');
 
 					if(parentUl.hasClass('filters')) {
-						element.parent().find('.editPopup .operator').hide();
-						element.parent().find('.editPopup .operator-' + element.parent().find('.editPopup .filterOperator').val()).show();
+						element.find('.editPopup .operator').hide();
+						element.find('.editPopup .operator-' + element.find('.editPopup .filterOperator').val()).show();
 					}
 				}
 			},
 			'.saveFilters click': function(element, event) {
 				event.preventDefault();
 
-				var operator = element.siblings('select').val();
+				var operator = element.parent().find('.filterOperator').val();
 				var value = new String();
 				var values = [];
 				var error = false;
 
-				$('.operator:visible input').each (function (index, item) {
+				element.parent().find('.operator:visible input').each (function (index, item) {
 					value = $(item).val();
 
 					if (value.length >= 1) {
@@ -776,43 +791,36 @@ define([
 				});
 
 				if (error == false) {
-					element.parents('li').data('field').attr('field.operator', element.siblings('select').val());
-					element.parents('li').data('field').attr('field.val', values);
-					element.parents('.editPopup').removeClass('open');
+
+					element.parents('.item').data('field').attr({'field': {'operator': element.parent().find('.filterOperator').val(), 'val': values}});
+
+					element.parents('.editPopup').removeClass('visible');
 				} else {
 					event.stopImmediatePropagation();
 				}
 
 			},
+			'.editPopup click': function(element, event) {
+				event.stopImmediatePropagation();
+			},
 			'.toolsFields .editPopup .button click': function(element, event) {
 				event.preventDefault();
 				var self = this;
 
-				element.parents('li').data('field').attr('field.as', element.siblings('input').val());
-				element.parents('.editPopup').removeClass('open');
+				element.parents('.item').data('field').attr('field.as', element.parent().find('input').val());
+				element.parents('.editPopup').removeClass('visible');
 			},
-			'.saveButton span click': function(element, event) {
+			'.saveCopy click': function(element, event) {
 				event.preventDefault();
-				event.stopPropagation();
-				element.parent().find('.submenu').show();
-				setTimeout(function() {
-					$('html').one('click', function(){
-						element.parent().find('.submenu').hide();
-					});
-				}, 50);
-
-			},
-			'.submenu li click': function(element, event) {
-				event.preventDefault();
-				event.stopPropagation();
-				element.parent().hide();
 				var self = this;
-
-				$('.tabs .active .insightTitle').removeClass('error');
+				element.removeClass('active');
+				$('.tabs .active .insightTitle').parent().removeClass('error');
 				if($('.tabs .active .insightTitle').val().trim() === ''){
-					$('.tabs .active .insightTitle').addClass('error').focus();
+					$('.tabs .active .insightTitle').parent().addClass('error');
+					$('.tabs .active .insightTitle').focus();
 				} else if(self.element.find('.databaseSelect').val() === 'new') {
-					self.element.find('.databaseSelect').addClass('error').focus();
+					self.element.find('.databaseSelect').parent().addClass('error')
+					self.element.find('.databaseSelect').focus();
 				} else {
 					$('.tabs .active .insightTitle').val('Copy of ' + $('.tabs .active .insightTitle').val().trim());
 
@@ -893,11 +901,11 @@ define([
 				element.parent().toggleClass('open');
 			},
 			'{window} resize': function() {
-				var h = $(window).innerHeight()-400;
+				var h = window.innerHeight-400;
 				if(h < 200) {
 					h = 200;
 				}
-				this.element.find('.structure > ul').css('max-height', h);
+				this.element.find('.structure > .menu').css('max-height', h);
 			}
 
 		}

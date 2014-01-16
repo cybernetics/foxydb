@@ -78,11 +78,11 @@ define([
 			updateSize: function() {
 				if(!this.calculating) { 
 					this.calculating = true;
-					var usableWidth = $('header').width()-$('header .left').width()-$('header .right').width()-$('.tabsNew .new').width()-30;
+					var usableWidth = $('header').width()-$('.sidebar:visible').outerWidth()-$('header .right').width()-$('.tabsNew .new').width()-30;
 					var totalWidth = 0;
 					var visibleWidth = 0;
 					var lastVisibleIndex = 0;
-
+					this.element.css('left',$('.sidebar:visible:visible').outerWidth());
 					this.element.find('.tabsInner li').each(function(index, item) {
 						var tabWidth = $(item).outerWidth()+4;
 						totalWidth += tabWidth;
@@ -96,7 +96,7 @@ define([
 					if(visibleWidth < totalWidth) {
 						this.element.find('.drop').show();
 						Global.tabs.comparator = 'sorter';
-						if(this.element.find('.active').index() > lastVisibleIndex) {
+						if(this.element.find('.active').index() >= lastVisibleIndex) {
 							Global.tabs.sort();
 							can.trigger(Global.tabs, 'length');
 						}
@@ -105,7 +105,7 @@ define([
 						this.element.find('.drop').hide();
 					}
 					
-					Global.overflowTabs.replace(Global.tabs.slice(lastVisibleIndex+1));
+					Global.overflowTabs.replace(Global.tabs.slice(lastVisibleIndex));
 					this.element.find('.tabsInner').width(visibleWidth);
 
 					this.calculating = false;

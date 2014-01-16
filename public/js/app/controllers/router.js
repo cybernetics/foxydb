@@ -93,7 +93,7 @@ define([
 								can.route.attr({controller: 'database', action: 'add'}, true);
 							} else {
 								$('.tabs').show();
-								self.element.find('.content').hide();
+								self.element.find('.pageContent').hide();
 								self.element.find('.dashboard').show();
 							}
 						});

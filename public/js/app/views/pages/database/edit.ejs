@@ -1,31 +1,28 @@
-<div class="updateDatabase pane">
-	<form <%= (el) -> el.data('database', database) %>>
-		<div class="paneTitle">
-			<h2>Update Database <%= database.name %></h2>
-		</div>
-		<div class="paneContent">
 
-			<div class="row">
-				<label>Name</label> <input name="title" type="text" value="<%= database.title %>" parsley-required="true" parsley-required-message="Name is required"></input>
-			</div>
-			<div class="row">
-				<label>Host</label> <input name="host" type="text" value="<%= database.host %>" parsley-required="true" parsley-required="true" parsley-required-message="Host is required"></input>
-			</div>
-			<div class="row">
-				<label>Port</label> <input name="port" type="text" value="<%= database.port %>" parsley-required="true" parsley-type="digits" parsley-type-message="Port must be number" parsley-required-message="Port is required"></input>
-			</div>
-			<div class="row">
-				<label>Database</label> <input name="name" type="text" value="<%= database.name%>" parsley-required="true" ></input>
-			</div>
-			<div class="row">
-				<label>Username</label> <input name="username" type="text" value="<%= database.username%>" parsley-required="true" parsley-required-message="Username is required"></input>
-			</div>
-			<div class="row">
-				<label>Password</label> <input name="password" type="password" value="<%= database.password%>" ></input>
-			</div>
-		</div>
-		<div class="paneButtons">
-			<button type="submit">Save</button>
-		</div>
-	</form>
-</div>
+<h3 class="ui header left floated">Update Database <%= database.name %></h3>
+<div class="ui clearing divider"></div>
+
+<form class="ui form updateDatabase" data-validate="parsley" <%= (el) -> el.data('database', database) %>>
+
+	<div class="field">
+		<label>Name</label> <input name="title" type="text" value="<%= database.title %>" parsley-required="true" parsley-required-message="Name is required"></input>
+	</div>
+	<div class="field">
+		<label>Database Host</label> <input name="host" type="text" value="<%= database.host %>" parsley-required="true" parsley-required="true" parsley-required-message="Host is required"></input>
+	</div>
+	<div class="field">
+		<label>Database Port</label> <input name="port" type="text" value="<%= database.port %>" parsley-required="true" parsley-type="digits" parsley-type-message="Port must be number" parsley-required-message="Port is required"></input>
+	</div>
+	<div class="field">
+		<label>Database Name</label> <input name="name" type="text" value="<%= database.name%>" parsley-required="true" ></input>
+	</div>
+	<div class="field">
+		<label>Database Username</label> <input name="username" type="text" value="<%= database.username%>" parsley-required="true" parsley-required-message="Username is required"></input>
+	</div>
+	<div class="field">
+		<label>Database Password</label> <input name="password" type="password" value="<%= database.password%>" ></input>
+	</div>
+	<button class="ui green submit button" type="submit">Save</button>
+	</div>
+</form>
+

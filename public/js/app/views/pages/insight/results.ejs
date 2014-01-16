@@ -1,46 +1,51 @@
+<h3 class="ui header left floated">
+	Results 
+	<% if(results.length > 0) { %>
+	<span class="ui label">Page <%=page%> of <%=count%></span>
+	<% } %>
+</h3>
+<div class="ui floated right icon buttons">
+	
+	<a href="#" class="ui small button previous disabled"><i class="icon left arrow"></i></a>
+	<a href="#" class="ui small button next disabled"><i class="icon right arrow"></i></a>
+</div>
+
+<div class="ui clearing divider"></div>
+
 <% if(results.length === 0) { %>
-	<div class="pane noborder">
-		<div class="paneTitle">
-			<h2><i class="icon-list "></i> No Results</h2>
-		</div>
+	<div class="ui message">
+		No Results
 	</div>
 <% } else { %>
-
-	<div class="pane">
-		<div class="paneTitle">
-			<h2><i class="icon-list "></i> Results</h2><span class="page">Page <%=page%> of <%=count%></span>
-		</div>
-
-		<div class="resultsTable">
-			
-			
-			<table>
-				<thead>
-					<tr>
-						<% can.each(fields, function(item) { %>
-							<th title="<%=item%>"><%=can.capitalize(item.replace(/_/g,' '))%></th>
-						<% }) %>
-
-					</tr>
-				</thead>
-				<tbody>
-					<% can.each(results, function(item) { %>
-						<tr>
-							<% can.each(fields, function(field) {  %>
-								<% if(item[field]) { %>
-									<td><%=item[field]%></td>
-								<% } else { %>
-									<td>&nbsp;</td>
-								<% } %>
-							<% }) %>
-						</tr>
+	
+		<div class="ui resultsContent">
+		<table class="ui compact table ">
+			<thead>
+				<tr>
+					<% can.each(fields, function(item) { %>
+						<th title="<%=item%>"><%=can.capitalize(item.replace(/_/g,' '))%></th>
 					<% }) %>
-				</tbody>
-			</table>
-		</div>
-		<div class="paneButtons">
-			<a href="#" class="button previous disabled">Previous</a>
-			<a href="#" class="button next disabled">Next</a>
-		</div>
+
+				</tr>
+			</thead>
+			<tbody>
+				<% can.each(results, function(item) { %>
+					<tr>
+						<% can.each(fields, function(field) {  %>
+							<% if(item[field]) { %>
+								<td><%=item[field]%></td>
+							<% } else { %>
+								<td>&nbsp;</td>
+							<% } %>
+						<% }) %>
+					</tr>
+				<% }) %>
+			</tbody>
+		</table>
+	</div>
+	<br />
+	<div class="ui floated right icon buttons">
+		<a href="#" class="ui small button previous disabled"><i class="icon left arrow"></i></a>
+		<a href="#" class="ui small button next disabled"><i class="icon right arrow"></i></a>
 	</div>
 <% } %>

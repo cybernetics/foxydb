@@ -52,6 +52,10 @@ html {
 
 }
 
+body {
+	overflow-x: hidden;
+}
+
 a {
 	text-decoration: none;
 	color: #666;
@@ -59,6 +63,11 @@ a {
 		color: #333;
 	}
 }
+
+strong {
+	font-weight: bold !important;
+}
+
 
 header {
 	.logo {
@@ -213,11 +222,10 @@ header {
 .sidebar {
 	min-height: 1000px;
 	background: #f6f6f6;
-	overflow: hidden;
 	.fox {
-		width: 209px;
+		width: ~"calc(100%+2em)";
 		height: 264px;
-		margin: 20px -20px;
+		margin: 20px -0.75em 0;
 		background: url(/images/tip.png) no-repeat;
 	}
 
@@ -228,5 +236,130 @@ header {
 		left: auto !important;
 		right: auto !important;
 		margin-left: 0 !important;
+		margin-top: 1em !important;
 	}
+
+	.structure .ui.accordion.fluid {
+		overflow: hidden;
+		overflow-y: scroll;
+		.content {
+			padding: 0;
+		}
+		> .item {
+			padding: 0;
+		}
+		.list .item {
+			border-top: 0;
+		}
+	}
+
+	.structure .ghost {
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		background: #fff;
+		line-height: 30px;
+		padding: 0 0.5em;
+		i {
+			display: none
+		}
+
+	}
+}
+
+.insight .inner {
+	box-shadow: none !important;
+}
+
+.editPopup {
+	display: none;
+}
+
+.queryEditor {
+	.sql {
+		width: 100%;
+		height: 150px;
+	}
+	position: relative;
+	.applyButton {
+		position: absolute !important;
+		right: 10px;
+		bottom: 10px;
+		opacity: 0.5;
+		z-index: 1000;
+		&:hover {
+			opacity: 1;
+		}
+	}
+}
+
+.resultsContent {
+	width: 0;
+	overflow: auto;
+	overflow-y: none !important;
+	table th {
+		font-weight: bold;
+	}
+	table th, table td {
+		white-space: nowrap;
+	}
+}
+.tools {
+	.list .item {
+		&:first-child {
+			border-top: 0;
+		}
+		&:last-child {
+			border-bottom: 0 !important;
+		}
+		> i.delete {
+			margin-right: 0 !important;
+		}
+			
+	}
+	.dragHere {
+		font-size: 0.875rem;
+		padding: 0.5em;
+		box-shadow: none !important;
+		border: 1px dashed rgba(0, 0, 0, 0.1) !important;
+		&.hidden {
+			display: none;
+			&.dragged {
+				display: block;
+				position: absolute;
+				background: fadeout(#fff, 20%);
+			}
+		}
+
+	}
+
+}
+.editPopup {
+	display: none;
+	left: 100%;
+	padding: 20px 20px 0;
+	position: absolute;
+	top: -15px;
+	width: 250px;	
+	z-index: 100;
+	&.open {
+		display: block;
+	}
+
+	i.delete {
+		position: absolute;
+		top: 1em;
+		right: 1em;
+	}
+
+	&.ui.right.center.popup:before {
+	    bottom: auto;
+	    box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.2);
+	    left: -0.35em;
+	    margin-top: 0;
+	    right: auto;
+	    top: auto;
+	}
+}
+
+.queryErrors, .queryStats {
+	display: none;
 }

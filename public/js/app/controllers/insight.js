@@ -314,6 +314,8 @@ define([
 							}
 						);
 					}
+				}).fail(function (response) {
+					self.element.find('.structure .message').addClass('red').html(response.responseJSON.errstr);
 				});
 
 			},
@@ -696,7 +698,7 @@ define([
 				if($('.tabs .active .insightTitle').val().trim() === ''){
 					$('.tabs .active .insightTitle').parent().addClass('error');
 					$('.tabs .active .insightTitle').focus();
-				} else if(self.element.find('.databaseSelect').val() === 'new') {
+				} else if(self.element.find('.databaseSelect').val() === 'new' || !self.element.find('.databaseSelect').val()) {
 					self.element.find('.databaseSelect').parent().addClass('error');
 					self.element.find('.databaseSelect').focus();
 				} else {
@@ -875,10 +877,12 @@ define([
 				if(element.val() === 'new') {
 					self.element.find('.sidebar .newDatabase').html('//js/app/views/pages/insight/database.ejs', {});
 					self.element.find('.sidebar .newDatabase form').parsley();
-				} else {
+				} else if (element.val()){
 					self.element.find('.sidebar .newDatabase').html('');
 					self.insight.attr('database_id', element.val());
 					self.getStructure();
+				} else {
+					self.element.find('.structure').html('');
 				}
 			},
 			'.sidebar .newDatabase form submit': function(element, event) {

@@ -70,6 +70,9 @@ exports.controller = function(app, db) {
 	app.post('/api/query/execute', function(req, res) {
 		if(req.session.user) {
 			db.get("SELECT * FROM `databases` WHERE `id` = ?;",req.body.database_id , function(err, row) {
+				if (!row) {
+					return res.send(404, {errstr: 'Database not found.'});
+				}
 				var connection = mysql.createConnection({
 					host     : row.host,
 					port 	 : row.port,

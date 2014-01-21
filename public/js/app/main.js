@@ -1,4 +1,5 @@
-define(['jquery', 'can', 'squel', 'can/view/modifiers', 'can/view/ejs', 'app/controllers/router', 'less!../../less/style', 'css!../../semantic/css/semantic.min', 'md5'], function($, can, squel, undefined, undefined, Router) {
+define(['jquery', 'can', 'squel', 'can/view/modifiers', 'can/view/ejs', 'app/controllers/router', 'd3.min', 'less!../../less/style', 'css!../../semantic/css/semantic.min', 'md5'], function($, can, squel, undefined, undefined, Router, d3) {
+	window.d3 = d3;
 	window.jQuery = $;
 
 	Main = can.Control({

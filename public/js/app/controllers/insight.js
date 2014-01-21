@@ -12,7 +12,9 @@ define([
 	'ace/ext-language_tools',
 	'can/util/object',
 	'jquerypp/event/drag',
-	'jquerypp/event/drop'
+	'jquerypp/event/drop',
+	'rickshaw.min',
+	'css!../../../css/rickshaw.min'
 ], function(
 	$,
 	can,
@@ -32,6 +34,8 @@ define([
 			},
 			tables: [],
 			fields: [],
+			currentResults: {},
+			currentPage: 0,
 			edit: function(options) {
 				var self = this;
 
@@ -581,8 +585,52 @@ define([
 					self.element.find('.exportForm').submit();
 				}
 			},
+			generateGraph: function() {
+				var self = this;
+				var fields = [];
+				if(self.currentResults.data.length > 0) {
+					fields = Object.keys(self.currentResults.data[0]);
+				}
+
+				self.element.find('.displayMode.graph').html('//js/app/views/pages/insight/graph.ejs', {fields: fields, results: self.currentResults.data, count: Math.ceil(self.currentResults.found_rows/50), page: self.currentPage, insight: self.insight});
+				
+				if(typeof self.insight.attr('graphopts.x') == 'undefined' || typeof self.insight.attr('graphopts.y') == 'undefined'){
+
+				} else {
+					console.log(self.insight.attr('graphopts.y'));
+				}
+
+				var graph = new Rickshaw.Graph({
+				element: document.querySelector('#insight_'+self.insight.attr('id')+' .graphArea'),
+				renderer: 'line',
+				series: [
+					{
+						data: [ { x: 0, y: 40 }, { x: 1, y: 49 }],
+						color: 'steelblue'
+					}
+				]
+				});
+				graph.render();
+
+			},
+			'.graphAxis input change': function(element, event) {
+				var self = this;
+				console.log('asdasdasdasd');
+				self.generateGraph();
+				self.insight.removeAttr('graphopts.y');
+				self.insight.attr('graphopts.y', {});
+				self.insight.attr('graphopts.x', '');
+				console.log(self.element.find('.graphYAxis input:checked'));
+				self.element.find('.graphYAxis input:checked').each(function() {
+					self.insight.attr('graphopts.y.'+$(this).val());
+				});
+				self.element.find('.graphXAxis input:checked').each(function() {
+					self.insight.attr('graphopts.x', $(this).val());
+				});
+			},
 			fetchData: function(element, page) {
 				var self = this;
+				self.currentPage = page;
 				var oldContent = element.html();
 				var oldWidth = element.width();
 				element.addClass('loading');
@@ -604,6 +652,7 @@ define([
 						row_count: 50
 					},
 					success: function(data) {
+						self.currentResults = data;
 						var fields = [];
 						if(data.data.length > 0) {
 							fields = Object.keys(data.data[0]);
@@ -614,7 +663,11 @@ define([
 							self.element.find('.exportButton').addClass('disabled');
 						}
 
-						self.element.find('.results').html('//js/app/views/pages/insight/results.ejs', {fields: fields, results: data.data, count: Math.ceil(data.found_rows/50), page: page});
+						self.element.find('.displayMode.results').html('//js/app/views/pages/insight/results.ejs', {fields: fields, results: data.data, count: Math.ceil(data.found_rows/50), page: page});
+						
+						self.generateGraph(page);
+						 
+						
 						self.element.find('.results .resultsContent').width(self.element.find('.results').width());
 						if(page > 1) {
 							self.element.find('.previous').removeClass('disabled');

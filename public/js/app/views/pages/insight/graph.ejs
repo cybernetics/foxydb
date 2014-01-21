@@ -16,8 +16,8 @@
 	<div class="menu">
 		<% can.each(fields, function(item) { %>
 			<div class="item">
-				<div class="ui checkbox" <%= (el) -> el.checkbox('setting', {onChange: $('.graphAxis input').trigger('change')}) %>>
-					<input name="y" value="<%=item%>" type="checkbox" <%=(typeof insight.attr('graphopts.y.'+item) != 'undefined'?'checked="selected"':'')%>></input><label><%=can.capitalize(item.replace(/_/g,' '))%></label>
+				<div class="ui checkbox" <%= (el) -> el.checkbox('setting', {onChange: controller.updateAxis()}) %>>
+					<input name="y" value="<%=item%>" type="checkbox" <%=(typeof y != 'undefined' && typeof y[item] != 'undefined'?'checked="checked"':'')%>></input><label><%=can.capitalize(item.replace(/_/g,' '))%></label>
 				</div> 
 			</div>
 		<% }) %>
@@ -31,8 +31,8 @@
 	<div class="menu grouped">
 		<% can.each(fields, function(item) { %>
 			<div class="item">
-				<div class="ui radio checkbox" <%= (el) -> el.checkbox('setting', {onChange: $('.graphAxis input').trigger('change')}) %>>
-					<input name="x" value="<%=item%>" type="radio" <%=(typeof insight.attr('graphopts.x') == item?'checked="checked"':'')%>></input><label><%=can.capitalize(item.replace(/_/g,' '))%></label>
+				<div class="ui radio checkbox" <%= (el) -> el.checkbox('setting', {onChange: controller.updateAxis()}) %>>
+					<input name="x" value="<%=item%>" type="radio" <%=(x == item?'checked="checked"':'')%>></input><label><%=can.capitalize(item.replace(/_/g,' '))%></label>
 				</div> 
 			</div>
 		<% }) %>

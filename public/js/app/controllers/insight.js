@@ -591,9 +591,7 @@ define([
 				if(self.currentResults.data.length > 0) {
 					fields = Object.keys(self.currentResults.data[0]);
 				}
-
-				self.element.find('.displayMode.graph').html('//js/app/views/pages/insight/graph.ejs', {fields: fields, results: self.currentResults.data, count: Math.ceil(self.currentResults.found_rows/50), page: self.currentPage, insight: self.insight});
-				
+				self.element.find('.displayMode.graph').html('//js/app/views/pages/insight/graph.ejs', {x:self.insight.attr('graphopts.x'), y:self.insight.attr('graphopts.y'), controller: self, fields: fields, results: self.currentResults.data, count: Math.ceil(self.currentResults.found_rows/50), page: self.currentPage, insight: self.insight});
 				if(typeof self.insight.attr('graphopts.x') == 'undefined' || typeof self.insight.attr('graphopts.y') == 'undefined'){
 
 				} else {
@@ -613,20 +611,20 @@ define([
 				graph.render();
 
 			},
-			'.graphAxis input change': function(element, event) {
+			'updateAxis': function() {
 				var self = this;
-				console.log('asdasdasdasd');
-				self.generateGraph();
-				self.insight.removeAttr('graphopts.y');
-				self.insight.attr('graphopts.y', {});
-				self.insight.attr('graphopts.x', '');
-				console.log(self.element.find('.graphYAxis input:checked'));
+				
+				var vals = {};
+				//self.insight.attr('graphopts.x', '');
 				self.element.find('.graphYAxis input:checked').each(function() {
-					self.insight.attr('graphopts.y.'+$(this).val());
+					vals[$(this).val()] = $(this).val();
+					console.log('vals',vals);
 				});
+				self.insight.attr('graphopts.y', vals, true);
 				self.element.find('.graphXAxis input:checked').each(function() {
 					self.insight.attr('graphopts.x', $(this).val());
 				});
+				console.log(self.insight.attr('graphopts').attr());
 			},
 			fetchData: function(element, page) {
 				var self = this;
@@ -665,7 +663,7 @@ define([
 
 						self.element.find('.displayMode.results').html('//js/app/views/pages/insight/results.ejs', {fields: fields, results: data.data, count: Math.ceil(data.found_rows/50), page: page});
 						
-						self.generateGraph(page);
+						self.generateGraph();
 						 
 						
 						self.element.find('.results .resultsContent').width(self.element.find('.results').width());
@@ -748,6 +746,7 @@ define([
 			'.saveButton click': function(element, event) {
 				var self = this;
 				event.preventDefault();
+				console.log(self.insight.attr('graphopts').attr());
 				$('.tabs .active .insightTitle').parent().removeClass('error');
 				if($('.tabs .active .insightTitle').val().trim() === ''){
 					$('.tabs .active .insightTitle').parent().addClass('error');

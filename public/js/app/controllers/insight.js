@@ -82,7 +82,7 @@ define([
 				if(can.route.attr('type')) {
 					type = can.route.attr('type');
 				}
-				self.insight = new Model.Insight({query:'-- Type your query here', current: true, name: '', type: type, variables: {}, fields: {}, filters: {}, relations: {}});
+				self.insight = new Model.Insight({query:'-- Type your query here', current: true, name: '', type: type, variables: {}, fields: {}, filters: {}, relations: {}, graph: 0, graphopts: {}});
 				self.element.data('insight', self);
 				Model.Database.findAll().then(function(data) {
 					self.databases = data;
@@ -123,12 +123,15 @@ define([
 							if(!response.attr('relations')) {
 								response.attr('relations', {});
 							}
-
+							if(!response.attr('graphopts')) {
+								response.attr('graphopts', {});
+							}
 							self.insight.attr(response.attr(), true);
 							self.insight.attr({variables:response.attr('variables')});
 							self.insight.attr({fields:response.attr('fields')});
 							self.insight.attr({filters:response.attr('filters')});
 							self.insight.attr({relations:response.attr('relations')});
+							self.insight.attr({graphopts:response.attr('graphopts')});
 							
 							self.updateTabs();
 							self.getStructure();
@@ -829,13 +832,9 @@ define([
 				} else {
 					$('.tabs .active .insightTitle').val('Copy of ' + $('.tabs .active .insightTitle').val().trim());
 
-					var insight = new Model.Insight({
-						database_id: self.element.find('.databaseSelect').val(),
-						name: $('.tabs .active .insightTitle').val(),
-						query: self.editor.getValue(),
-						variables: self.insight.attr('variables'),
-						type: self.insight.attr('type')
-					});
+					var insight = new Model.Insight(self.insight.attr());
+					insight.attr('name',$('.tabs .active .insightTitle').val());
+					insight.removeAttr('id');
 					insight.save().then(function(response) {
 						self.insight.attr(response.attr());
 						self.options.id = response.id;
@@ -904,6 +903,16 @@ define([
 				event.preventDefault();
 				event.stopPropagation();
 				element.parent().toggleClass('open');
+			},
+			'.displayType .button click': function(element, event) {
+				event.preventDefault();
+				var self = this;
+				console.log(element.hasClass('table'));
+				if(element.hasClass('dTable')) {
+					self.insight.attr('graph', 0);
+				} else {
+					self.insight.attr('graph', 1);
+				}
 			},
 			'{window} resize': function() {
 				var h = window.innerHeight-300;

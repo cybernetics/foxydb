@@ -1,7 +1,7 @@
 var progress = require('progress');
 var fs = require('fs');
 
-var version = 3;
+var version = 5;
 var tables = 3; //How many tables we need to create
 exports.install = function(db) {
 
@@ -14,7 +14,7 @@ exports.install = function(db) {
 				db.serialize(function() {
 					db.run("CREATE TABLE `users` (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT, level INTEGER);", function(err, row) { bar.tick() });
 					db.run("CREATE TABLE `databases` (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, title TEXT, type TEXT, host TEXT, port INTEGER, name TEXT, username TEXT, password TEXT);", function(err, row) { bar.tick() });
-					db.run("CREATE TABLE `insights` (id INTEGER PRIMARY KEY AUTOINCREMENT, database_id INTEGER, name TEXT, query TEXT, type INTEGER, variables TEXT, fields TEXT, filters TEXT, relations TEXT);", function(err, row) { bar.tick() });
+					db.run("CREATE TABLE `insights` (id INTEGER PRIMARY KEY AUTOINCREMENT, database_id INTEGER, name TEXT, query TEXT, type INTEGER, variables TEXT, fields TEXT, filters TEXT, relations TEXT, graph INTEGER, graphopts TEXT);", function(err, row) { bar.tick() });
 				});
 			} else {
 				upgrade(db);
@@ -40,6 +40,16 @@ function upgrade(db) {
 					break;
 				case 3:
 					db.run("ALTER TABLE `insights` ADD COLUMN relations TEXT;", function(err, row) {
+						bar.tick();
+					});
+					break;	
+				case 4:
+					db.run("ALTER TABLE `insights` ADD COLUMN graph INTEGER;", function(err, row) {
+						bar.tick();
+					});
+					break;	
+				case 5:
+					db.run("ALTER TABLE `insights` ADD COLUMN graphopts INTEGER;", function(err, row) {
 						bar.tick();
 					});
 					break;	

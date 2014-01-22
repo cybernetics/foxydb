@@ -112,6 +112,7 @@ define([
 							Global.tabs.push(self.insight);
 							self.setupDragDrop();
 							self.getStructure();
+							self.changed = false;
 					} else {
 						Model.Insight.findOne({id: self.options.id}).then(function(response) {
 
@@ -142,7 +143,7 @@ define([
 							self.setupDragDrop();
 
 							self.element.find('.applyButton').click();
-							
+							self.changed = false;
 						});					
 
 					}
@@ -155,7 +156,9 @@ define([
 
 					self.editor.on('change', function() {
 						self.getVariables();
+						self.changed = true;
 					});
+					
 					self.insight.bind('query',function(event, newVal, oldVal) {
 						self.editor.setValue(newVal);
 					});
@@ -730,7 +733,7 @@ define([
 						if(typeof self.options.id === 'undefined') {
 							Global.insights.push(self.insight);
 						}
-						
+
 						self.changed = false;
 						self.options.id = response.id;
 						can.route.attr('id',self.options.id);

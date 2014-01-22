@@ -13,7 +13,7 @@ define([
 	'can/util/object',
 	'jquerypp/event/drag',
 	'jquerypp/event/drop',
-	'rickshaw.min',
+	'rickshaw',
 	'css!../../../css/rickshaw.min'
 ], function(
 	$,
@@ -592,7 +592,7 @@ define([
 				if(self.currentResults.data.length > 0) {
 					fields = Object.keys(self.currentResults.data[0]);
 				}
-				self.element.find('.displayMode.graph').html('//js/app/views/pages/insight/graph.ejs', {x:self.insight.attr('graphopts.x'), y:self.insight.attr('graphopts.y'), controller: self, fields: fields, results: self.currentResults.data, count: Math.ceil(self.currentResults.found_rows/50), page: self.currentPage, insight: self.insight});
+				self.element.find('.displayMode.graph').html('//js/app/views/pages/insight/graph.ejs', {type:self.insight.attr('graphopts.type'), x:self.insight.attr('graphopts.x'), y:self.insight.attr('graphopts.y'), controller: self, fields: fields, results: self.currentResults.data, count: Math.ceil(self.currentResults.found_rows/50), page: self.currentPage, insight: self.insight});
 				if(typeof self.insight.attr('graphopts.x') == 'undefined' || typeof self.insight.attr('graphopts.y') == 'undefined'){
 
 				} else {
@@ -614,12 +614,14 @@ define([
 						series.push(serie);
 
 					});
+					var type = (self.insight.attr('graphopts.type')||'line').split('_');
 
 					var graph = new Rickshaw.Graph(
 					{
 						element: document.querySelector('#insight_'+self.insight.attr('id')+' .graphArea'),
 						width: $('#insight_'+self.insight.attr('id')+' .graphArea').width()-40,
-						renderer: 'line',
+						height: 400,
+						renderer: type[0],
 						series: series
 					});
 					console.log(series);
@@ -632,21 +634,25 @@ define([
 					} );
 					var hoverDetail = new Rickshaw.Graph.HoverDetail( {
 						graph: graph,
-						formatter: function(series, x, y){
-							return self.currentResults.data[x][self.insight.attr('graphopts.x')];
+						formatter: function(series, x, y, formattedX, formattedY){
+							return series.name + ':&nbsp;' + formattedY;
 						},
+						xFormatter: function(x) {
+							return self.currentResults.data[x][self.insight.attr('graphopts.x')];
+						}
 					} );
+					if(typeof type[1] == 'undefined') {
+						graph.configure({offset: 'zero', unstack: true});
+					}
 					graph.render();
 				}
-
+				
 				self.updatePages(self.currentPage, self.currentResults.found_rows);
 
 			},
 			'updateAxis': function() {
 				var self = this;
-				console.log(self);
-				console.log('updateaxis');
-				//can.batch.start();
+				can.batch.start();
 				self.insight.attr('graphopts.x', '');
 				self.insight.removeAttr('graphopts.y');
 				self.insight.attr('graphopts.y', {});
@@ -657,8 +663,10 @@ define([
 				self.element.find('.graphXAxis input:checked').each(function() {
 					self.insight.attr('graphopts.x', $(this).val());
 				});
-				//can.batch.stop(true, true);
-				console.log(self.insight.attr('graphopts').attr());
+				self.element.find('.graphType input:checked').each(function() {
+					self.insight.attr('graphopts.type', $(this).val());
+				});
+				can.batch.stop(true, true);
 				self.generateGraph();
 			},
 			fetchData: function(element, page) {

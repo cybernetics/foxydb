@@ -588,6 +588,7 @@ define([
 			generateGraph: function() {
 				var self = this;
 				var fields = [];
+				var palette = new Rickshaw.Color.Palette( { scheme: 'spectrum14' } );
 				if(self.currentResults.data.length > 0) {
 					fields = Object.keys(self.currentResults.data[0]);
 				}
@@ -595,36 +596,70 @@ define([
 				if(typeof self.insight.attr('graphopts.x') == 'undefined' || typeof self.insight.attr('graphopts.y') == 'undefined'){
 
 				} else {
-					console.log(self.insight.attr('graphopts.y'));
+					var series = [];
+					var xs = {};
+					self.currentResults.data.forEach(function(resitem, index) {
+						xs[resitem[self.insight.attr('graphopts.x')]] = index;
+					});
+					self.insight.attr('graphopts.y').each(function(index, item) {
+						var data = []
+						self.currentResults.data.forEach(function(resitem) {
+							data.push({x: xs[resitem[self.insight.attr('graphopts.x')]], y: parseInt(resitem[item])||0});
+						});
+						var serie = {
+							data: data,
+							color: palette.color(),
+							name: item
+						};
+						series.push(serie);
+
+					});
+
+					var graph = new Rickshaw.Graph(
+					{
+						element: document.querySelector('#insight_'+self.insight.attr('id')+' .graphArea'),
+						width: $('#insight_'+self.insight.attr('id')+' .graphArea').width()-40,
+						renderer: 'line',
+						series: series
+					});
+					console.log(series);
+
+					var y_ticks = new Rickshaw.Graph.Axis.Y( {
+						graph: graph,
+						orientation: 'left',
+						tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+						element: document.querySelector('#insight_'+self.insight.attr('id')+' .graphAreaY'),
+					} );
+					var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+						graph: graph,
+						formatter: function(series, x, y){
+							return self.currentResults.data[x][self.insight.attr('graphopts.x')];
+						},
+					} );
+					graph.render();
 				}
 
-				var graph = new Rickshaw.Graph({
-				element: document.querySelector('#insight_'+self.insight.attr('id')+' .graphArea'),
-				renderer: 'line',
-				series: [
-					{
-						data: [ { x: 0, y: 40 }, { x: 1, y: 49 }],
-						color: 'steelblue'
-					}
-				]
-				});
-				graph.render();
+				self.updatePages(self.currentPage, self.currentResults.found_rows);
 
 			},
 			'updateAxis': function() {
 				var self = this;
-				
-				var vals = {};
-				//self.insight.attr('graphopts.x', '');
+				console.log(self);
+				console.log('updateaxis');
+				//can.batch.start();
+				self.insight.attr('graphopts.x', '');
+				self.insight.removeAttr('graphopts.y');
+				self.insight.attr('graphopts.y', {});
+				console.log($('.graphYAxis input:checked'));
 				self.element.find('.graphYAxis input:checked').each(function() {
-					vals[$(this).val()] = $(this).val();
-					console.log('vals',vals);
+					self.insight.attr('graphopts.y.'+$(this).val(),$(this).val());
 				});
-				self.insight.attr('graphopts.y', vals, true);
 				self.element.find('.graphXAxis input:checked').each(function() {
 					self.insight.attr('graphopts.x', $(this).val());
 				});
+				//can.batch.stop(true, true);
 				console.log(self.insight.attr('graphopts').attr());
+				self.generateGraph();
 			},
 			fetchData: function(element, page) {
 				var self = this;
@@ -667,18 +702,8 @@ define([
 						 
 						
 						self.element.find('.results .resultsContent').width(self.element.find('.results').width());
-						if(page > 1) {
-							self.element.find('.previous').removeClass('disabled');
-						} else if(!self.element.find('.previous').hasClass('disabled')) {
-							self.element.find('.previous').addClass('disabled');
-						}
-
-						if(page < Math.ceil(data.found_rows/50)) {
-							self.element.find('.next').removeClass('disabled');
-						} else if(!self.element.find('.next').hasClass('disabled')) {
-							self.element.find('.next').addClass('disabled');
-						}
-						self.page = page;
+						self.updatePages(page, data.found_rows);
+						
 						self.element.find('.queryStats').html('Query executed in ' + data.execution_time + 'ms').show();
 						//if(Math.ceil(data.found_rows/50) <= page)
 					},
@@ -695,6 +720,21 @@ define([
 					}
 
 				});
+			},
+			'updatePages': function(page, found_rows) {
+				var self = this;
+				if(page > 1) {
+					self.element.find('.previous').removeClass('disabled');
+				} else if(!self.element.find('.previous').hasClass('disabled')) {
+					self.element.find('.previous').addClass('disabled');
+				}
+
+				if(page < Math.ceil(found_rows/50)) {
+					self.element.find('.next').removeClass('disabled');
+				} else if(!self.element.find('.next').hasClass('disabled')) {
+					self.element.find('.next').addClass('disabled');
+				}
+				self.page = page;
 			},
 			'.previous click': function(element, event) {
 				event.preventDefault();
@@ -972,6 +1012,9 @@ define([
 					h = 200;
 				}
 				this.element.find('.structure > .menu').css('max-height', h);
+				if(this.insight.attr('graph') && Object.keys(this.currentResults).length > 0) {
+					this.generateGraph();
+				}
 			}
 
 		}

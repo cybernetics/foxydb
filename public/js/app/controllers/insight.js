@@ -615,36 +615,38 @@ define([
 
 					});
 					var type = (self.insight.attr('graphopts.type')||'line').split('_');
+					try {
+						var graph = new Rickshaw.Graph(
+						{
+							element: document.querySelector('#insight_'+self.insight.attr('id')+' .graphArea'),
+							width: $('#insight_'+self.insight.attr('id')+' .graphArea').width()-40,
+							height: 400,
+							renderer: type[0],
+							series: series
+						});
 
-					var graph = new Rickshaw.Graph(
-					{
-						element: document.querySelector('#insight_'+self.insight.attr('id')+' .graphArea'),
-						width: $('#insight_'+self.insight.attr('id')+' .graphArea').width()-40,
-						height: 400,
-						renderer: type[0],
-						series: series
-					});
-					console.log(series);
-
-					var y_ticks = new Rickshaw.Graph.Axis.Y( {
-						graph: graph,
-						orientation: 'left',
-						tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-						element: document.querySelector('#insight_'+self.insight.attr('id')+' .graphAreaY'),
-					} );
-					var hoverDetail = new Rickshaw.Graph.HoverDetail( {
-						graph: graph,
-						formatter: function(series, x, y, formattedX, formattedY){
-							return series.name + ':&nbsp;' + formattedY;
-						},
-						xFormatter: function(x) {
-							return self.currentResults.data[x][self.insight.attr('graphopts.x')];
+						var y_ticks = new Rickshaw.Graph.Axis.Y( {
+							graph: graph,
+							orientation: 'left',
+							tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+							element: document.querySelector('#insight_'+self.insight.attr('id')+' .graphAreaY'),
+						} );
+						var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+							graph: graph,
+							formatter: function(series, x, y, formattedX, formattedY){
+								return series.name + ':&nbsp;' + formattedY;
+							},
+							xFormatter: function(x) {
+								return self.currentResults.data[x][self.insight.attr('graphopts.x')];
+							}
+						} );
+						if(typeof type[1] == 'undefined') {
+							graph.configure({offset: 'zero', unstack: true});
 						}
-					} );
-					if(typeof type[1] == 'undefined') {
-						graph.configure({offset: 'zero', unstack: true});
+						graph.render();
+					} catch(e) {
+						console.log(e);
 					}
-					graph.render();
 				}
 				
 				self.updatePages(self.currentPage, self.currentResults.found_rows);

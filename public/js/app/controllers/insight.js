@@ -25,10 +25,17 @@ define([
 
 		},
 		{
+			changed: false,
 			langTools: null,
 			operators: {between: 'BETWEEN', equal: '=', ne: '<>', lt: '<', lte: '<=', gt: '>', gte: '>=', like: 'LIKE', in: 'IN', relation: 'relation'},
 			init: function(element, options) {
+				var self = this;
 
+				$(window).bind('beforeunload', function() {
+					if (self.changed) {
+						return false;
+					}
+				});
 			},
 			tables: [],
 			fields: [],
@@ -133,6 +140,7 @@ define([
 							self.updateTabs();
 							self.getStructure();
 							self.setupDragDrop();
+
 							self.element.find('.applyButton').click();
 							
 						});					
@@ -144,7 +152,7 @@ define([
 					self.element.find('.sql').css('font-size',12);
 					self.editor.getSession().setUseWrapMode(true);
 					self.editor.renderer.setShowGutter(false);
-					
+
 					self.editor.on('change', function() {
 						self.getVariables();
 					});
@@ -176,6 +184,7 @@ define([
 								}
 							}
 
+							self.changed = true;
 							self.generateQuery();
 						}
 					});
@@ -439,7 +448,6 @@ define([
 					if (wheres.length) {
 						query +=  ' WHERE ' + wheres.join(' AND ');
 					}
-
 				}
 
 				self.insight.attr('query', query + ';');
@@ -686,7 +694,7 @@ define([
 						self.insight.attr('variables', {});
 						self.insight.attr('query', '-- Type your query here');
 					}
-					
+
 					self.element.find('.exportButton').data('export', false);
 					self.element.find('.exportButton').addClass('disabled');
 				}
@@ -722,6 +730,8 @@ define([
 						if(typeof self.options.id === 'undefined') {
 							Global.insights.push(self.insight);
 						}
+						
+						self.changed = false;
 						self.options.id = response.id;
 						can.route.attr('id',self.options.id);
 					});
@@ -916,7 +926,6 @@ define([
 				}
 				this.element.find('.structure > .menu').css('max-height', h);
 			}
-
 		}
 	);
 });

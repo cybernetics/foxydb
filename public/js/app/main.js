@@ -43,7 +43,7 @@ define(['jquery', 'can', 'squel', 'can/view/modifiers', 'can/view/ejs', 'app/con
 			}
 		}
 	});
-	
+
 	new Global();
 
 	new Main($('body'));

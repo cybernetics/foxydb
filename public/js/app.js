@@ -5,7 +5,8 @@ require.config({
         jquery: 'jquery-2.0.3.min',
         squel: 'squel/squel',
         parsley: 'parsleyjs/parsley',
-        formParams: 'jquery.formParams/jquery.formParams'
+        formParams: 'jquery.formParams/jquery.formParams',
+        d3: 'd3.min'
     },
     map: {
 	  '*': {
@@ -14,7 +15,12 @@ require.config({
 	    'text': 'requirejs-text/text',
 	    'ejs': 'canjs-require-ejs/src/plugin/ejs'
 	  }
-	}
+	},
+    shim: {
+        d3: {
+            exports: 'd3.min'
+        }
+    }
 });
 less = { relativeUrls: true }
 requirejs(['app/main']);

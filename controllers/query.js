@@ -89,6 +89,7 @@ exports.controller = function(app, db) {
 						var totalCount = 0;
 						var time = new Date();
 						var ast = simpleSqlParser.sql2ast(req.body.query);
+						console.log(ast);
 						if(Object.keys(ast).length == 0) {
 							connection.query(req.body.query, function(err, rows) {
 								if(err) {
@@ -104,14 +105,16 @@ exports.controller = function(app, db) {
 								limitCount = ast.LIMIT.nb;
 							}
 							ast.SELECT = [{name: 'COUNT(*) AS cnt'}];
-
+							console.log(simpleSqlParser.ast2sql(ast));
 							connection.query(simpleSqlParser.ast2sql(ast), function(err, rows) {
 								if(err) {
-									res.send(500, {errstr: err.message});
+									res.send(500, {errstr: err.message, executed_query: simpleSqlParser.ast2sql(ast)});
 									connection.end();
 								} else {
 									totalCount = limitCount;
-									if(rows.length > 0) {
+									if (typeof ast['GROUP BY'] !== 'undefined') {
+										totalCount = rows.length;
+									} else if(rows.length > 0) {
 										totalCount = rows[0].cnt;	
 									}
 										
@@ -125,7 +128,7 @@ exports.controller = function(app, db) {
 									connection.query(simpleSqlParser.ast2sql(newAst), function(err, rows) {
 										var timeCompleted = new Date();
 										if(err) {
-											res.send(500, {errstr: err.message});
+											res.send(500, {errstr: err.message,executed_query: simpleSqlParser.ast2sql(newAst), execution_time: timeCompleted.getTime() - time.getTime()});
 										} else {
 											if(typeof rows.splice === 'undefined') {
 												res.send(200, {data:[], found_rows: 0, executed_query: simpleSqlParser.ast2sql(newAst), execution_time: timeCompleted.getTime() - time.getTime()});

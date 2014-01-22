@@ -12,7 +12,9 @@ define([
 	'ace/ext-language_tools',
 	'can/util/object',
 	'jquerypp/event/drag',
-	'jquerypp/event/drop'
+	'jquerypp/event/drop',
+	'rickshaw',
+	'css!../../../css/rickshaw.min'
 ], function(
 	$,
 	can,
@@ -39,6 +41,8 @@ define([
 			},
 			tables: [],
 			fields: [],
+			currentResults: {},
+			currentPage: 0,
 			edit: function(options) {
 				var self = this;
 
@@ -89,7 +93,7 @@ define([
 				if(can.route.attr('type')) {
 					type = can.route.attr('type');
 				}
-				self.insight = new Model.Insight({query:'-- Type your query here', current: true, name: '', type: type, variables: {}, fields: {}, filters: {}, relations: {}});
+				self.insight = new Model.Insight({query:'-- Type your query here', current: true, name: '', type: type, variables: {}, fields: {}, filters: {}, relations: {}, graph: 0, graphopts: {}});
 				self.element.data('insight', self);
 				Model.Database.findAll().then(function(data) {
 					self.databases = data;
@@ -131,12 +135,15 @@ define([
 							if(!response.attr('relations')) {
 								response.attr('relations', {});
 							}
-
+							if(!response.attr('graphopts')) {
+								response.attr('graphopts', {});
+							}
 							self.insight.attr(response.attr(), true);
 							self.insight.attr({variables:response.attr('variables')});
 							self.insight.attr({fields:response.attr('fields')});
 							self.insight.attr({filters:response.attr('filters')});
 							self.insight.attr({relations:response.attr('relations')});
+							self.insight.attr({graphopts:response.attr('graphopts')});
 							
 							self.updateTabs();
 							self.getStructure();
@@ -591,8 +598,95 @@ define([
 					self.element.find('.exportForm').submit();
 				}
 			},
+			generateGraph: function() {
+				var self = this;
+				var fields = [];
+				var palette = new Rickshaw.Color.Palette( { scheme: 'spectrum14' } );
+				if(self.currentResults.data.length > 0) {
+					fields = Object.keys(self.currentResults.data[0]);
+				}
+				self.element.find('.displayMode.graph').html('//js/app/views/pages/insight/graph.ejs', {type:self.insight.attr('graphopts.type'), x:self.insight.attr('graphopts.x'), y:self.insight.attr('graphopts.y'), controller: self, fields: fields, results: self.currentResults.data, count: Math.ceil(self.currentResults.found_rows/50), page: self.currentPage, insight: self.insight});
+				if(typeof self.insight.attr('graphopts.x') == 'undefined' || typeof self.insight.attr('graphopts.y') == 'undefined'){
+
+				} else {
+					var series = [];
+					var xs = {};
+					self.currentResults.data.forEach(function(resitem, index) {
+						xs[resitem[self.insight.attr('graphopts.x')]] = index;
+					});
+					self.insight.attr('graphopts.y').each(function(index, item) {
+						var data = []
+						self.currentResults.data.forEach(function(resitem) {
+							data.push({x: xs[resitem[self.insight.attr('graphopts.x')]], y: parseInt(resitem[item])||0});
+						});
+						var serie = {
+							data: data,
+							color: palette.color(),
+							name: item
+						};
+						series.push(serie);
+
+					});
+					var type = (self.insight.attr('graphopts.type')||'line').split('_');
+					try {
+						var graph = new Rickshaw.Graph(
+						{
+							element: document.querySelector('#insight_'+self.insight.attr('id')+' .graphArea'),
+							width: $('#insight_'+self.insight.attr('id')+' .graphArea').width()-40,
+							height: 400,
+							renderer: type[0],
+							series: series
+						});
+
+						var y_ticks = new Rickshaw.Graph.Axis.Y( {
+							graph: graph,
+							orientation: 'left',
+							tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+							element: document.querySelector('#insight_'+self.insight.attr('id')+' .graphAreaY'),
+						} );
+						var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+							graph: graph,
+							formatter: function(series, x, y, formattedX, formattedY){
+								return series.name + ':&nbsp;' + formattedY;
+							},
+							xFormatter: function(x) {
+								return self.currentResults.data[x][self.insight.attr('graphopts.x')];
+							}
+						} );
+						if(typeof type[1] == 'undefined') {
+							graph.configure({offset: 'zero', unstack: true});
+						}
+						graph.render();
+					} catch(e) {
+						console.log(e);
+					}
+				}
+				
+				self.updatePages(self.currentPage, self.currentResults.found_rows);
+
+			},
+			'updateAxis': function() {
+				var self = this;
+				can.batch.start();
+				self.insight.attr('graphopts.x', '');
+				self.insight.removeAttr('graphopts.y');
+				self.insight.attr('graphopts.y', {});
+				console.log($('.graphYAxis input:checked'));
+				self.element.find('.graphYAxis input:checked').each(function() {
+					self.insight.attr('graphopts.y.'+$(this).val(),$(this).val());
+				});
+				self.element.find('.graphXAxis input:checked').each(function() {
+					self.insight.attr('graphopts.x', $(this).val());
+				});
+				self.element.find('.graphType input:checked').each(function() {
+					self.insight.attr('graphopts.type', $(this).val());
+				});
+				can.batch.stop(true, true);
+				self.generateGraph();
+			},
 			fetchData: function(element, page) {
 				var self = this;
+				self.currentPage = page;
 				var oldContent = element.html();
 				var oldWidth = element.width();
 				element.addClass('loading');
@@ -614,6 +708,7 @@ define([
 						row_count: 50
 					},
 					success: function(data) {
+						self.currentResults = data;
 						var fields = [];
 						if(data.data.length > 0) {
 							fields = Object.keys(data.data[0]);
@@ -624,20 +719,14 @@ define([
 							self.element.find('.exportButton').addClass('disabled');
 						}
 
-						self.element.find('.results').html('//js/app/views/pages/insight/results.ejs', {fields: fields, results: data.data, count: Math.ceil(data.found_rows/50), page: page});
+						self.element.find('.displayMode.results').html('//js/app/views/pages/insight/results.ejs', {fields: fields, results: data.data, count: Math.ceil(data.found_rows/50), page: page});
+						
+						self.generateGraph();
+						 
+						
 						self.element.find('.results .resultsContent').width(self.element.find('.results').width());
-						if(page > 1) {
-							self.element.find('.previous').removeClass('disabled');
-						} else if(!self.element.find('.previous').hasClass('disabled')) {
-							self.element.find('.previous').addClass('disabled');
-						}
-
-						if(page < Math.ceil(data.found_rows/50)) {
-							self.element.find('.next').removeClass('disabled');
-						} else if(!self.element.find('.next').hasClass('disabled')) {
-							self.element.find('.next').addClass('disabled');
-						}
-						self.page = page;
+						self.updatePages(page, data.found_rows);
+						
 						self.element.find('.queryStats').html('Query executed in ' + data.execution_time + 'ms').show();
 						//if(Math.ceil(data.found_rows/50) <= page)
 					},
@@ -654,6 +743,21 @@ define([
 					}
 
 				});
+			},
+			'updatePages': function(page, found_rows) {
+				var self = this;
+				if(page > 1) {
+					self.element.find('.previous').removeClass('disabled');
+				} else if(!self.element.find('.previous').hasClass('disabled')) {
+					self.element.find('.previous').addClass('disabled');
+				}
+
+				if(page < Math.ceil(found_rows/50)) {
+					self.element.find('.next').removeClass('disabled');
+				} else if(!self.element.find('.next').hasClass('disabled')) {
+					self.element.find('.next').addClass('disabled');
+				}
+				self.page = page;
 			},
 			'.previous click': function(element, event) {
 				event.preventDefault();
@@ -705,6 +809,7 @@ define([
 			'.saveButton click': function(element, event) {
 				var self = this;
 				event.preventDefault();
+				console.log(self.insight.attr('graphopts').attr());
 				$('.tabs .active .insightTitle').parent().removeClass('error');
 				if($('.tabs .active .insightTitle').val().trim() === ''){
 					$('.tabs .active .insightTitle').parent().addClass('error');
@@ -844,13 +949,9 @@ define([
 				} else {
 					$('.tabs .active .insightTitle').val('Copy of ' + $('.tabs .active .insightTitle').val().trim());
 
-					var insight = new Model.Insight({
-						database_id: self.element.find('.databaseSelect').val(),
-						name: $('.tabs .active .insightTitle').val(),
-						query: self.editor.getValue(),
-						variables: self.insight.attr('variables'),
-						type: self.insight.attr('type')
-					});
+					var insight = new Model.Insight(self.insight.attr());
+					insight.attr('name',$('.tabs .active .insightTitle').val());
+					insight.removeAttr('id');
 					insight.save().then(function(response) {
 						self.insight.attr(response.attr());
 						self.options.id = response.id;
@@ -922,12 +1023,25 @@ define([
 				event.stopPropagation();
 				element.parent().toggleClass('open');
 			},
+			'.displayType .button click': function(element, event) {
+				event.preventDefault();
+				var self = this;
+				console.log(element.hasClass('table'));
+				if(element.hasClass('dTable')) {
+					self.insight.attr('graph', 0);
+				} else {
+					self.insight.attr('graph', 1);
+				}
+			},
 			'{window} resize': function() {
 				var h = window.innerHeight-300;
 				if(h < 200) {
 					h = 200;
 				}
 				this.element.find('.structure > .menu').css('max-height', h);
+				if(this.insight.attr('graph') && Object.keys(this.currentResults).length > 0) {
+					this.generateGraph();
+				}
 			}
 		}
 	);

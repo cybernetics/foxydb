@@ -33,6 +33,12 @@
 		<input name="exportDB" class="exportDB" ></input>
 	</form>
 </a>
+<div class="ui icon buttons right floated small displayType">
+	<div class="ui button dTable <%=(!insight.attr('graph')?'active':'')%>"><i class="table icon"></i></div>
+	<div class="ui button dChart <%=(insight.attr('graph')?'active':'')%>"><i class="basic chart icon"></i></div>
+</div>
+
+
 <div class="ui clearing divider"></div>
 
 <div class="queryEditor">
@@ -46,7 +52,11 @@
 <div class="queryStats message ui green">
 
 </div>
+<br /><br />
+<div class="displayMode results  <%=(!insight.attr('graph')?'':'hidden')%>">
 
-<div class="results">
+</div>
+
+<div class="displayMode graph  <%=(insight.attr('graph')?'':'hidden')%>">
 
 </div>

@@ -23,10 +23,20 @@ define([
 
 			},
 			'.icon.delete click': function(element, event) {
+
+				if (element.parent().data('insight').attr('changed')) {
+					if (!confirm("Insight was updated, maybe You should save it?")) {
+						return;
+					} else {
+						element.parent().data('insight').attr('changed', false);
+					}
+				}
+
 				index = element.parent().index();
 				if(element.parent().hasClass('active')) {
 					can.route.attr({controller: 'dashboard'}, true);
 				}
+
 				$('#insight_' + element.parent().data('insight').attr('id')).remove();
 				delete Model.Insight.store[element.parent().data('insight').attr('id')];
 				Global.tabs.splice(index, 1);

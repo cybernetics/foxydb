@@ -4,7 +4,7 @@
 		<option value="-1">Select</option>
 	<% first = false; %>
 	<% } %>
-	<% if (table != relation.table) { %>
-		<option <%= ((typeof selected !== 'undefined' && selected == relation.table) ? 'selected="selected"' : '') %> value="<%=relation.table; %>" ><%=relation.table; %></option>
+	<% if (table != index) { %>
+		<option <%= ((typeof selected !== 'undefined' && selected == index) ? 'selected="selected"' : '') %> value="<%=index; %>" ><%=index; %></option>
 	<% } %>
 <% }); %>

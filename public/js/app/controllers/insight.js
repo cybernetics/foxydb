@@ -27,14 +27,13 @@ define([
 
 		},
 		{
-			changed: false,
 			langTools: null,
 			operators: {between: 'BETWEEN', equal: '=', ne: '<>', lt: '<', lte: '<=', gt: '>', gte: '>=', like: 'LIKE', in: 'IN', relation: 'relation'},
 			init: function(element, options) {
 				var self = this;
 
 				$(window).bind('beforeunload', function() {
-					if (self.changed) {
+					if (self.insight.attr('changed')) {
 						return "Insight was updated, maybe You should save it?";
 					}
 				});
@@ -116,7 +115,6 @@ define([
 							Global.tabs.push(self.insight);
 							self.setupDragDrop();
 							self.getStructure();
-							self.changed = false;
 					} else {
 						Model.Insight.findOne({id: self.options.id},function(response) {
 							if(!response.attr('variables')) {
@@ -149,7 +147,7 @@ define([
 							self.setupDragDrop();
 
 							self.element.find('.applyButton').click();
-							self.changed = false;
+							self.insight.attr('changed', false);
 						});					
 
 					}
@@ -162,7 +160,7 @@ define([
 
 					self.editor.on('change', function() {
 						self.getVariables();
-						self.changed = true;
+						self.insight.attr('changed', true);
 					});
 					
 					self.insight.bind('query',function(event, newVal, oldVal) {
@@ -836,7 +834,7 @@ define([
 							Global.insights.push(self.insight);
 						}
 
-						self.changed = false;
+						self.insight.attr('changed', false);
 						self.options.id = response.id;
 						can.route.attr('id',self.options.id);
 					});
@@ -963,7 +961,7 @@ define([
 				this.element.find('.operator-' + element.val()).show();
 
 				if (element.val() == 'relation') {
-					element.siblings('.operator:visible').find('.relTables').html('//js/app/views/pages/insight/selecttable.ejs', {rels: this.insight.attr('relations'), table: element.parents('li').data('field').table});
+					element.parent().siblings('.operator:visible').find('.relTables').html('//js/app/views/pages/insight/selecttable.ejs', {rels: this.insight.attr('relations'), table: element.parents('.item').data('field').table});
 				}
 			},
 			'.relTables change': function (element, event) {

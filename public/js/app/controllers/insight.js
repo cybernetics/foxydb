@@ -118,8 +118,7 @@ define([
 							self.getStructure();
 							self.changed = false;
 					} else {
-						Model.Insight.findOne({id: self.options.id}).then(function(response) {
-
+						Model.Insight.findOne({id: self.options.id},function(response) {
 							if(!response.attr('variables')) {
 								response.attr('variables', {});
 							}
@@ -671,7 +670,6 @@ define([
 				self.insight.attr('graphopts.x', '');
 				self.insight.removeAttr('graphopts.y');
 				self.insight.attr('graphopts.y', {});
-				console.log($('.graphYAxis input:checked'));
 				self.element.find('.graphYAxis input:checked').each(function() {
 					self.insight.attr('graphopts.y.'+$(this).val(),$(this).val());
 				});
@@ -809,7 +807,6 @@ define([
 			'.saveButton click': function(element, event) {
 				var self = this;
 				event.preventDefault();
-				console.log(self.insight.attr('graphopts').attr());
 				$('.tabs .active .insightTitle').parent().removeClass('error');
 				if($('.tabs .active .insightTitle').val().trim() === ''){
 					$('.tabs .active .insightTitle').parent().addClass('error');

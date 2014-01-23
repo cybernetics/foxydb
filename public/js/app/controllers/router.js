@@ -9,7 +9,7 @@ define([
 	'app/controllers/tabs',
 	'app/controllers/insight',
 	'jquery-cookie/jquery.cookie',
-	 '../../../semantic/javascript/semantic.min'
+	 '../../../semantic/javascript/semantic'
 ], function(
 	$,
 	can

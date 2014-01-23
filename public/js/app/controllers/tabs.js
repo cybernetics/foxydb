@@ -28,7 +28,7 @@ define([
 					can.route.attr({controller: 'dashboard'}, true);
 				}
 				$('#insight_' + element.parent().data('insight').attr('id')).remove();
-
+				delete Model.Insight.store[element.parent().data('insight').attr('id')];
 				Global.tabs.splice(index, 1);
 			},
 			'li click': function(element, event) {

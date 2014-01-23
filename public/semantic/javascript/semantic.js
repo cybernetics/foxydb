@@ -274,7 +274,7 @@ $.fn.accordion = function(parameters) {
             clearTimeout(module.performance.timer);
             module.performance.timer = setTimeout(module.performance.display, 100);
           },
-          display: function() {
+          display: function() { return;
             var
               title = settings.name + ':',
               totalTime = 0
@@ -843,7 +843,7 @@ $.extend( $.easing, {
           clearTimeout(module.performance.timer);
           module.performance.timer = setTimeout(module.performance.display, 100);
         },
-        display: function() {
+        display: function() { return;
           var
             title = settings.name + ':',
             totalTime = 0
@@ -1781,7 +1781,7 @@ $.fn.form = function(fields, parameters) {
             clearTimeout(module.performance.timer);
             module.performance.timer = setTimeout(module.performance.display, 100);
           },
-          display: function() {
+          display: function() { return;
             var
               title = settings.name + ':',
               totalTime = 0
@@ -2537,7 +2537,7 @@ $.fn.state = function(parameters) {
             clearTimeout(module.performance.timer);
             module.performance.timer = setTimeout(module.performance.display, 100);
           },
-          display: function() {
+          display: function() { return;
             var
               title = settings.name + ':',
               totalTime = 0
@@ -3271,7 +3271,7 @@ $.fn.chatroom = function(parameters) {
           clearTimeout(module.performance.timer);
           module.performance.timer = setTimeout(module.performance.display, 100);
         },
-        display: function() {
+        display: function() { return;
           var
             title = settings.name + ':',
             totalTime = 0
@@ -3734,7 +3734,7 @@ $.fn.checkbox = function(parameters) {
             clearTimeout(module.performance.timer);
             module.performance.timer = setTimeout(module.performance.display, 100);
           },
-          display: function() {
+          display: function() { return;
             var
               title = settings.name + ':',
               totalTime = 0
@@ -4303,7 +4303,7 @@ $.fn.dimmer = function(parameters) {
             clearTimeout(module.performance.timer);
             module.performance.timer = setTimeout(module.performance.display, 100);
           },
-          display: function() {
+          display: function() { return;
             var
               title = settings.name + ':',
               totalTime = 0
@@ -5198,7 +5198,7 @@ $.fn.dropdown = function(parameters) {
             clearTimeout(module.performance.timer);
             module.performance.timer = setTimeout(module.performance.display, 100);
           },
-          display: function() {
+          display: function() { return;
             var
               title = settings.name + ':',
               totalTime = 0
@@ -5927,7 +5927,7 @@ $.fn.modal = function(parameters) {
             clearTimeout(module.performance.timer);
             module.performance.timer = setTimeout(module.performance.display, 100);
           },
-          display: function() {
+          display: function() { return;
             var
               title = settings.name + ':',
               totalTime = 0
@@ -6448,7 +6448,7 @@ $.fn.nag = function(parameters) {
             clearTimeout(module.performance.timer);
             module.performance.timer = setTimeout(module.performance.display, 100);
           },
-          display: function() {
+          display: function() { return;
             var
               title = settings.name + ':',
               totalTime = 0
@@ -7291,7 +7291,7 @@ $.fn.popup = function(parameters) {
             clearTimeout(module.performance.timer);
             module.performance.timer = setTimeout(module.performance.display, 100);
           },
-          display: function() {
+          display: function() { return;
             var
               title = settings.name + ':',
               totalTime = 0
@@ -7738,7 +7738,7 @@ $.fn.rating = function(parameters) {
             clearTimeout(module.performance.timer);
             module.performance.timer = setTimeout(module.performance.display, 100);
           },
-          display: function() {
+          display: function() { return;
             var
               title = settings.name + ':',
               totalTime = 0
@@ -8359,7 +8359,7 @@ $.fn.search = function(source, parameters) {
             clearTimeout(module.performance.timer);
             module.performance.timer = setTimeout(module.performance.display, 100);
           },
-          display: function() {
+          display: function() { return;
             var
               title = settings.name + ':',
               totalTime = 0
@@ -9280,7 +9280,7 @@ $.fn.shape = function(parameters) {
             clearTimeout(module.performance.timer);
             module.performance.timer = setTimeout(module.performance.display, 100);
           },
-          display: function() {
+          display: function() { return;
             var
               title = settings.name + ':',
               totalTime = 0
@@ -9804,7 +9804,7 @@ $.fn.sidebar = function(parameters) {
             clearTimeout(module.performance.timer);
             module.performance.timer = setTimeout(module.performance.display, 100);
           },
-          display: function() {
+          display: function() { return;
             var
               title = settings.name + ':',
               totalTime = 0
@@ -10488,7 +10488,7 @@ $.fn.sidebar.settings = {
           clearTimeout(module.performance.timer);
           module.performance.timer = setTimeout(module.performance.display, 100);
         },
-        display: function() {
+        display: function() { return;
           var
             title = settings.name + ':',
             totalTime = 0
@@ -10884,7 +10884,7 @@ $.fn.transition = function() {
             module.debug('Starting tween', settings.animation, $module.attr('class'));
           },
 
-          display: function() {
+          display: function() { return;
             var
               displayType = module.get.displayType()
             ;
@@ -11004,7 +11004,7 @@ $.fn.transition = function() {
             $module.removeClass(className.animating);
           },
 
-          display: function() {
+          display: function() { return;
             if(instance.displayType !== undefined) {
               $module.css('display', '');
             }
@@ -11320,7 +11320,7 @@ $.fn.transition = function() {
             clearTimeout(module.performance.timer);
             module.performance.timer = setTimeout(module.performance.display, 100);
           },
-          display: function() {
+          display: function() { return;
             var
               title = settings.name + ':',
               totalTime = 0
@@ -11775,7 +11775,7 @@ $.fn.video = function(parameters) {
             clearTimeout(module.performance.timer);
             module.performance.timer = setTimeout(module.performance.display, 100);
           },
-          display: function() {
+          display: function() { return;
             var
               title = settings.name + ':',
               totalTime = 0

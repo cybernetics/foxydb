@@ -35,7 +35,7 @@ define([
 
 				$(window).bind('beforeunload', function() {
 					if (self.changed) {
-						return false;
+						return "Insight was updated, maybe You should save it?";
 					}
 				});
 			},

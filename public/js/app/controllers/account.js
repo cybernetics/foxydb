@@ -34,7 +34,7 @@ define([
 						type: 'delete',
 						success: function(data) {
 							$.cookie('loggedIn',0);
-							Global.user.attr({user: ''}, true);
+							Global.user.attr({name: '', email: ''}, true);
 							Global.state.attr('loggedIn', false);
 							$('.tabsInner').remove();
 							can.route.attr({route: '/'}, true);

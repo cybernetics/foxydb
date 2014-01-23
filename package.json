@@ -1,7 +1,7 @@
 {
     "name": "foxydb",
     "description": "FoxyDB",
-    "version": "1.0.0",
+    "version": "1.2.0",
     "private": true,
     "dependencies": {
     	"express": "3.x",
@@ -10,6 +10,6 @@
         "progress": "*",
         "validator": "2.0.0",
         "flow": "*",
-        "simple-sql-parser": "git+https://github.com/DVSoftware/simpleSqlParser.git"
+        "simple-sql-parser": "git+https://github.com/DVSoftware/simpleSqlParser.git#functions"
     }
 }

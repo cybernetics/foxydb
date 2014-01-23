@@ -101,7 +101,7 @@ exports.controller = function(app, db) {
 								limitOffset = ast.LIMIT.from;
 								limitCount = ast.LIMIT.nb;
 							}
-							ast.SELECT = [{name: 'COUNT(*) AS cnt'}];
+							ast.SELECT.push({name: 'COUNT(*) AS cnt'});
 							console.log(simpleSqlParser.ast2sql(ast));
 							connection.query(simpleSqlParser.ast2sql(ast), function(err, rows) {
 								if(err) {

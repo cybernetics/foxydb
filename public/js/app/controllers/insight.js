@@ -631,7 +631,7 @@ define([
 					try {
 						var graph = new Rickshaw.Graph(
 						{
-							element: document.querySelector('#insight_'+self.insight.attr('id')+' .graphArea'),
+							element: document.querySelector('#insight_'+(self.insight.attr('id')||0)+' .graphArea'),
 							width: $('#insight_'+self.insight.attr('id')+' .graphArea').width()-40,
 							height: 400,
 							renderer: type[0],
@@ -642,7 +642,7 @@ define([
 							graph: graph,
 							orientation: 'left',
 							tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-							element: document.querySelector('#insight_'+self.insight.attr('id')+' .graphAreaY'),
+							element: document.querySelector('#insight_'+(self.insight.attr('id')||0)+' .graphAreaY'),
 						} );
 						var hoverDetail = new Rickshaw.Graph.HoverDetail( {
 							graph: graph,
@@ -1026,7 +1026,6 @@ define([
 			'.displayType .button click': function(element, event) {
 				event.preventDefault();
 				var self = this;
-				console.log(element.hasClass('table'));
 				if(element.hasClass('dTable')) {
 					self.insight.attr('graph', 0);
 				} else {

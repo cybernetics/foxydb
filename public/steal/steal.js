@@ -193,18 +193,23 @@ var h = {
 	stealCheck : /steal\.(production\.)?js.*/,
 	// get script that loaded steal 
 	getStealScriptSrc : function() {
-		if (!h.doc ) {
+		var scripts, script;
+		if(steal.isRhino && !h.doc){
 			return;
 		}
-		var scripts = h.getElementsByTagName("script"),
-			script;
-
-		// find the steal script and setup initial paths.
-		h.each(scripts, function( i, s ) {
-			if ( h.stealCheck.test(s.src) ) {
-				script = s;
-			}
-		});
+		else if (!h.doc) {
+			script = {
+				src : h.win.location.href
+			};
+		}else{
+			scripts = h.getElementsByTagName("script");
+			// find the steal script and setup initial paths.
+			h.each(scripts, function( i, s ) {
+				if ( h.stealCheck.test(s.src) ) {
+					script = s;
+				}
+			});
+		}
 		return script;
 	},
 	inArray : function( arr, val ){
@@ -917,6 +922,7 @@ h.extend(ConfigManager.prototype, {
 			this.stealConfig.root = root;
 			return this;
 		}
+
 		this.stealConfig.root =  root || URI("");
 	},
 	//var stealConfig = configs[configContext];
@@ -1144,7 +1150,8 @@ ConfigManager.defaults = {
 	// code in core.js w/i config.on callback
 };
 
-	// ### TYPES ##
+	/*global h,ConfigManager*/
+// ### TYPES ##
 /**
  * @function steal.config.types
  * @parent steal.config
@@ -1247,14 +1254,14 @@ ConfigManager.prototype.require = function( options, success, error) {
 		converters = [options.type]
 	}
 	require(options, converters, success, error, this)
-}
+};
 ConfigManager.prototype.addSuffix = function( str ) {
 	var suffix = this.attr('suffix')
 	if ( suffix ) {
 		str = (str + '').indexOf('?') > -1 ? str + "&" + suffix : str + "?" + suffix;
 	}
 	return str;
-}
+};
 
 // Require function. It will be called recursevly until all 
 // converters are ran. After that `success` callback is ran.
@@ -1268,12 +1275,12 @@ function require(options, converters, success, error, config) {
 	type.require(options, function require_continue_check() {
 		// if we have more types to convert
 		if ( converters.length ) {
-			require(options, converters, success, error, config)
+			require(options, converters, success, error, config);
 		} else { // otherwise this is the final
 			success.apply(this, arguments);
 		}
-	}, error, config)
-};
+	}, error, config);
+}
 
 
 
@@ -1301,58 +1308,75 @@ var cssCount = 0,
 // Apply all the basic types
 ConfigManager.defaults.types = {
 	"js": function( options, success, error ) {
-		// create a script tag
-		var script = h.scriptTag(),
-			callback = function() {
-				if (!script.readyState || stateCheck.test(script.readyState) ) {
-					cleanUp(script);
-					success();
-				}
-			}, errorTimeout;
-		// if we have text, just set and insert text
-		if ( options.text ) {
-			// insert
-			script.text = options.text;
+		var host,fileUri,fileHost;
 
-		} else {
-			var src = options.src; //st.idToUri( options.id );
-			// If we're in IE older than IE9 we need to use
-			// onreadystatechange to determine when javascript file
-			// is loaded. Unfortunately this makes it impossible to
-			// call teh error callback, because it will return 
-			// loaded or completed for the script even if it 
-			// encountered the 404 error
-			if(h.useIEShim){
-				script.onreadystatechange = function(){
-					if (stateCheck.test(script.readyState)) {
+		host = steal.config('root').host;
+		fileUri = options.idToUri(options.id);
+		fileHost = fileUri.host;
+
+		//only load JS this way outside of rhino, and only if it is JS. the 'js' type also loads mustache files..
+		if(!steal.isRhino && !h.doc && (options.type === "js")){
+			h.request({
+				contentType : 'application/javascript',
+				src : "" +fileUri
+			},function(result){
+				options.text = result;
+				h.win.eval(result);
+				success();
+			});
+		}else{
+			// create a script tag
+			var script = h.scriptTag(),
+				callback = function() {
+					if (!script.readyState || stateCheck.test(script.readyState) ) {
+						cleanUp(script);
 						success();
 					}
-				}
+				}, errorTimeout;
+			// if we have text, just set and insert text
+			if ( options.text ) {
+				// insert
+				script.text = options.text;
+
 			} else {
-				script.onload = callback;
-				// error handling doesn't work on firefox on the filesystem
-				if ( h.support.error && error && src.protocol !== "file" ) {
-					script.onerror = error;
+				// If we're in IE older than IE9 we need to use
+				// onreadystatechange to determine when javascript file
+				// is loaded. Unfortunately this makes it impossible to
+				// call teh error callback, because it will return
+				// loaded or completed for the script even if it
+				// encountered the 404 error
+				if(h.useIEShim){
+					script.onreadystatechange = function(){
+						if (stateCheck.test(script.readyState)) {
+							success();
+						}
+					};
+				} else {
+					script.onload = callback;
+					// error handling doesn't work on firefox on the filesystem
+					if ( h.support.error && error && fileUri.protocol !== "file" ) {
+						script.onerror = error;
+					}
 				}
+
+				// listen to loaded
+				// IE will change the src property to a full domain.
+				// For example, if you set it to 'foo.js', when grabbing src it will be "http://localhost/foo.js".
+				// We set the id property so later references to this script will have the same path.
+				script.src = script.id = "" + fileUri;
+				//script.src = options.src = addSuffix(options.src);
+				//script.async = false;
+				script.onSuccess = success;
 			}
 
-			// listen to loaded
-			// IE will change the src property to a full domain.
-			// For example, if you set it to 'foo.js', when grabbing src it will be "http://localhost/foo.js".
-			// We set the id property so later references to this script will have the same path.
-			script.src = script.id = "" + src;
-			//script.src = options.src = addSuffix(options.src);
-			//script.async = false;
-			script.onSuccess = success;
-		}
+			// insert the script
+			lastInserted = script;
+			h.head().insertBefore(script, h.head().firstChild);
 
-		// insert the script
-		lastInserted = script;
-		h.head().insertBefore(script, h.head().firstChild);
-
-		// if text, just call success right away, and clean up
-		if ( options.text ) {
-			callback();
+			// if text, just call success right away, and clean up
+			if ( options.text ) {
+				callback();
+			}
 		}
 	},
 	"fn": function( options, success ) {
@@ -3069,7 +3093,8 @@ st.setupShims = function(shims){
 	}
 }
 
-		// =============================== STARTUP ===============================
+		/*global h,st,modules,config,Module,Deferred*/
+// =============================== STARTUP ===============================
 var rootSteal = false;
 
 // essentially ... we need to know when we are on our first steal
@@ -3106,13 +3131,13 @@ h.extend(st, {
 				path: to
 			};
 			h.each(modules, function( id, module ) {
-				if ( module.options.type != "fn" ) {
+				if ( module.options.type !== "fn" ) {
 					// TODO terrible
 					var buildType = module.options.buildType;
 					module.updateOptions();
 					module.options.buildType = buildType;
 				}
-			})
+			});
 		} else { // its an object
 			h.each(from, st.map);
 		}
@@ -3151,10 +3176,10 @@ h.extend(st, {
 				setTimeout(function() {
 					st.popPending();
 					go();
-				}, 0)
+				}, 0);
 			} else {
 				// if we are in rhino, start loading dependencies right away
-				go()
+				go();
 			}
 		}
 	},
@@ -3170,12 +3195,12 @@ h.extend(st, {
 		Module.pending = [];
 		h.each(myPending, function(i, arg){
 			Module.make(arg);
-		})
-	}
+		});
+	};
 	// restores the pending queue
 	st.popPending = function(){
 		Module.pending = Module.pending.length ? myPending.concat(null,Module.pending) : myPending;
-	}
+	};
 })();
 
 // =============================== jQuery ===============================
@@ -3204,7 +3229,7 @@ h.extend(st, {
 			jQ.ready(true);
 			ready = true;
 		}
-	})
+	});
 
 })();
 
@@ -3241,15 +3266,20 @@ h.addEvent(h.win, "load", function() {
 	loaded.load.resolve();
 });
 
+if(!h.win.document && !steal.isRhino){
+	loaded.load.resolve();
+	h.win.window = h.win.self;
+}
+
 st.one("end", function( collection ) {
 	loaded.end.resolve(collection);
 	firstEnd = collection;
-	st.trigger("done", firstEnd)
-})
+	st.trigger("done", firstEnd);
+});
 st.firstComplete = loaded.end;
 
 Deferred.when(loaded.load, loaded.end).then(function() {
-	st.trigger("ready")
+	st.trigger("ready");
 	st.isReady = true;
 });
 
@@ -3287,25 +3317,25 @@ startup = h.after(startup, function() {
 
 	// mark things that have already been loaded
 	h.each(options.executed || [], function( i, stel ) {
-		st.executed(stel)
-	})
+		st.executed(stel);
+	});
 	// immediate steals we do
 	var steals = [];
 
 	// add start files first
 	if ( options.startIds ) {
 		/// this can be a string or an array
-		steals.push.apply(steals, h.isString(options.startIds) ? [options.startIds] : options.startIds)
-		options.startIds = steals.slice(0)
+		steals.push.apply(steals, h.isString(options.startIds) ? [options.startIds] : options.startIds);
+		options.startIds = steals.slice(0);
 	}
 
 	// we only load things with force = true
-	if ( config.attr().env == "production" && config.attr().loadProduction && config.attr().productionId ) {
+	if ( config.attr().env === "production" && config.attr().loadProduction && config.attr().productionId ) {
 		st({
 			id: config.attr().productionId,
 			force: true
 		});
-	} else if(config.attr().env == "development"){
+	} else if(config.attr().env === "development"){
 		steals.unshift({
 			id: "stealconfig.js",
 			abort: false
@@ -3319,7 +3349,7 @@ startup = h.after(startup, function() {
 		}
 
 		if ( options.startId ) {
-			steals.push(null,options.startId)
+			steals.push(null,options.startId);
 		}
 	}
 	if ( steals.length ) {

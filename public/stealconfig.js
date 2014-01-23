@@ -1,5 +1,4 @@
 steal.config({
-	env: 'development',
 	map: {
 		"*": {
 			"jquery/jquery.js" : "jquery",

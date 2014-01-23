@@ -9,7 +9,7 @@ steal(
 				'findAll': 'GET /api/users',
 				'findOne': 'GET /api/user/{id}',
 				'update': 'PUT /api/user/{id}',
-				'destroy': 'DELETE /api/user/{id}',
+				'destroy': 'DELETE /api/user/{id}'
 			},
 			{
 

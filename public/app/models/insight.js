@@ -1,4 +1,5 @@
 steal(
+	'can/compute',
 	'can/model'
 ).then(
 	function() {

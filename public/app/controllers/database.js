@@ -1,7 +1,7 @@
 steal(
 	'lib/parsleyjs/parsley.js',
 	'lib/parsleyerror.js',
-	'lib/jquery.formParams/jquery.formParams.js',
+	'jquery/dom/form_params',
 	'app/models/database.js'
 ).then(
 	'app/views/pages/database/list.ejs',

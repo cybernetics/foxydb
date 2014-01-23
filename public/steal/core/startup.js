@@ -1,3 +1,4 @@
+/*global h,st,modules,config,Module,Deferred*/
 // =============================== STARTUP ===============================
 var rootSteal = false;
 
@@ -35,13 +36,13 @@ h.extend(st, {
 				path: to
 			};
 			h.each(modules, function( id, module ) {
-				if ( module.options.type != "fn" ) {
+				if ( module.options.type !== "fn" ) {
 					// TODO terrible
 					var buildType = module.options.buildType;
 					module.updateOptions();
 					module.options.buildType = buildType;
 				}
-			})
+			});
 		} else { // its an object
 			h.each(from, st.map);
 		}
@@ -80,10 +81,10 @@ h.extend(st, {
 				setTimeout(function() {
 					st.popPending();
 					go();
-				}, 0)
+				}, 0);
 			} else {
 				// if we are in rhino, start loading dependencies right away
-				go()
+				go();
 			}
 		}
 	},
@@ -99,12 +100,12 @@ h.extend(st, {
 		Module.pending = [];
 		h.each(myPending, function(i, arg){
 			Module.make(arg);
-		})
-	}
+		});
+	};
 	// restores the pending queue
 	st.popPending = function(){
 		Module.pending = Module.pending.length ? myPending.concat(null,Module.pending) : myPending;
-	}
+	};
 })();
 
 // =============================== jQuery ===============================
@@ -133,7 +134,7 @@ h.extend(st, {
 			jQ.ready(true);
 			ready = true;
 		}
-	})
+	});
 
 })();
 
@@ -170,15 +171,20 @@ h.addEvent(h.win, "load", function() {
 	loaded.load.resolve();
 });
 
+if(!h.win.document && !steal.isRhino){
+	loaded.load.resolve();
+	h.win.window = h.win.self;
+}
+
 st.one("end", function( collection ) {
 	loaded.end.resolve(collection);
 	firstEnd = collection;
-	st.trigger("done", firstEnd)
-})
+	st.trigger("done", firstEnd);
+});
 st.firstComplete = loaded.end;
 
 Deferred.when(loaded.load, loaded.end).then(function() {
-	st.trigger("ready")
+	st.trigger("ready");
 	st.isReady = true;
 });
 
@@ -216,25 +222,25 @@ startup = h.after(startup, function() {
 
 	// mark things that have already been loaded
 	h.each(options.executed || [], function( i, stel ) {
-		st.executed(stel)
-	})
+		st.executed(stel);
+	});
 	// immediate steals we do
 	var steals = [];
 
 	// add start files first
 	if ( options.startIds ) {
 		/// this can be a string or an array
-		steals.push.apply(steals, h.isString(options.startIds) ? [options.startIds] : options.startIds)
-		options.startIds = steals.slice(0)
+		steals.push.apply(steals, h.isString(options.startIds) ? [options.startIds] : options.startIds);
+		options.startIds = steals.slice(0);
 	}
 
 	// we only load things with force = true
-	if ( config.attr().env == "production" && config.attr().loadProduction && config.attr().productionId ) {
+	if ( config.attr().env === "production" && config.attr().loadProduction && config.attr().productionId ) {
 		st({
 			id: config.attr().productionId,
 			force: true
 		});
-	} else if(config.attr().env == "development"){
+	} else if(config.attr().env === "development"){
 		steals.unshift({
 			id: "stealconfig.js",
 			abort: false
@@ -248,7 +254,7 @@ startup = h.after(startup, function() {
 		}
 
 		if ( options.startId ) {
-			steals.push(null,options.startId)
+			steals.push(null,options.startId);
 		}
 	}
 	if ( steals.length ) {

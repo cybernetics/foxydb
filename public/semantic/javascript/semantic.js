@@ -2238,7 +2238,7 @@ $.fn.state = function(parameters) {
           },
           down: function() {
             $module.addClass(className.down);
-          },
+          }
         },
 
         disable: {
@@ -2256,7 +2256,7 @@ $.fn.state = function(parameters) {
           },
           down: function() {
             $module.removeClass(className.down);
-          },
+          }
         },
 
         toggle: {
@@ -5363,7 +5363,7 @@ $.fn.dropdown.settings = {
 $.extend( $.easing, {
   easeOutQuad: function (x, t, b, c, d) {
     return -c *(t/=d)*(t-2) + b;
-  },
+  }
 });
 
 

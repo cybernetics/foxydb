@@ -241,7 +241,7 @@ steal('steal',
 						// convert using steal's root because that might have been configured
 						source = resource.options.text ||  readFile( steal.idToUri( resource.options.id ) );
 					}
-					resource.options.text = source;
+					resource.options.text = resource.options.text || source
 					
 					// this becomes data
 					return {

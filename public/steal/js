@@ -49,7 +49,7 @@ do
   fi
 done
 ARGS=$ARGS]
-java -Xmx512m -Xss1024k -cp $CP org.mozilla.javascript.tools.shell.Main -e _args=$ARGS -opt -1 -e 'load('"'"$1"'"')'
+java -Xmx1024m -Xss1024k -XX:+UseConcMarkSweepGC -cp $CP org.mozilla.javascript.tools.shell.Main -e _args=$ARGS -opt -1 -e 'load('"'"$1"'"')'
 
 if [ $ERRORLEV = "1" -a $? = "1" ]
 then

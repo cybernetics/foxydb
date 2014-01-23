@@ -1,7 +1,7 @@
 steal(
 	'lib/parsleyjs/parsley.js',
 	'lib/parsleyerror.js',
-	'lib/jquery.formParams/jquery.formParams.js',
+	'jquery/dom/form_params',
 	'app/models/database.js',
 	'app/models/insight.js',
 	'lib/ace',
@@ -642,7 +642,7 @@ steal(
 								graph: graph,
 								orientation: 'left',
 								tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-								element: document.querySelector('#insight_'+(self.insight.attr('id')||0)+' .graphAreaY'),
+								element: document.querySelector('#insight_'+(self.insight.attr('id')||0)+' .graphAreaY')
 							} );
 							var hoverDetail = new Rickshaw.Graph.HoverDetail( {
 								graph: graph,

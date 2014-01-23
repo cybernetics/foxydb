@@ -56,8 +56,8 @@ exports.controller = function(app, db) {
 		if(req.session.user) {
 			if(typeof cache[req.params.database_id] == 'undefined') {
 				db.get("SELECT * FROM `databases` WHERE `id` = ?;",req.params.database_id , function(err, row) {
-					if(err) {
-						res.send(500, err);
+					if(err || !row) {
+						return res.send(500, {errstr: err || 'Database not found'});
 					}
 					var connection = mysql.createConnection({
 						host     : row.host,

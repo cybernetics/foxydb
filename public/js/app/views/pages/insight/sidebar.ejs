@@ -3,6 +3,7 @@
 	<div class="field">
 		<label>Database</label>
 		<select class="databaseSelect">
+			<option value="">Select Database</option>
 			<% can.each(databases, function(database) {%>
 				<option value="<%=database.attr('id')%>" <%=(database.attr('id')===insight.attr('database_id')?'selected="selected"':'')%>><%=database.attr('title')%></option>
 			<% }) %>

@@ -27,10 +27,17 @@ define([
 
 		},
 		{
+			changed: false,
 			langTools: null,
 			operators: {between: 'BETWEEN', equal: '=', ne: '<>', lt: '<', lte: '<=', gt: '>', gte: '>=', like: 'LIKE', in: 'IN', relation: 'relation'},
 			init: function(element, options) {
+				var self = this;
 
+				$(window).bind('beforeunload', function() {
+					if (self.changed) {
+						return false;
+					}
+				});
 			},
 			tables: [],
 			fields: [],
@@ -109,6 +116,7 @@ define([
 							Global.tabs.push(self.insight);
 							self.setupDragDrop();
 							self.getStructure();
+							self.changed = false;
 					} else {
 						Model.Insight.findOne({id: self.options.id}).then(function(response) {
 
@@ -140,8 +148,9 @@ define([
 							self.updateTabs();
 							self.getStructure();
 							self.setupDragDrop();
+
 							self.element.find('.applyButton').click();
-							
+							self.changed = false;
 						});					
 
 					}
@@ -151,10 +160,12 @@ define([
 					self.element.find('.sql').css('font-size',12);
 					self.editor.getSession().setUseWrapMode(true);
 					self.editor.renderer.setShowGutter(false);
-					
+
 					self.editor.on('change', function() {
 						self.getVariables();
+						self.changed = true;
 					});
+					
 					self.insight.bind('query',function(event, newVal, oldVal) {
 						self.editor.setValue(newVal);
 					});
@@ -183,6 +194,7 @@ define([
 								}
 							}
 
+							self.changed = true;
 							self.generateQuery();
 						}
 					});
@@ -321,6 +333,8 @@ define([
 							}
 						);
 					}
+				}).fail(function (response) {
+					self.element.find('.structure .message').addClass('red').html(response.responseJSON.errstr);
 				});
 
 			},
@@ -444,7 +458,6 @@ define([
 					if (wheres.length) {
 						query +=  ' WHERE ' + wheres.join(' AND ');
 					}
-
 				}
 
 				self.insight.attr('query', query + ';');
@@ -788,7 +801,7 @@ define([
 						self.insight.attr('variables', {});
 						self.insight.attr('query', '-- Type your query here');
 					}
-					
+
 					self.element.find('.exportButton').data('export', false);
 					self.element.find('.exportButton').addClass('disabled');
 				}
@@ -801,7 +814,7 @@ define([
 				if($('.tabs .active .insightTitle').val().trim() === ''){
 					$('.tabs .active .insightTitle').parent().addClass('error');
 					$('.tabs .active .insightTitle').focus();
-				} else if(self.element.find('.databaseSelect').val() === 'new') {
+				} else if(self.element.find('.databaseSelect').val() === 'new' || !self.element.find('.databaseSelect').val()) {
 					self.element.find('.databaseSelect').parent().addClass('error');
 					self.element.find('.databaseSelect').focus();
 				} else {
@@ -825,6 +838,8 @@ define([
 						if(typeof self.options.id === 'undefined') {
 							Global.insights.push(self.insight);
 						}
+
+						self.changed = false;
 						self.options.id = response.id;
 						can.route.attr('id',self.options.id);
 					});
@@ -976,10 +991,12 @@ define([
 				if(element.val() === 'new') {
 					self.element.find('.sidebar .newDatabase').html('//js/app/views/pages/insight/database.ejs', {});
 					self.element.find('.sidebar .newDatabase form').parsley();
-				} else {
+				} else if (element.val()){
 					self.element.find('.sidebar .newDatabase').html('');
 					self.insight.attr('database_id', element.val());
 					self.getStructure();
+				} else {
+					self.element.find('.structure').html('');
 				}
 			},
 			'.sidebar .newDatabase form submit': function(element, event) {
@@ -1026,7 +1043,6 @@ define([
 					this.generateGraph();
 				}
 			}
-
 		}
 	);
 });

@@ -1,0 +1,5 @@
+<%== can.view.render('app/views/layout/controller.ejs', {}); %>
+<div class="ui celled grid pagecontent content dashboard" <%= (el) -> new Controller.Dashboard(el) %>>
+	<div class="two wide column sidebar"></div>
+	<div class="fourteen wide column inner contentColumn"></div>
+</div>

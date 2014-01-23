@@ -1,0 +1,32 @@
+<h3 class="ui header left floated">Database setup</h3>
+<div class="ui clearing divider"></div>
+
+<form class="ui form database" data-validate="parsley">
+
+	<div class="field">
+		<label>Name</label> <input name="title" type="text" parsley-required="true"></input>
+	</div>
+<!--			<div class="row">
+		<label>Database Type</label> 
+		<select name="type" type="text" parsley-required="true">
+			<option value="mysql">MySQL</option>
+		</select>
+	</div>-->
+	<div class="field">
+		<label>Database Hostname</label> <input name="host" type="text" value="localhost" parsley-required="true"></input>
+	</div>
+	<div class="field">
+		<label>Database Port</label> <input name="port" type="text" value="3306" parsley-required="true" parsley-type="digits"></input>
+	</div>
+	<div class="field">
+		<label>Database Name</label> <input name="name" type="text" parsley-required="true"></input>
+	</div>
+	<div class="field">
+		<label>Database Username</label> <input name="username" type="text" parsley-required="true"></input>
+	</div>
+	<div class="field">
+		<label>Database Password</label> <input name="password" type="password" ></input>
+	</div>
+	<button class="ui green submit button" type="submit">Connect to the Database</button>
+	</div>
+</form>

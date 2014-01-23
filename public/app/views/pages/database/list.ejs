@@ -1,0 +1,32 @@
+<h3 class="ui header left floated">Manage Databases</h3>
+<a class="ui labeled icon small button right floated" href="#!database/add">
+	<i class="icon plus"></i>
+	New Database
+</a>
+<div class="ui clearing divider"></div>
+
+
+
+<table class="ui table segment">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Host</th>
+			<th>Database</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% can.each(database, function(item) { %>
+			<tr>
+				<td><%=item.attr('title')%></td>
+				<td><%=item.attr('host')%></td>
+				<td><%=item.attr('name')%></td>
+				<td>
+					<a <%= (el) -> el.data('database', item) %>href="#" class="delete"><i class="icon delete"></i>Delete</a> &nbsp;&nbsp;&nbsp; 
+					<a href="#!database/edit&id=<%= item.id %>" class="edit"><i class="icon pencil"></i>Edit</a>
+				</td>
+			</tr>
+		<% }) %>
+	</tbody>
+</table>

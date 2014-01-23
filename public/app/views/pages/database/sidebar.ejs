@@ -1,0 +1,7 @@
+
+<% if (typeof custom === 'undefined') { %>
+<div class="tip ui popup top center transition visible">Please fill in all required parameters for a database connection. <br /><br /><strong>Note:</strong> Please create unprivileged user with read only acccess for FoxyDB, even though we only use SELECT queries, we need to store Your password in plaintext.</div>
+<% } else {%>
+<div class="tip ui popup top center transition visible"><%=custom%></div>
+<% } %>
+<div class="fox"></div>

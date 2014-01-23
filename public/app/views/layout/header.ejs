@@ -1,0 +1,33 @@
+<div class="errorMessage ui red message" ></div>
+<header class="ui menu fixed inverted">
+	<div class="menu left">
+		<div class="item">
+			<a class="logo" href="#!dashboard">FoxyDB</a>
+		</div>
+
+	</div>
+	<% if(Global.state.attr('loggedIn')) { %>
+		<div class="menu right">
+			<div class="ui item dropdown" <%= (el) -> el.dropdown() %>>
+				<img class="ui avatar image" src="http://www.gravatar.com/avatar/<%= MD5(Global.user.attr('email').toLowerCase()) %>" /> <%= Global.user.attr('name') %>
+				<i class="dropdown icon"></i>
+				<ul class="menu">
+					<% if(Global.user.attr('level') == 0) { %>
+						<li class="item"><a href="#!users"><i class="user icon"></i> Manage Users</a></li>
+						<li class="item"><a href="#!database/list"><i class="reorder icon"></i> Manage Databases</a></li>
+					<% } %>
+					<li class="item"><a href="#!account/logout"><i class="sign out icon"></i> Log Out</a></li>
+					
+					<% if (typeof config.baseURL !== 'undefined' && config.baseURL.length) { %>
+						<li class="item"><a href="<%=config.baseURL%>"><i class="home icon"></i> Back to Site</a></li>
+					<% } %>
+				</ul>
+			</div>
+
+		</div>
+	<% } %>
+</header>
+<div class="tabs" <%= (el) -> new Controller.Tabs(el) %>>
+
+</div>
+

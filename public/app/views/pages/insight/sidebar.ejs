@@ -1,0 +1,27 @@
+
+<div class="ui form">
+	<div class="field">
+		<label>Database</label>
+		<select class="databaseSelect">
+			<option value="">Select Database</option>
+			<% can.each(databases, function(database) {%>
+				<option value="<%=database.attr('id')%>" <%=(database.attr('id')===insight.attr('database_id')?'selected="selected"':'')%>><%=database.attr('title')%></option>
+			<% }) %>
+			<% if(Global.user.attr('level') == 0) { %>
+				<option value="new">New Connection</option>
+			<% } %>
+		</select>
+	</div>
+</div>
+<div class="newDatabase"></div>
+<div class="structure"></div>
+<div class="tip ui popup top center transition visible">
+<% if(insight.attr('type') == 0) { %>
+		Drag/Drop columns to create filters.
+	<% } else { %>
+		Use a query editor to make advanced reports.
+	<% } %>
+	<br /><br /> You can always create a new database connection by selecting a <strong>New Connection</strong> entry from the database dropdown.
+</div>
+
+<div class="fox"></div>

@@ -1,0 +1,15 @@
+{
+  "name": "jquery.formParams",
+  "homepage": "https://github.com/tinganho/jquery.formParams",
+  "version": "0.1.1",
+  "_release": "0.1.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.1",
+    "commit": "e11066051124f6e5bcf59f714413d60a9283d23a"
+  },
+  "_source": "git://github.com/tinganho/jquery.formParams.git",
+  "_target": "~0.1.1",
+  "_originalSource": "jquery.formParams",
+  "_direct": true
+}

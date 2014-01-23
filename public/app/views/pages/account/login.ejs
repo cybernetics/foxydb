@@ -1,0 +1,23 @@
+
+<h3 class="ui header left floated">Log In
+	<% if (config.allowRegister) { %>
+		<div class="sub header right floated">Don't have an account? <a href="#!account/register">Register</a></div>
+	<% } %>
+</h3>
+
+<div class="ui clearing divider"></div>
+
+<form class="ui form login" parsley-validate data-focus="first">
+	<div class="two fields">
+		<div class="field">
+			<label>E-Mail</label> <input name="email" type="text" parsley-required="true" parsley-type="email" parsley-type-email-message="Invalid E-Mail" parsley-required-message="E-Mail is required"></input>
+		</div>
+
+		<div class="field">
+			<label>Password</label> <input name="password" type="password"></input>
+		</div>
+	</div>
+	<button class="ui green submit button" type="submit">Log In</button>
+	</div>
+</form>
+

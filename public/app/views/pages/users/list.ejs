@@ -1,0 +1,32 @@
+<h3 class="ui header left floated">Manage Users</h3>
+<a class="ui labeled icon small button right floated" href="#!users/add">
+	<i class="icon plus"></i>
+	New User
+</a>
+<div class="ui clearing divider"></div>
+
+
+
+<table class="ui table segment">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>E-Mail</th>
+			<th>Level</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% can.each(users, function(item) { %>
+			<tr>
+				<td><%=item.attr('name')%></td>
+				<td><%=item.attr('email')%></td>
+				<td><%=(item.attr('level') == 0?'Administrator':'User')%></td>
+				<td>
+					<a <%= (el) -> el.data('user', item) %>href="#" class="delete"><i class="icon delete"></i>Delete</a> &nbsp;&nbsp;&nbsp; 
+					<a href="#!users/edit&id=<%= item.id %>" class="edit"><i class="icon pencil"></i>Edit</a>
+				</td>
+			</tr>
+		<% }) %>
+	</tbody>
+</table>

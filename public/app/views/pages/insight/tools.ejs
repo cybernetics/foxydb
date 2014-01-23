@@ -1,0 +1,136 @@
+
+<ul>
+<% if(insight.attr('type') == 0) { %>
+	<li class="toolsFilters ui segment secondary">
+		<h4 class="ui header">Filters
+			<div class="sub header">Drag/Drop fields here to create filters</div>
+		</h4>
+		<div class="ui divider"></div>
+		<div class="innerContent">
+			<% if(!can.Object.same(insight.attr('filters').attr(),{})) { %>
+			<div class="ui small celled segment attached selection list columnList filters" >
+				<% insight.attr('filters').each(function(item, index) { %>
+					<% if (typeof item.attr('field.val.0') !== 'undefined' && item.attr('field.val.0').length) item.attr('field.val.0', item.attr('field.val.0').replace(/\"/, '')) %>
+					<% if (typeof item.attr('field.val.1') !== 'undefined' && item.attr('field.val.1').length) item.attr('field.val.1', item.attr('field.val.1').replace(/\"/, '')) %>
+					<div class="item" <%= (el) -> el.data('field', item)%> >
+						<span title="<%= item.table %>.<%= item.field.Field%>"><%= item.table %>.<%= item.field.Field%></span><i class="floated right icon delete removeButton"></i>
+						<div class="editPopup tip ui popup right center transition">
+							<h4 class="ui header dividing">Edit filter</h4>
+							<i class="ui icon delete closeButton"></i>
+							<div class="innerContent ui form">
+							<div class="field">
+									<label><%= item.field.Field %></label>
+									<select class="filterOperator">
+										<option value="equal" <%=(item.attr('field.operator') == 'equal' ? 'selected="selected"':'')%>>Equal to</option>
+										<option value="ne" <%=(item.attr('field.operator') == 'ne'? 'selected="selected"':'')%>>Not equal to</option>
+										<option value="between" <%=(item.attr('field.operator') == 'between'? 'selected="selected"':'')%>>Between</option>
+										<option value="lt" <%=(item.attr('field.operator') == 'lt'? 'selected="selected"':'')%>>Less than</option>
+										<option value="lte" <%=(item.attr('field.operator') == 'lte'? 'selected="selected"':'')%>>Less than or equal to</option>
+										<option value="gt" <%=(item.attr('field.operator') == 'gt'? 'selected="selected"':'')%>>Greater than</option>
+										<option value="gte" <%=(item.attr('field.operator') == 'gte'? 'selected="selected"':'')%>>Greater than or equal to</option>
+										<option value="like" <%=(item.attr('field.operator') == 'like'? 'selected="selected"':'')%>>Like</option>
+										<option value="in" <%=(item.attr('field.operator') == 'in'? 'selected="selected"':'')%>>In</option>
+										<option value="relation" <%=(item.attr('field.operator') == 'relation'? 'selected="selected"':'')%>>Relation</option>
+									</select>
+								</div>
+								<div class="field operator operator-between" <%=(item.attr('field.operator') == 'between'? 'style="display: block;"' : '')%>>
+									<table>
+										<tr>
+											<td width="33%">
+												<input type="text" name="value[0]" placeholder="From" value="<%=item.attr('field.val.0')%>"></input>
+											</td>
+											<td width="34%" align="center">
+												and
+											</td>
+											<td width="33%">
+											<input type="text" name="value[1]" placeholder="To" value="<%=item.attr('field.val.1')%>"></input>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="field operator operator-ne operator-equal operator-lt operator-lte operator-gt operator-gte">
+									<input type="text" name="value" placeholder="Value" value="<%=item.attr('field.val.0')%>"></input>
+								</div>
+								<div class="field operator operator-like">
+									<label>Use <strong>%</strong> as a wildcard</label>
+									<input type="text" name="value" placeholder="Value" value="<%=item.attr('field.val.0')%>"></input>
+								</div>
+								<div class="field operator operator-in">
+									<label>Comma separated values</label>
+									<input type="text" name="value" placeholder="Values" value="<%=item.attr('field.val.0')%>"></input>
+								</div>
+								<div class="field operator operator-relation">
+									<label>Select table and column to make relation</label>
+									<select class="relTables">
+										<!-- Select view -->
+									</select>
+									<input type="hidden" name="relt" class="relt" value="<%=item.attr('field.val.0')%>"> </input>
+
+									<select class="relColumn">
+										<!-- Select view -->
+									</select>
+									<input type="hidden" name="relc" class="relc" value="<%=item.attr('field.val.1')%>"> </input>
+
+								</div>
+								<a href="#" class="ui button saveFilters" >Update</a>
+							</div>
+						</div>
+					</div>
+
+				<% }) %>
+			<% } %>
+			</div>
+			<div class="dragHere filters  ui  segment attached center aligned <%=(Object.keys(insight.attr('filters').attr()).length > 0)? 'hidden':''%>">Drag here</div>
+		</div>
+	</li>
+
+	<li class="toolsFields ui segment secondary">
+		<h4 class="ui header">Fields
+			<div class="sub header">Drag/Drop fields that You want to show in the report</div>
+		</h4>
+		<div class="ui divider"></div>
+		<div class="innerContent">
+			<% if(!can.Object.same(insight.attr('fields').attr(),{})) { %>
+			<div class="ui small celled segment attached selection list columnList fields" >
+				<% insight.attr('fields').each(function(item, index) { %>
+					<div class="item" <%= (el) -> el.data('field', item)%>>
+						<span title="<%= item.table %>.<%= item.field.Field%>"><%= item.table %>.<%= item.field.Field%></span> <i class="floated right icon delete removeButton"></i>
+						<div class="editPopup tip ui popup right center transition">
+							<h4 class="ui header dividing">Rename Column</h4>
+							<i class="ui icon delete closeButton"></i>
+							<div class="ui form">
+								<div class="field">
+									<input type="text" placeholder="<%= item.table %>.<%= item.field.Field%>" value="<%=item.attr('field.as')%>"></input>
+								</div>
+								<a href="#" class="ui button">Update</a>
+							</div>
+						</div>
+					</div>
+				<% }) %>
+			</div>
+			<% } %>
+			<div class="dragHere fields ui  segment attached center aligned <%=(Object.keys(insight.attr('fields').attr()).length > 0)? 'hidden':''%>">Drag here</div>
+		</div>
+	</li>
+<% } else { %>
+	<li class="toolsPlaceholders ui segment secondary">
+		<h4 class="ui header">Variables
+			<div class="sub header">Use <strong>:variable_name:</strong> in the SQL Query editor to add variables</div>
+		</h4>
+		<div class="ui divider"></div>
+
+		<div class="innerContent ui form">
+			<% if(!can.Object.same(insight.attr('variables').attr(),{})) { %>
+				<% insight.attr('variables').each(function(item, index) { %>
+				<div class="field">
+					<label><%=index%>:</label>
+					<input type="text" placeholder="<%=index%>" value="<%=item%>"></input>
+				</div>
+				<% }) %>
+			<% } else { %>
+				No variables found in Your SQL
+			<% } %>
+		</div>
+	</li>
+<% } %>
+</ul>

@@ -1,0 +1,46 @@
+<% if(Global.user.attr('level') == 0) { %>
+<div class="ui grid">
+	<div class="equal height row">
+		<div class="eight wide column">
+			
+			<div class="ui attached segment">
+				<h4 class="ui top header">
+					New insight from visual editor
+				</h4>
+				<p>Build a new insight from our drag and drop editor.</p>
+			</div>
+			<a href="#!insight/edit&type=0" class="ui bottom attached button">Get started</a>
+		</div>
+		<div class="eight wide column">
+
+			<div class="ui attached segment">
+				<h4 class="ui top header">
+					New insight from query
+				</h4>
+				<p>Write your own custom query using SQL.</p>
+			</div>
+			<a href="#!insight/edit&type=1" class="ui bottom attached button">Get started</a>
+		</div>
+	</div>
+</div>
+<% } %>
+<h3 class="ui header">Saved Insights</h3>
+<% if(insights.attr('length') == 0) { %>
+<div class="ui visible message">
+	<p>There are no insights. </p>
+</div>
+<% } else { %>
+	<div class="ui selection celled list">
+		<% insights.each(function(item) {  %>
+			<a <%= (el) -> el.data('insight',item) %> class="item" href="#!insight/edit&id=<%=item.attr('id')%>">
+				<% if(Global.user.attr('level') == 0) { %>
+					<a class="ui right floated delete" href="#"><i class="icon remove"></i></a>
+					<a class="ui right floated edit" href="#!insight/edit&id=<%=item.attr('id')%>"><i class="icon pencil"></i></a>
+				<% } %>
+				<span class="content">
+			  		<%=item.attr('name')%>
+				</span>
+			</a>
+		<% }) %>
+	</div>
+<% } %>

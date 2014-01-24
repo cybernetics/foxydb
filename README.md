@@ -1,5 +1,6 @@
 FoxyDB
 ======
+[![Build Status](https://travis-ci.org/shiftplanning/foxydb.png?branch=master)](https://travis-ci.org/shiftplanning/foxydb)
 FoxyDB is a browser based graphical database driven reporting tool
 
 Dependencies

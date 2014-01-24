@@ -5,9 +5,10 @@ steal(
 	'app/controllers/router.js',
 	'lib/d3.min.js',
 	'lib/md5.js',
-	'semantic/css/semantic.min.css'
+	'semantic/css/semantic.min.css',
+	'less/style.less'
 ).then(
-	'less/style.less',
+
 	function() {
 		Main = can.Control({
 

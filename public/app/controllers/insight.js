@@ -967,7 +967,7 @@ steal(
 					this.element.find('.operator-' + element.val()).show();
 
 					if (element.val() == 'relation') {
-						element.siblings('.operator:visible').find('.relTables').html('app/views/pages/insight/selecttable.ejs', {rels: this.insight.attr('relations'), table: element.parents('li').data('field').table});
+						element.parent().siblings('.operator:visible').find('.relTables').html('app/views/pages/insight/selecttable.ejs', {rels: this.insight.attr('relations'), table: element.parents('.item').data('field').table});
 					}
 				},
 				'.relTables change': function (element, event) {

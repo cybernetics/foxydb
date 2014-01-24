@@ -89,7 +89,6 @@ exports.controller = function(app, db) {
 						var totalCount = 0;
 						var time = new Date();
 						var ast = simpleSqlParser.sql2ast(req.body.query);
-						console.log(ast);
 						if(Object.keys(ast).length == 0) {
 							connection.query(req.body.query, function(err, rows) {
 								if(err) {
@@ -105,7 +104,6 @@ exports.controller = function(app, db) {
 								limitCount = ast.LIMIT.nb;
 							}
 							ast.SELECT.push({name: 'COUNT(*) AS cnt'});
-							console.log(simpleSqlParser.ast2sql(ast));
 							connection.query(simpleSqlParser.ast2sql(ast), function(err, rows) {
 								if(err) {
 									res.send(500, {errstr: err.message, executed_query: simpleSqlParser.ast2sql(ast)});

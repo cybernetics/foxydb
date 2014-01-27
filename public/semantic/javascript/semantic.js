@@ -272,7 +272,7 @@ $.fn.accordion = function(parameters) {
               });
             }
             clearTimeout(module.performance.timer);
-            module.performance.timer = setTimeout(module.performance.display, 100);
+            //module.performance.timer = setTimeout(module.performance.display, 100);
           },
           display: function() {
             var
@@ -841,7 +841,7 @@ $.extend( $.easing, {
             });
           }
           clearTimeout(module.performance.timer);
-          module.performance.timer = setTimeout(module.performance.display, 100);
+          //module.performance.timer = setTimeout(module.performance.display, 100);
         },
         display: function() {
           var
@@ -1786,7 +1786,7 @@ $.fn.form = function(fields, parameters) {
               });
             }
             clearTimeout(module.performance.timer);
-            module.performance.timer = setTimeout(module.performance.display, 100);
+            //module.performance.timer = setTimeout(module.performance.display, 100);
           },
           display: function() {
             var
@@ -2542,7 +2542,7 @@ $.fn.state = function(parameters) {
               });
             }
             clearTimeout(module.performance.timer);
-            module.performance.timer = setTimeout(module.performance.display, 100);
+            //module.performance.timer = setTimeout(module.performance.display, 100);
           },
           display: function() {
             var
@@ -3276,7 +3276,7 @@ $.fn.chatroom = function(parameters) {
             });
           }
           clearTimeout(module.performance.timer);
-          module.performance.timer = setTimeout(module.performance.display, 100);
+          //module.performance.timer = setTimeout(module.performance.display, 100);
         },
         display: function() {
           var
@@ -3739,7 +3739,7 @@ $.fn.checkbox = function(parameters) {
               });
             }
             clearTimeout(module.performance.timer);
-            module.performance.timer = setTimeout(module.performance.display, 100);
+            //module.performance.timer = setTimeout(module.performance.display, 100);
           },
           display: function() {
             var
@@ -4308,7 +4308,7 @@ $.fn.dimmer = function(parameters) {
               });
             }
             clearTimeout(module.performance.timer);
-            module.performance.timer = setTimeout(module.performance.display, 100);
+            //module.performance.timer = setTimeout(module.performance.display, 100);
           },
           display: function() {
             var
@@ -5203,7 +5203,7 @@ $.fn.dropdown = function(parameters) {
               });
             }
             clearTimeout(module.performance.timer);
-            module.performance.timer = setTimeout(module.performance.display, 100);
+            //module.performance.timer = setTimeout(module.performance.display, 100);
           },
           display: function() {
             var
@@ -5435,7 +5435,7 @@ $.fn.modal = function(parameters) {
         instance     = $module.data(moduleNamespace),
         module
       ;
-      console.log('ovo su settingsi!', settings);
+      
       module  = {
 
         initialize: function() {
@@ -5932,7 +5932,7 @@ $.fn.modal = function(parameters) {
               });
             }
             clearTimeout(module.performance.timer);
-            module.performance.timer = setTimeout(module.performance.display, 100);
+            //module.performance.timer = setTimeout(module.performance.display, 100);
           },
           display: function() {
             var
@@ -6453,7 +6453,7 @@ $.fn.nag = function(parameters) {
               });
             }
             clearTimeout(module.performance.timer);
-            module.performance.timer = setTimeout(module.performance.display, 100);
+            //module.performance.timer = setTimeout(module.performance.display, 100);
           },
           display: function() {
             var
@@ -7296,7 +7296,7 @@ $.fn.popup = function(parameters) {
               });
             }
             clearTimeout(module.performance.timer);
-            module.performance.timer = setTimeout(module.performance.display, 100);
+            //module.performance.timer = setTimeout(module.performance.display, 100);
           },
           display: function() {
             var
@@ -7743,7 +7743,7 @@ $.fn.rating = function(parameters) {
               });
             }
             clearTimeout(module.performance.timer);
-            module.performance.timer = setTimeout(module.performance.display, 100);
+            //module.performance.timer = setTimeout(module.performance.display, 100);
           },
           display: function() {
             var
@@ -8364,7 +8364,7 @@ $.fn.search = function(source, parameters) {
               });
             }
             clearTimeout(module.performance.timer);
-            module.performance.timer = setTimeout(module.performance.display, 100);
+            //module.performance.timer = setTimeout(module.performance.display, 100);
           },
           display: function() {
             var
@@ -9285,7 +9285,7 @@ $.fn.shape = function(parameters) {
               });
             }
             clearTimeout(module.performance.timer);
-            module.performance.timer = setTimeout(module.performance.display, 100);
+            //module.performance.timer = setTimeout(module.performance.display, 100);
           },
           display: function() {
             var
@@ -9809,7 +9809,7 @@ $.fn.sidebar = function(parameters) {
               });
             }
             clearTimeout(module.performance.timer);
-            module.performance.timer = setTimeout(module.performance.display, 100);
+            //module.performance.timer = setTimeout(module.performance.display, 100);
           },
           display: function() {
             var
@@ -10493,7 +10493,7 @@ $.fn.sidebar.settings = {
             });
           }
           clearTimeout(module.performance.timer);
-          module.performance.timer = setTimeout(module.performance.display, 100);
+          //module.performance.timer = setTimeout(module.performance.display, 100);
         },
         display: function() {
           var
@@ -11327,7 +11327,7 @@ $.fn.transition = function() {
               });
             }
             clearTimeout(module.performance.timer);
-            module.performance.timer = setTimeout(module.performance.display, 100);
+            //module.performance.timer = setTimeout(module.performance.display, 100);
           },
           display: function() {
             var
@@ -11783,7 +11783,7 @@ $.fn.video = function(parameters) {
               });
             }
             clearTimeout(module.performance.timer);
-            module.performance.timer = setTimeout(module.performance.display, 100);
+            //module.performance.timer = setTimeout(module.performance.display, 100);
           },
           display: function() {
             var

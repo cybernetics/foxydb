@@ -38,16 +38,28 @@ steal(
 				},
 				'.delete click': function(element, event) {
 					event.preventDefault();
+					var self = this;
 
-					if (confirm('You are about to remove database ' + element.data('database').title)) {
-						$.ajax({
-							url: '/api/database/' + element.data('database').id,
-							type: 'delete',
-							success: function(msg) {
-								can.route.attr({controller: 'database', action: 'list'}, true);
-							}
-						});
+					if (!self.element.find('.confirmModal').length) {
+						self.element.find('.inner').append('app/views/layout/modals/confirm.ejs', {title: 'Database remove', content: 'You are about to remove database.', positive: 'Remove', negative: 'Cancel'});
 					}
+
+					self.element.find('.confirmModal .content').html('<p>You are about to delete database ' + element.data('database').title);
+					self.element.find('.confirmModal').modal({
+						closable: false,
+						debug: false,
+						detachable: false,
+						allowMultiple: false,
+						onApprove: function () {
+							$.ajax({
+								url: '/api/database/' + element.data('database').id,
+								type: 'delete',
+								success: function(msg) {
+									can.route.attr({controller: 'database', action: 'list'}, true);
+								}
+							});
+						}
+					}).modal('show');
 				},
 				'form.updateDatabase submit': function(element, event) {
 					event.preventDefault();

@@ -15,16 +15,18 @@ Configuration
 -------------
 - Edit `config.js` file 
 
-        exports.frontConfig = {
-            allowRegister: true, //Allow users to register, not suitable for public installs, but good for intranets
-        	baseURL: 'http://www.foxydb.com/' //Return to homepage link
-        }
-        
-        exports.application = {
-        	port: 8000, //Port on which the application will be served
-        	sessionSecret: 'foxy', //Session cookie secret
-        	packaged: true //Serve packaged production files, setto false for development and debug
-        }
+```javascript
+exports.frontConfig = {
+    allowRegister: true, //Allow users to register, not suitable for public installs, but good for intranets
+	baseURL: 'http://www.foxydb.com/' //Return to homepage link
+}
+
+exports.application = {
+	port: 8000, //Port on which the application will be served
+	sessionSecret: 'foxy', //Session cookie secret
+	packaged: true //Serve packaged production files, setto false for development and debug
+}
+```
 
 Running
 ------------

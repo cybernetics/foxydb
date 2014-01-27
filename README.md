@@ -7,8 +7,8 @@ Dependencies
 ------------
 - node.js
 
-Installation
-------------
+Installation/Updating
+---------------------
 - Run `npm install` to install all node.js dependencies
 
 Configuration
@@ -31,3 +31,8 @@ exports.application = {
 Running
 ------------
 - Run `node server.js` 
+
+Building
+--------
+- Run `build.sh` (Requires Java Development Kit)
+

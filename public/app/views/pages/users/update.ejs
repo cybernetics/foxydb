@@ -9,11 +9,13 @@
 		<div class="field">
 			<label>E-Mail</label> <input name="email" type="text" value="<%= user.email %>" parsley-required="true" parsley-type="email" parsley-type-email-message="Invalid E-Mail" parsley-required-message="E-Mail is required"></input>
 		</div>
+		<% if (Global.user.level == 0) { %>
 		<div class="field">
 			<div class="ui toggle checkbox" <%= (el) -> el.checkbox() %>>
 				<input name="level" value="0" <%= (user.level == 0 ? 'checked="checked"' : '')%> type="checkbox" ></input><label>Administrator</label>
 			</div>
 		</div>
+		<% } %>
 		<div class="two fields">
 			<div class="field">
 				<label>Password</label> <input name="password" type="password" id="password" parsley-minlength="6"></input>

@@ -21,7 +21,11 @@ steal(
 				index: function() {
 					var self = this;
 
-					self.element.find('.inner').html('app/views/pages/users/list.ejs', {users: Model.User.findAll({})});
+					if (Global.user.level == 0) {
+						self.element.find('.inner').html('app/views/pages/users/list.ejs', {users: Model.User.findAll({})});
+					} else {
+						self.element.find('.inner').html('app/views/pages/users/update.ejs', {user: Model.User.findOne({id: Global.user.id})});
+					}
 				},
 				add: function(element, options) {
 					this.element.find('.inner').html('app/views/pages/users/new.ejs', {});
@@ -79,7 +83,7 @@ steal(
 						var userObject = element.formParams();
 						var user = element.data('user');
 
-						if (typeof userObject.level === 'undefined') {
+						if (typeof userObject.level === 'undefined' || Global.user.level == 1) {
 							user.attr('level', 1);
 						} else {
 							user.attr('level', userObject.level);
@@ -93,6 +97,9 @@ steal(
 						user.attr('email', userObject.email);
 
 						user.save().then(function(data) {
+							if (Global.user.id == user.id) {
+								Global.user.attr(user.attr());
+							}
 							can.route.attr({controller: 'users'}, true);
 						}).fail(function(data) {
 							if (typeof data.responseJSON != 'undefined'){

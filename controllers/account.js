@@ -73,7 +73,7 @@ exports.controller = function(app, db) {
 					});
 				});
 			} else {
-				req.send(500, 'You cannot delete Your account.');
+				res.send(500, 'You cannot delete Your account.');
 			}
 		}
 	});

@@ -33,10 +33,22 @@ steal(
 				},
 				'.remove click': function(element, event) {
 					event.preventDefault();
-					if(confirm('Are You sure?')) {
-						var insight = element.parents('.item').data('insight')
-						insight.destroy();
+					var self = this;
+
+					if (!self.element.find('.confirmModal').length) {
+						self.element.find('.inner').append('app/views/layout/modals/confirm.ejs', {title: 'Insight remove', content: 'You are about to remove insight.', positive: 'Remove', negative: 'Cancel'});
 					}
+
+					self.element.find('.confirmModal').modal({
+						closable: false,
+						debug: false,
+						detachable: false,
+						allowMultiple: false,
+						onApprove: function () {
+							var insight = element.parents('.item').data('insight');
+							insight.destroy();
+						}
+					}).modal('show');
 				}
 
 			}

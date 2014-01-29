@@ -104,6 +104,29 @@ steal(
 
 						self.element.find('.sidebar').html('app/views/pages/insight/sidebar.ejs', {databases: self.databases, insight: self.insight});
 						self.element.find('.inner').html('app/views/pages/insight/content.ejs', {insight: self.insight});
+						self.element.find('.inner').append('app/views/layout/modals/confirm.ejs', {title: 'Clear Query', content: 'You are about to clear query', positive: 'Clear', negative: 'Cancel'});
+
+						self.element.find('.confirmModal').modal({
+							closable: false,
+							debug: true,
+							detachable: false,
+							allowMultiple: false,
+							onApprove: function () {
+								if (self.insight.attr('type') == 0) {
+									self.insight.attr('fields', {});
+									self.insight.attr('filters', {});
+									self.insight.attr('relations', {});
+									self.generateQuery();
+								} else {
+									self.insight.attr('variables', {});
+									self.insight.attr('query', '-- Type your query here');
+								}
+
+								self.element.find('.exportButton').data('export', false);
+								self.element.find('.exportButton').addClass('disabled');
+							}
+						});
+
 						self.element.find('.tools').html('app/views/pages/insight/tools.ejs', {insight: self.insight});
 						self.langTools = ace.require("ace/ext/language_tools");
 						var editor = ace.edit(self.element.find('.sql')[0]);
@@ -793,20 +816,7 @@ steal(
 					event.stopImmediatePropagation();
 					var self = this;
 
-					if (confirm('You are about to clear query')) {
-						if (self.insight.attr('type') == 0) {
-							self.insight.attr('fields', {});
-							self.insight.attr('filters', {});
-							self.insight.attr('relations', {});
-							self.generateQuery();
-						} else {
-							self.insight.attr('variables', {});
-							self.insight.attr('query', '-- Type your query here');
-						}
-
-						self.element.find('.exportButton').data('export', false);
-						self.element.find('.exportButton').addClass('disabled');
-					}
+					self.element.find('.confirmModal').modal('show');
 				},
 				'.saveButton click': function(element, event) {
 					var self = this;

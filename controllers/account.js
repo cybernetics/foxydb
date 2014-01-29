@@ -62,15 +62,19 @@ exports.controller = function(app, db) {
 	});
 	app.delete('/api/user/:id', function(req, res) {
 		if (req.session.user && req.session.user.level == 0) {
-			db.serialize(function() {
-				db.run('DELETE FROM `users` WHERE `id` = ?', [req.params.id], function(err) {
-					if (err) {
-						res.send(500, {error: err});
-					} else {
-						res.send(200, {});
-					}
+			if (req.params.id != req.session.user.id) {
+				db.serialize(function() {
+					db.run('DELETE FROM `users` WHERE `id` = ?', [req.params.id], function(err) {
+						if (err) {
+							res.send(500, {error: err});
+						} else {
+							res.send(200, {});
+						}
+					});
 				});
-			});
+			} else {
+				req.send(500, 'You cannot delete Your account.');
+			}
 		}
 	});
 	app.get('/api/users', function(req, res) {

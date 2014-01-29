@@ -23,7 +23,9 @@
 				<td><%=item.attr('email')%></td>
 				<td><%=(item.attr('level') == 0?'Administrator':'User')%></td>
 				<td>
+					<% if (item.attr('id') != Global.user.id) { %>
 					<a <%= (el) -> el.data('user', item) %>href="#" class="delete"><i class="icon delete"></i>Delete</a> &nbsp;&nbsp;&nbsp; 
+					<% } %>
 					<a href="#!users/edit&id=<%= item.id %>" class="edit"><i class="icon pencil"></i>Edit</a>
 				</td>
 			</tr>

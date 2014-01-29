@@ -19,7 +19,7 @@ exports.controller = function(app, db) {
 		}
 	});
 	app.get('/api/user/:id', function(req, res) {
-		if(req.session.user && req.session.user.level == 0) {
+		if(req.session.user && (req.session.user.level == 0 || req.session.user.id == req.params.id)) {
 			db.serialize(function() {
 				db.get("SELECT name, email, level, id FROM `users` WHERE `id` = ?;",req.params.id , function(err, row) {
 					if(typeof row == 'undefined') {
@@ -34,7 +34,7 @@ exports.controller = function(app, db) {
 		}
 	});
 	app.put('/api/user/:id', function(req, res) {
-		if (req.session.user && req.session.user.level == 0) {
+		if (req.session.user && (req.session.user.level == 0 || req.session.user.id == req.params.id)) {
 			db.serialize(function() {
 				var query;
 				var values = [];
@@ -58,6 +58,8 @@ exports.controller = function(app, db) {
 					}
 				});
 			});
+		} else {
+			res.send(401, 'Only administrators are allowed to update users.');
 		}
 	});
 	app.delete('/api/user/:id', function(req, res) {

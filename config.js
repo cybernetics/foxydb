@@ -6,5 +6,5 @@ exports.frontConfig = {
 exports.application = {
 	port: 8000,
 	sessionSecret: 'foxy',
-	packaged: false
+	packaged: true
 }

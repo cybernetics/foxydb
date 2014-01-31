@@ -19,7 +19,13 @@ steal(
 					this.element.find('.sidebar').html('app/views/pages/users/sidebar.ejs', {});
 				},
 				index: function() {
-					this.element.find('.inner').html('app/views/pages/users/list.ejs', {users: Model.User.findAll({})});
+					var self = this;
+
+					if (Global.user.level == 0) {
+						self.element.find('.inner').html('app/views/pages/users/list.ejs', {users: Model.User.findAll({})});
+					} else {
+						self.element.find('.inner').html('app/views/pages/users/update.ejs', {user: Model.User.findOne({id: Global.user.id})});
+					}
 				},
 				add: function(element, options) {
 					this.element.find('.inner').html('app/views/pages/users/new.ejs', {});
@@ -28,23 +34,34 @@ steal(
 				edit: function(element, options) {
 					if (typeof element.id !== 'undefined') {
 						this.element.find('.inner').html('app/views/pages/users/update.ejs', {user: Model.User.findOne({id: element.id})});
-						//this.element.find('form').parsley();				
 					} else {
 						can.route.attr({controller: 'users'}, true);
 					}
 				},
 				'.delete click': function(element, event) {
 					event.preventDefault();
+					var self = this;
 
-					if (confirm('You are about to remove user ' + element.data('user').name)) {
-						$.ajax({
-							url: '/api/user/' + element.data('user').id,
-							type: 'delete',
-							success: function(msg) {
-								can.route.attr({controller: 'users'}, true);
-							}
-						});
+					if (!self.element.find('.confirmModal').length) {
+						self.element.find('.inner').append('app/views/layout/modals/confirm.ejs', {title: 'User remove', content: 'You are about to remove user.', positive: 'Delete', negative: 'Cancel'});
 					}
+
+					self.element.find('.confirmModal .content').html('<p>You are about to delete user ' + element.data('user').name);
+					self.element.find('.confirmModal').modal({
+						closable: false,
+						debug: false,
+						detachable: false,
+						allowMultiple: false,
+						onApprove: function () {
+							$.ajax({
+								url: '/api/user/' + element.data('user').id,
+								type: 'delete',
+								success: function(msg) {
+									can.route.attr({controller: 'users'}, true);
+								}
+							});
+						}
+					}).modal('show');
 				},
 				'form.create submit': function(element, event) {
 					event.preventDefault();
@@ -66,7 +83,7 @@ steal(
 						var userObject = element.formParams();
 						var user = element.data('user');
 
-						if (typeof userObject.level === 'undefined') {
+						if (typeof userObject.level === 'undefined' || Global.user.level == 1) {
 							user.attr('level', 1);
 						} else {
 							user.attr('level', userObject.level);
@@ -80,6 +97,9 @@ steal(
 						user.attr('email', userObject.email);
 
 						user.save().then(function(data) {
+							if (Global.user.id == user.id) {
+								Global.user.attr(user.attr());
+							}
 							can.route.attr({controller: 'users'}, true);
 						}).fail(function(data) {
 							if (typeof data.responseJSON != 'undefined'){

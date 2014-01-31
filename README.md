@@ -24,7 +24,7 @@ exports.frontConfig = {
 exports.application = {
 	port: 8000, //Port on which the application will be served
 	sessionSecret: 'foxy', //Session cookie secret
-	packaged: true //Serve packaged production files, setto false for development and debug
+	packaged: true //Serve packaged production files, set to false for development and debug
 }
 ```
 

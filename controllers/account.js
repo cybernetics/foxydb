@@ -19,7 +19,7 @@ exports.controller = function(app, db) {
 		}
 	});
 	app.get('/api/user/:id', function(req, res) {
-		if(req.session.user && req.session.user.level == 0) {
+		if(req.session.user && (req.session.user.level == 0 || req.session.user.id == req.params.id)) {
 			db.serialize(function() {
 				db.get("SELECT name, email, level, id FROM `users` WHERE `id` = ?;",req.params.id , function(err, row) {
 					if(typeof row == 'undefined') {
@@ -34,7 +34,7 @@ exports.controller = function(app, db) {
 		}
 	});
 	app.put('/api/user/:id', function(req, res) {
-		if (req.session.user && req.session.user.level == 0) {
+		if (req.session.user && (req.session.user.level == 0 || req.session.user.id == req.params.id)) {
 			db.serialize(function() {
 				var query;
 				var values = [];
@@ -58,19 +58,25 @@ exports.controller = function(app, db) {
 					}
 				});
 			});
+		} else {
+			res.send(401, 'Only administrators are allowed to update users.');
 		}
 	});
 	app.delete('/api/user/:id', function(req, res) {
 		if (req.session.user && req.session.user.level == 0) {
-			db.serialize(function() {
-				db.run('DELETE FROM `users` WHERE `id` = ?', [req.params.id], function(err) {
-					if (err) {
-						res.send(500, {error: err});
-					} else {
-						res.send(200, {});
-					}
+			if (req.params.id != req.session.user.id) {
+				db.serialize(function() {
+					db.run('DELETE FROM `users` WHERE `id` = ?', [req.params.id], function(err) {
+						if (err) {
+							res.send(500, {error: err});
+						} else {
+							res.send(200, {});
+						}
+					});
 				});
-			});
+			} else {
+				res.send(500, 'You cannot delete Your account.');
+			}
 		}
 	});
 	app.get('/api/users', function(req, res) {
